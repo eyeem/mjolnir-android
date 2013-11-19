@@ -39,3 +39,4 @@ build/
 
 # Mjolnir generated files
 library/src/javagen/
+eyeem-sdk-android/src/javagen/

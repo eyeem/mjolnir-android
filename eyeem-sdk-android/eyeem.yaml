@@ -1,0 +1,115 @@
+---
+photo:
+  id: String
+  thumbUrl: String
+  photoUrl: String
+  webUrl: String
+  width: Fixnum
+  height: Fixnum
+  updated: Date
+  user: user
+  latitude: Float
+  longitude: Float
+  totalLikes: Fixnum
+  totalPeople: Fixnum
+  totalComments: Fixnum
+  description: String
+  filter: String
+  comments: comments
+  likers: likers
+  people: people
+  albums: albums
+  import_linkify:
+    ImportMixin: com.eyeem.chips.Linkify
+  init_entities:
+    CtorMixin: "Utils.computeEntities(this);"
+  entities:
+    Mixin: |
+      public Linkify.Entities entities = new Linkify.Entities();
+      public String entityfiedDescription;
+user:
+  id: String
+  nickname: String
+  fullname: String
+  webUrl: String
+  thumbUrl: String
+  photoUrl: String
+  description: String
+comments:
+  offset: Fixnum
+  limit: Fixnum
+  total: Fixnum
+  items:
+    Array: comment
+comment:
+  id: String
+  photoId: String
+  message: String
+  extendedMessage: String
+  user: user
+  updated: Date
+likers:
+  offset: Fixnum
+  limit: Fixnum
+  total: Fixnum
+  items:
+    Array: user
+people:
+  offset: Fixnum
+  limit: Fixnum
+  total: Fixnum
+  items:
+    Array: person
+person:
+  nickname: String
+  fullname: String
+  thumbUrl: String
+  serviceType: String
+  serviceId: String
+  facebook: FalseClass
+  twitter: FalseClass
+  textUtils:
+    ImportMixin: android.text.TextUtils
+  ctor:
+    CtorMixin: |
+      if (!TextUtils.isEmpty(fullname))
+        fullnameASCII = FlattenToASCII.removeDiacritic(fullname).toLowerCase();
+  toString:
+    Mixin: |
+      public String fullnameASCII;
+      @Override public String toString() {
+            if (!TextUtils.isEmpty(fullname))
+               return fullname;
+            else if (!TextUtils.isEmpty(nickname))
+               return nickname;
+            else
+               return "";
+         }
+albums:
+  offset: Fixnum
+  limit: Fixnum
+  total: Fixnum
+  items:
+    Array: album
+album:
+  id: String
+  name: String
+  type: String
+  thumbUrl: String
+  webUrl: String
+  updated: Date
+  location: location
+  totalPhotos: Fixnum
+  totalLikers: Fixnum
+  totalContributors: Fixnum
+  types:
+    Mixin: |
+      public final static String TYPE_CITY = "city";
+      public final static String TYPE_VENUE = "venue";
+      public final static String TYPE_EVENT = "event";
+      public final static String TYPE_COUNTRY = "country";
+      public final static String TYPE_TAG = "tag";
+location:
+  latitude: String
+  longitude: String
+  countryCode: String
