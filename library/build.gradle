@@ -50,6 +50,7 @@ task generateSources {
 
 gradle.projectsEvaluated {
     compileDebug.dependsOn(generateSources)
+    compileRelease.dependsOn(generateSources)
 }
 
 android {
