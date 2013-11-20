@@ -1,6 +1,7 @@
 package com.eyeem.sdk;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -116,10 +117,12 @@ public class EyeEm extends RequestBuilder {
 
    public static class Account extends OAuth2Account {
 
+      public final static String TYPE = "eyeem";
+
       User user;
 
       public Account() {
-         type = "eyeem";
+         type = TYPE;
       }
 
       public static Account fromJSON(JSONObject json) {
@@ -140,6 +143,16 @@ public class EyeEm extends RequestBuilder {
       @Override public String callbackUrl() { return CALLBACK_URI; }
       @Override public String secret() { return SECRET; }
       @Override public RequestBuilder oauthRequest() { return new EyeEm("/v2/oauth/token"); }
+      @Override public String avatarUrl() { return user != null ? user.thumbUrl : ""; }
+      @Override public String displayName() {
+         if (user == null)
+            return "";
+         else if (!TextUtils.isEmpty(user.fullname))
+            return user.fullname;
+         else if (!TextUtils.isEmpty(user.nickname))
+            return user.nickname;
+         return "";
+      }
 
       @Override
       public RequestBuilder sign(RequestBuilder requestBuilder) {

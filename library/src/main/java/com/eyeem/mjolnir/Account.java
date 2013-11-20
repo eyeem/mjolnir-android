@@ -27,6 +27,9 @@ public abstract class Account implements Serializable {
 
    public abstract RequestBuilder sign(RequestBuilder requestBuilder);
 
+   public String avatarUrl() { return ""; }
+   public String displayName() { return ""; }
+
    public JSONObject toJSON(JSONObject json) throws JSONException {
       json.put("type", type);
       json.put("id", id);
@@ -75,6 +78,10 @@ public abstract class Account implements Serializable {
          && !TextUtils.isEmpty(((Account)o).id)
          && ((Account)o).type.equals(type)
          && ((Account)o).id.equals(id);
+   }
+
+   @Override public int hashCode() {
+      return ("" + id + type).hashCode();
    }
 
    private static HashMap<String, Class> subclasses = new HashMap<String, Class>();
