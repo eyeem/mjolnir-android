@@ -26,13 +26,12 @@ dependencies {
 
     compile 'com.android.support:support-v4:18.0.+'
 
-    compile 'com.eyeem.potato:library:0.9.0-SNAPSHOT@aar'
-    // compile 'com.eyeem.chips:library:0.9.0-SNAPSHOT@aar'
+    compile 'com.eyeem.potato:library:0.9.0@aar'
+    compile 'com.eyeem.chips:library:0.9.1-SNAPSHOT@aar'
     compile 'com.eyeem.volley:volley:0.1.0-SNAPSHOT@aar'
     compile 'com.squareup.okhttp:okhttp:1.2.1'
 
     compile project(':mjolnir-android:library')
-    compile project(':chips-android:library')
 
     testCompile 'junit:junit:4.10'
     testCompile 'org.robolectric:robolectric:2.1.+'

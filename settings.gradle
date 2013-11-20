@@ -1,3 +1,2 @@
 include 'library'
 include 'eyeem-sdk-android'
-include ':chips-android:library'
