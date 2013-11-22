@@ -26,22 +26,13 @@ public class ListRequest extends JsonRequest<List> {
 
    public ListRequest(RequestBuilder b, Class clazz, Response.Listener<List> listener,
                       Response.ErrorListener errorListener) {
-      super(Method.GET, b.toUrl(), null, listener, errorListener);
+      super(b.method, b.toUrl(), null, listener, errorListener);
       this.b = b;
       this.clazz = clazz;
    }
 
    protected List fromArray(JSONArray jsonArray) {
-      try {
-         java.lang.reflect.Method fromJSONArray = clazz.getMethod("fromJSONArray", JSONArray.class);
-         return (List)fromJSONArray.invoke(null, jsonArray);
-      } catch (NoSuchMethodException e) {
-         return null;
-      } catch (InvocationTargetException e) {
-         return null;
-      } catch (IllegalAccessException e) {
-         return null;
-      }
+      return fromArray(clazz, jsonArray);
    }
 
    @Override
@@ -60,5 +51,18 @@ public class ListRequest extends JsonRequest<List> {
    @Override
    public Map<String, String> getHeaders() throws AuthFailureError {
       return b.headers;
+   }
+
+   public static List fromArray(Class clazz, JSONArray jsonArray) {
+      try {
+         java.lang.reflect.Method fromJSONArray = clazz.getMethod("fromJSONArray", JSONArray.class);
+         return (List)fromJSONArray.invoke(null, jsonArray);
+      } catch (NoSuchMethodException e) {
+         return null;
+      } catch (InvocationTargetException e) {
+         return null;
+      } catch (IllegalAccessException e) {
+         return null;
+      }
    }
 }

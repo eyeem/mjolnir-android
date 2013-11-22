@@ -26,22 +26,13 @@ public class ObjectRequest extends JsonRequest<Object> {
 
    public ObjectRequest(RequestBuilder b, Class clazz, Response.Listener<Object> listener,
                       Response.ErrorListener errorListener) {
-      super(Request.Method.GET, b.toUrl(), null, listener, errorListener);
+      super(b.method, b.toUrl(), null, listener, errorListener);
       this.b = b;
       this.clazz = clazz;
    }
 
    protected Object fromJSON(JSONObject jsonObject) {
-      try {
-         java.lang.reflect.Method fromJSON = clazz.getMethod("fromJSON", JSONObject.class);
-         return fromJSON.invoke(null, jsonObject);
-      } catch (NoSuchMethodException e) {
-         return null;
-      } catch (InvocationTargetException e) {
-         return null;
-      } catch (IllegalAccessException e) {
-         return null;
-      }
+      return fromJSON(clazz, jsonObject);
    }
 
    @Override
@@ -61,5 +52,18 @@ public class ObjectRequest extends JsonRequest<Object> {
    @Override
    public Map<String, String> getHeaders() throws AuthFailureError {
       return b.headers;
+   }
+
+   protected static Object fromJSON(Class clazz, JSONObject jsonObject) {
+      try {
+         java.lang.reflect.Method fromJSON = clazz.getMethod("fromJSON", JSONObject.class);
+         return fromJSON.invoke(null, jsonObject);
+      } catch (NoSuchMethodException e) {
+         return null;
+      } catch (InvocationTargetException e) {
+         return null;
+      } catch (IllegalAccessException e) {
+         return null;
+      }
    }
 }

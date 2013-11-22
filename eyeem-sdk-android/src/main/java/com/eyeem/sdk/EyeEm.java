@@ -36,6 +36,10 @@ public class EyeEm extends RequestBuilder {
       header("X-Api-Version", "2.2.0");
    }
 
+   public static EyeEm user(String id) {
+      return (EyeEm) new EyeEm("/v2/users/" + id).jsonpath("user");
+   }
+
    public static EyeEm userPhotos(String id) {
       return (EyeEm) new EyeEm("/v2/users/" + id + "/photos").jsonpath("photos.items");
    }
@@ -166,7 +170,7 @@ public class EyeEm extends RequestBuilder {
       }
 
       @Override public void postAuth(RequestQueue queue, final Context context, final WeakReference<OAuth2Account.UICallback> _callback) {
-         new EyeEm("/v2/users/me").jsonpath("user")
+         EyeEm.user("me")
             .with(Account.this)
             .objectOf(User.class)
             .listener(new Response.Listener<Object>() {
