@@ -27,7 +27,7 @@ import com.eyeem.mjolnir.R;
  */
 public class OAuthFragment extends DialogFragment implements OAuth2Account.UICallback {
 
-   public final static String TAG = "OAuthFragment";
+   public final static String TAG = "com.eyeem.mjolnir.oauth.OAuthFragment.TAG";
 
    public final static String KEY_ACCOUNT = "account";
 
@@ -96,7 +96,7 @@ public class OAuthFragment extends DialogFragment implements OAuth2Account.UICal
       webViewContainer = (FrameLayout) view.findViewById(R.id.web_oauth_container);
 
       if (webViewOauth == null) {
-         webViewOauth = new WebView(webViewContainer.getContext().getApplicationContext());
+         webViewOauth = new WebView(webViewContainer.getContext());
          webViewOauth.setBackgroundColor(0x00000000); // transparent
       }
       webViewContainer.addView(webViewOauth,
@@ -140,7 +140,7 @@ public class OAuthFragment extends DialogFragment implements OAuth2Account.UICal
       args.putSerializable(KEY_ACCOUNT, account);
       newFragment.setArguments(args);
       newFragment.setRequestQueue(queue);
-      newFragment.show(ft, "dialog");
+      newFragment.show(ft, TAG);
    }
 
    @Override
