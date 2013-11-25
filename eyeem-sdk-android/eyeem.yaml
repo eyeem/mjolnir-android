@@ -129,6 +129,12 @@ discover_item:
   nearbyWeight: Float
   type: String
   photos: photos
+  types:
+    Mixin: |
+      public static final String TYPE_ALBUM = "album";
+      public static final String TYPE_POPULAR = "popular";
+      public static final String TYPE_NEARBY = "nearbyLive";
+      public static final String TYPE_USER = "user";
 weather:
   weather_icon: String
   weather_code: String
