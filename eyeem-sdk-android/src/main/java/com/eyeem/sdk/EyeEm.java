@@ -112,6 +112,14 @@ public class EyeEm extends RequestBuilder {
       return (EyeEm) param("lat", lat).param("lng", lng);
    }
 
+   public EyeEm city(String city) {
+      return (EyeEm) param("city", city);
+   }
+
+   public EyeEm cc(String cc) {
+      return (EyeEm) param("cc", cc);
+   }
+
    @Override
    public RequestBuilder fetchFront(Object info) {
       return param("offset", 0);

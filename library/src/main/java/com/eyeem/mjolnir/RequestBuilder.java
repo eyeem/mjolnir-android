@@ -78,6 +78,8 @@ public class RequestBuilder implements Serializable, Cloneable {
    }
 
    public RequestBuilder param(String key, String value) {
+      if (TextUtils.isEmpty(value))
+         return this;
       params.put(key, value);
       return this;
    }

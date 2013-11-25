@@ -129,9 +129,22 @@ discover_item:
   nearbyWeight: Float
   type: String
   photos: photos
+weather:
+  weather_icon: String
+  weather_code: String
+  temp_f: String
+  temp_c: String
 header:
+  venue: venue
   image_url: String
   greeting: String
+  city: city
+venue:
+  name: String
+city:
+  lng: String
+  lat: String
+  name: String
 photos:
   total: Fixnum
   limit: Fixnum
