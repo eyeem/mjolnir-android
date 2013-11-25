@@ -15,7 +15,9 @@ import org.json.JSONObject;
 import java.lang.ref.WeakReference;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -30,10 +32,23 @@ public class EyeEm extends RequestBuilder {
    public static String SECRET = "";
    public static String CALLBACK_URI = "";
 
+   public static void init(String id, String secret, String callback_uri) {
+      Account.registerAccountType("eyeem", EyeEm.Account.class);
+      EyeEm.ID = id;
+      EyeEm.SECRET = secret;
+      EyeEm.CALLBACK_URI = callback_uri;
+   }
+
    private EyeEm(String path) {
       super(API_URL, path);
       param("client_id", ID);
-      header("X-Api-Version", "2.2.0");
+      header("X-Api-Version", "2.3.0");
+      header("X-hourOfDay", String.valueOf(Calendar.getInstance().get(Calendar.HOUR_OF_DAY)));
+      headers.putAll(default_headers);
+   }
+
+   public static EyeEm path(String path) {
+      return new EyeEm(path);
    }
 
    public static EyeEm user(String id) {
@@ -91,6 +106,12 @@ public class EyeEm extends RequestBuilder {
       return (EyeEm)param("numLikers", count);
    }
 
+   public EyeEm latlng(String lat, String lng) {
+      if (TextUtils.isEmpty(lat) || TextUtils.isEmpty(lng))
+         return this;
+      return (EyeEm) param("lat", lat).param("lng", lng);
+   }
+
    @Override
    public RequestBuilder fetchFront(Object info) {
       return param("offset", 0);
@@ -123,7 +144,7 @@ public class EyeEm extends RequestBuilder {
 
       public final static String TYPE = "eyeem";
 
-      User user;
+      public User user;
 
       public Account() {
          type = TYPE;
@@ -188,4 +209,6 @@ public class EyeEm extends RequestBuilder {
             .enqueue(queue);
       }
    }
+
+   public static HashMap<String, String> default_headers = new HashMap<String, String>();
 }

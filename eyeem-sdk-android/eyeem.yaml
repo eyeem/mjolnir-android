@@ -113,3 +113,28 @@ location:
   latitude: String
   longitude: String
   countryCode: String
+discover:
+  total: Fixnum
+  limit: Fixnum
+  offset: Fixnum
+  items:
+    Array: discover_item
+  header: header
+discover_item:
+  weight: Float
+  primaryReason: String
+  reason: String
+  album: album
+  trendingWeight: Float
+  nearbyWeight: Float
+  type: String
+  photos: photos
+header:
+  image_url: String
+  greeting: String
+photos:
+  total: Fixnum
+  limit: Fixnum
+  offset: Fixnum
+  items:
+    Array: photo
