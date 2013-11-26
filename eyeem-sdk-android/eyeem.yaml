@@ -121,6 +121,8 @@ discover:
     Array: discover_item
   header: header
 discover_item:
+  title: String
+  subtitle: String
   weight: Float
   primaryReason: String
   reason: String

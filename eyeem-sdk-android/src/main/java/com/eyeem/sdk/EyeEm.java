@@ -51,6 +51,10 @@ public class EyeEm extends RequestBuilder {
       return new EyeEm(path);
    }
 
+   public static EyeEm discover() {
+      return (EyeEm) new EyeEm("/v2/users/me/discover").jsonpath("discover");
+   }
+
    public static EyeEm user(String id) {
       return (EyeEm) new EyeEm("/v2/users/" + id).jsonpath("user");
    }
