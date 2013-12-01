@@ -59,12 +59,20 @@ public class EyeEm extends RequestBuilder {
       return (EyeEm) new EyeEm("/v2/users/" + id).jsonpath("user");
    }
 
+   public static EyeEm userSearch(String query) {
+      return (EyeEm) new EyeEm("/v2/users").param("q", query).jsonpath("users.items");
+   }
+
    public static EyeEm userPhotos(String id) {
       return (EyeEm) new EyeEm("/v2/users/" + id + "/photos").jsonpath("photos.items");
    }
 
    public static EyeEm albumPhotos(String id) {
       return (EyeEm) new EyeEm("/v2/albums/" + id + "/photos").jsonpath("photos.items");
+   }
+
+   public static EyeEm albumSearch(String query) {
+      return (EyeEm) new EyeEm("/v2/albums").param("q", query).jsonpath("albums.items");
    }
 
    public EyeEm defaults() {
@@ -80,6 +88,10 @@ public class EyeEm extends RequestBuilder {
 
    public EyeEm detailed() {
       return (EyeEm)param("detailed", "1");
+   }
+
+   public EyeEm followers() {
+      return (EyeEm)param("followers", "1");
    }
 
    public EyeEm limit(int count) {
