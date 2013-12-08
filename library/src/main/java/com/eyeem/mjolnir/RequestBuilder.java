@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * Created by vishna on 29/10/13.
  */
-public class RequestBuilder implements Serializable, Cloneable {
+public class RequestBuilder implements Serializable {
    final public String host;
    final public String path;
    public PathDeclutter declutter;
@@ -25,6 +25,18 @@ public class RequestBuilder implements Serializable, Cloneable {
    public int method = Request.Method.GET; // GET by default
    public String content;
    public String content_type;
+
+   public RequestBuilder(RequestBuilder r) {
+      host = r.host;
+      path = r.path;
+      declutter = r.declutter;
+      params.putAll(r.params);
+      headers.putAll(r.headers);
+      account = r.account;
+      method = r.method;
+      content = r.content;
+      content_type = r.content_type;
+   }
 
    public RequestBuilder(String host, String path) {
       this.host = host;
@@ -151,12 +163,7 @@ public class RequestBuilder implements Serializable, Cloneable {
       return this;
    }
 
-   @Override public RequestBuilder clone() {
-      try {
-         return (RequestBuilder) super.clone();
-      } catch (CloneNotSupportedException e) {
-         e.printStackTrace();
-         return null;
-      }
+   public RequestBuilder copy() {
+      return new RequestBuilder(this);
    }
 }

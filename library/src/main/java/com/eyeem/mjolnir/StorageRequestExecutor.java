@@ -29,7 +29,7 @@ public class StorageRequestExecutor {
    }
 
    public VolleyListRequestExecutor fetchFront() {
-      RequestBuilder frontRequest = requestBuilder.clone().fetchFront(list);
+      RequestBuilder frontRequest = requestBuilder.copy().fetchFront(list);
       return new VolleyListRequestExecutor(frontRequest, objectClass)
          .listener(new Response.Listener<List>() {
             @Override
@@ -46,7 +46,7 @@ public class StorageRequestExecutor {
    }
 
    public VolleyListRequestExecutor fetchBack() {
-      RequestBuilder frontRequest = requestBuilder.clone().fetchBack(list);
+      RequestBuilder frontRequest = requestBuilder.copy().fetchBack(list);
       return new VolleyListRequestExecutor(frontRequest, objectClass)
          .listener(new Response.Listener<List>() {
             @Override
