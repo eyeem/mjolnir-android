@@ -65,4 +65,8 @@ public class ListRequest extends JsonRequest<List> {
          return null;
       }
    }
+
+   public RequestBuilder getRequestBuilder() {
+      return b;
+   };
 }
