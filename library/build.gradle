@@ -7,7 +7,7 @@ buildscript {
         mavenLocal()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.6.+'
+        classpath 'com.android.tools.build:gradle:0.7.+'
         classpath 'com.squareup.gradle:gradle-android-test-plugin:0.9.1-SNAPSHOT'
     }
 }
@@ -48,11 +48,6 @@ task generateSources {
     }
 }
 
-gradle.projectsEvaluated {
-    compileDebug.dependsOn(generateSources)
-    compileRelease.dependsOn(generateSources)
-}
-
 android {
     compileSdkVersion 18
     buildToolsVersion '18.0.1'
@@ -63,6 +58,10 @@ android {
                 srcDirs 'src/javagen'
             }
         }
+    }
+
+    libraryVariants.all { variant ->
+        variant.javaCompile.dependsOn generateSources
     }
 }
 
