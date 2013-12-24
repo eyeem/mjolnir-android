@@ -46,8 +46,8 @@ public class StorageRequestExecutor {
    }
 
    public VolleyListRequestExecutor fetchBack() {
-      RequestBuilder frontRequest = requestBuilder.copy().fetchBack(list);
-      return new VolleyListRequestExecutor(frontRequest, objectClass)
+      RequestBuilder backRequest = requestBuilder.copy().fetchBack(list);
+      return new VolleyListRequestExecutor(backRequest, objectClass)
          .listener(new Response.Listener<List>() {
             @Override
             public void onResponse(List response) {
