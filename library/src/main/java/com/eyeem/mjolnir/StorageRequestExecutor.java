@@ -15,6 +15,7 @@ public class StorageRequestExecutor {
    public Storage.List list;
    public RequestBuilder requestBuilder;
    public Class objectClass;
+   public boolean exhausted;
 
    public StorageRequestExecutor(RequestBuilder requestBuilder, Class objectClass) {
       this.requestBuilder = requestBuilder;
@@ -51,7 +52,9 @@ public class StorageRequestExecutor {
          .listener(new Response.Listener<List>() {
             @Override
             public void onResponse(List response) {
+               int before = list.size();
                list.addAll(response);
+               exhausted = (before == list.size());
             }
          })
          .errorListener(new Response.ErrorListener() {
