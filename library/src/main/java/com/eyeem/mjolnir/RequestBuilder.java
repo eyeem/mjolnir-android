@@ -21,8 +21,8 @@ import java.util.Map;
  * Created by vishna on 29/10/13.
  */
 public class RequestBuilder implements Serializable {
-   final public String host;
-   final public String path;
+   public String host;
+   public String path;
    public PathDeclutter declutter;
    public HashMap<String, String> params = new HashMap<String, String>();
    public HashMap<String, String> headers = new HashMap<String, String>();
@@ -31,17 +31,7 @@ public class RequestBuilder implements Serializable {
    public String content;
    public String content_type;
 
-   public RequestBuilder(RequestBuilder r) {
-      host = r.host;
-      path = r.path;
-      declutter = r.declutter;
-      params.putAll(r.params);
-      headers.putAll(r.headers);
-      account = r.account;
-      method = r.method;
-      content = r.content;
-      content_type = r.content_type;
-   }
+   public RequestBuilder() { /*kryo*/ }
 
    public RequestBuilder(String host, String path) {
       this.host = host;

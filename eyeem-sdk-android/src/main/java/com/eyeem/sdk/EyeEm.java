@@ -39,6 +39,8 @@ public class EyeEm extends RequestBuilder {
       EyeEm.CALLBACK_URI = callback_uri;
    }
 
+   public EyeEm() { /*kryo*/ }
+
    private EyeEm(String path) {
       super(API_URL, path);
       param("client_id", ID);
