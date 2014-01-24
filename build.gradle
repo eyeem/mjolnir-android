@@ -1,3 +1,11 @@
+//class ProjectSettings{
+//    int compileSdk = 18
+//    int targetSdk = 19
+//    String buildTools = '19.0.1'
+//    String androidPlugin = 'com.android.tools.build:gradle:0.8.+'
+//}
+//project.extensions.create("ver", ProjectSettings)
+
 task wrapper(type: Wrapper) {
     gradleVersion = '1.9'
 }
@@ -11,7 +19,7 @@ buildscript {
         mavenLocal()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.6.+'
+        classpath project.ver.androidPlugin
         classpath 'com.squareup.gradle:gradle-android-test-plugin:0.9.1-SNAPSHOT'
     }
 }
