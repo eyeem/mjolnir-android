@@ -16,9 +16,10 @@ photo:
   description: String
   filter: String
   comments: comments
-  likers: likers
+  likers: users
   people: people
   albums: albums
+  liked: FalseClass
   import_linkify:
     ImportMixin: com.eyeem.chips.Linkify
   init_entities:
@@ -27,6 +28,9 @@ photo:
     Mixin: |
       public Linkify.Entities entities = new Linkify.Entities();
       public String entityfiedDescription;
+      public float getAspectRatio() { return height == 0 ? 0 : (float) width / (float) height; }
+      // TODO
+      public String filename;
 user:
   id: String
   nickname: String
@@ -35,6 +39,18 @@ user:
   thumbUrl: String
   photoUrl: String
   description: String
+  following: FalseClass
+  blocked: FalseClass
+  restricted: FalseClass
+  totalFollowers: Fixnum
+  totalFriends: Fixnum
+  totalPhotos: Fixnum
+  totalLikedPhotos: Fixnum
+  totalLikedAlbums: Fixnum
+  entities:
+    Mixin: |
+      // TODO
+      public String photofilename;
 comments:
   offset: Fixnum
   limit: Fixnum
@@ -48,7 +64,8 @@ comment:
   extendedMessage: String
   user: user
   updated: Date
-likers:
+  mentionedUsers: users
+users:
   offset: Fixnum
   limit: Fixnum
   total: Fixnum
@@ -70,6 +87,10 @@ person:
   twitter: FalseClass
   textUtils:
     ImportMixin: android.text.TextUtils
+  urlException:
+    ImportMixin: java.io.UnsupportedEncodingException
+  URLEncoder:
+    ImportMixin: java.net.URLEncoder
   ctor:
     CtorMixin: |
       if (!TextUtils.isEmpty(fullname))
@@ -85,6 +106,20 @@ person:
             else
                return "";
          }
+      public String handle() {
+      String name = "";
+      if (serviceType.equals("eyeem") || serviceType.equals("facebook")) {
+         name = fullname;
+      } else if (serviceType.equals("twitter")) {
+         name = nickname;
+      }
+      
+      try {
+         return URLEncoder.encode(serviceType + ":" + serviceId + ":" + name, "UTF-8");
+      } catch (UnsupportedEncodingException e) {
+         return null;
+      }
+      }
 albums:
   offset: Fixnum
   limit: Fixnum
@@ -102,6 +137,10 @@ album:
   totalPhotos: Fixnum
   totalLikers: Fixnum
   totalContributors: Fixnum
+  photos: photos
+  hidden: FalseClass
+  favorited: FalseClass
+  subtitle: String
   types:
     Mixin: |
       public final static String TYPE_CITY = "city";
@@ -109,10 +148,18 @@ album:
       public final static String TYPE_EVENT = "event";
       public final static String TYPE_COUNTRY = "country";
       public final static String TYPE_TAG = "tag";
+      // TODO
+      public String filename;
 location:
   latitude: String
   longitude: String
   countryCode: String
+  cityAlbum: album
+  countryAlbum: album
+  venueService: venue_service
+venue_service:
+  categoryName: String
+  id: String
 discover:
   total: Fixnum
   limit: Fixnum
@@ -137,6 +184,8 @@ discover_item:
       public static final String TYPE_POPULAR = "popular";
       public static final String TYPE_NEARBY = "nearbyLive";
       public static final String TYPE_USER = "user";
+      public static final String TYPE_FRIENDS = "friends";
+      public boolean local; // FIXME
 weather:
   weather_icon: String
   weather_code: String
@@ -149,6 +198,19 @@ header:
   city: city
 venue:
   name: String
+  serviceId: String
+  category: String
+  categoryName: String
+  types:
+    Mixin: |
+      // TODO
+      public ArrayList<Topic> topics;
+      public boolean isCity;
+      public boolean newLocation;
+      public boolean noLocation;
+      public String venueServiceName;
+      public double newLat;
+      public double newLon;
 city:
   lng: String
   lat: String
@@ -159,3 +221,7 @@ photos:
   offset: Fixnum
   items:
     Array: photo
+topic:
+  id: String
+  name: String
+  totalPhotos: Fixnum
