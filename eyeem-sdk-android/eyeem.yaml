@@ -228,3 +228,16 @@ topic:
   id: String
   name: String
   totalPhotos: Fixnum
+contact:
+  fullname: String
+  nickname: String
+  serviceId: String
+  serviceType: String
+  thumbUrl: String
+  user: user
+mission:
+  title: String
+  description: String
+  url: String
+  thumbUrl: String
+  album: Album
