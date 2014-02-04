@@ -143,6 +143,8 @@ album:
   hidden: FalseClass
   favorited: FalseClass
   subtitle: String
+  init_filename:
+    CtorMixin: "filename = Utils.lastSegment(thumbUrl);"
   types:
     Mixin: |
       public final static String TYPE_CITY = "city";
@@ -150,7 +152,6 @@ album:
       public final static String TYPE_EVENT = "event";
       public final static String TYPE_COUNTRY = "country";
       public final static String TYPE_TAG = "tag";
-      // TODO
       public String filename;
 location:
   latitude: String

@@ -13,9 +13,9 @@ public class PathDeclutter implements Serializable {
 
    ArrayList<String> keys;
 
-   PathDeclutter() { /*kryo*/ }
+   public PathDeclutter() { /*kryo*/ }
 
-   PathDeclutter(String path) {
+   public PathDeclutter(String path) {
       keys = new ArrayList<String>();
       for(String node : path.split("\\.")) {
          keys.add(node);
