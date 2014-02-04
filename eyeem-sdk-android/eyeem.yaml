@@ -163,13 +163,11 @@ location:
 venue_service:
   categoryName: String
   id: String
-discover:
-  total: Fixnum
-  limit: Fixnum
-  offset: Fixnum
-  items:
-    Array: discover_item
+discover_meta:
   header: header
+  weather: weather
+  lat: String
+  lng: String
 discover_item:
   title: String
   subtitle: String
@@ -204,10 +202,35 @@ venue:
   serviceId: String
   category: String
   categoryName: String
+  import_iterator:
+    ImportMixin: java.util.Iterator
+  textUtils:
+    ImportMixin: android.text.TextUtils
+  init_topics:
+    CtorMixin: |
+      // TODO
+      JSONObject topics = json.optJSONObject("topics");
+      
+      if (topics != null) {
+         Iterator it = topics.keys();
+         while (it.hasNext()) {
+            try {
+               String key = (String) it.next();
+               String val = topics.optString(key);
+               if (!TextUtils.isEmpty(key) && !TextUtils.isEmpty(val)) {
+                  Topic t = new Topic();
+                  t.name = val;
+                  t.id = key;
+                  this.topics.add(t);
+               }
+            } catch (Exception e) {
+            }
+         }
+      }
   types:
     Mixin: |
       // TODO
-      public ArrayList<Topic> topics;
+      public ArrayList<Topic> topics = new ArrayList<Topic>();
       public boolean isCity;
       public boolean newLocation;
       public boolean noLocation;
