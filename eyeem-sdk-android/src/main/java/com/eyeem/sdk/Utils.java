@@ -1,6 +1,7 @@
 package com.eyeem.sdk;
 
 import android.app.Application;
+import android.net.Uri;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 
@@ -33,10 +34,12 @@ public class Utils {
          while (matcher.find()) {
             String id = matcher.group(1);
             Linkify.Entity entity = new Linkify.Entity(matcher.start(), matcher.end(), id, id, Linkify.Entity.ALBUM);
-            for (Album a : p.albums.items) {
-               if (a.id.equals(id)) {
-                  entity.text = a.name;
-                  break;
+            if (p.albums != null) {
+               for (Album a : p.albums.items) {
+                  if (a.id.equals(id)) {
+                     entity.text = a.name;
+                     break;
+                  }
                }
             }
             p.entities.add(entity);
@@ -184,5 +187,13 @@ public class Utils {
          }
       }
       return ssb;
+   }
+
+   public static String lastSegment(String thumbUrl) {
+      try {
+         return Uri.parse(thumbUrl).getLastPathSegment();
+      } catch (Exception e) {
+         return null;
+      }
    }
 }

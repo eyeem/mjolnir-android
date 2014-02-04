@@ -24,12 +24,13 @@ photo:
     ImportMixin: com.eyeem.chips.Linkify
   init_entities:
     CtorMixin: "Utils.computeEntities(this);"
+  init_filename:
+    CtorMixin: "filename = Utils.lastSegment(thumbUrl);"
   entities:
     Mixin: |
       public Linkify.Entities entities = new Linkify.Entities();
       public String entityfiedDescription;
       public float getAspectRatio() { return height == 0 ? 0 : (float) width / (float) height; }
-      // TODO
       public String filename;
 user:
   id: String
@@ -64,7 +65,8 @@ comment:
   extendedMessage: String
   user: user
   updated: Date
-  mentionedUsers: users
+  mentionedUsers:
+    Array: user
 users:
   offset: Fixnum
   limit: Fixnum
