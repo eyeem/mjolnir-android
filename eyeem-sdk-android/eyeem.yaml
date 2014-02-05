@@ -264,3 +264,14 @@ mission:
   url: String
   thumbUrl: String
   album: Album
+search_result:
+  totalUsers: Fixnum
+  totalAlbums: Fixnum
+  albums: albums
+  users: users
+collection:
+  thumbUrl: String
+  id: String
+  albumIds:
+    Array: String
+  name: String
