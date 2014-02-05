@@ -278,7 +278,9 @@ collection:
 news_list:
   unseen: Fixnum
   total: Fixnum
-  news:
+  newestId: String
+  oldestId: String
+  items:
     Array: news
 news:
   id: String
@@ -305,8 +307,10 @@ aggregation:
   type: String
   users:
     Array: user
-  photos: photos
-  albums: albums
+  photos:
+    Array: photo
+  albums:
+    Array: album
   java_import:
     ImportMixin: java.util.List
   java_methods:
@@ -315,9 +319,9 @@ aggregation:
         if (type.equals("user")) {
           return users;
         } else if (type.equals("photo")) {
-          return photos.items;
+          return photos;
         } else if (type.equals("album")) {
-          return albums.items;
+          return albums;
         }
         return java.util.Collections.emptyList();
       }
