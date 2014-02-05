@@ -20,13 +20,13 @@ photo:
   people: people
   albums: albums
   liked: FalseClass
-  import_linkify:
+  java_import_linkify:
     ImportMixin: com.eyeem.chips.Linkify
-  init_entities:
+  java_init_entities:
     CtorMixin: "Utils.computeEntities(this);"
-  init_filename:
+  java_init_filename:
     CtorMixin: "filename = Utils.lastSegment(thumbUrl);"
-  entities:
+  java_entities:
     Mixin: |
       public Linkify.Entities entities = new Linkify.Entities();
       public String entityfiedDescription;
@@ -48,7 +48,7 @@ user:
   totalPhotos: Fixnum
   totalLikedPhotos: Fixnum
   totalLikedAlbums: Fixnum
-  entities:
+  java_entities:
     Mixin: |
       // TODO
       public String photofilename;
@@ -87,17 +87,17 @@ person:
   serviceId: String
   facebook: FalseClass
   twitter: FalseClass
-  textUtils:
+  java_textUtils:
     ImportMixin: android.text.TextUtils
-  urlException:
+  java_urlException:
     ImportMixin: java.io.UnsupportedEncodingException
-  URLEncoder:
+  java_URLEncoder:
     ImportMixin: java.net.URLEncoder
-  ctor:
+  java_ctor:
     CtorMixin: |
       if (!TextUtils.isEmpty(fullname))
         fullnameASCII = FlattenToASCII.removeDiacritic(fullname).toLowerCase();
-  toString:
+  java_toString:
     Mixin: |
       public String fullnameASCII;
       @Override public String toString() {
@@ -143,9 +143,9 @@ album:
   hidden: FalseClass
   favorited: FalseClass
   subtitle: String
-  init_filename:
+  java_init_filename:
     CtorMixin: "filename = Utils.lastSegment(thumbUrl);"
-  types:
+  java_types:
     Mixin: |
       public final static String TYPE_CITY = "city";
       public final static String TYPE_VENUE = "venue";
@@ -179,7 +179,7 @@ discover_item:
   nearbyWeight: Float
   type: String
   photos: photos
-  types:
+  java_types:
     Mixin: |
       public static final String TYPE_ALBUM = "album";
       public static final String TYPE_POPULAR = "popular";
@@ -202,11 +202,11 @@ venue:
   serviceId: String
   category: String
   categoryName: String
-  import_iterator:
+  java_import_iterator:
     ImportMixin: java.util.Iterator
-  textUtils:
+  java_textUtils:
     ImportMixin: android.text.TextUtils
-  init_topics:
+  java_init_topics:
     CtorMixin: |
       // TODO
       JSONObject topics = json.optJSONObject("topics");
@@ -227,7 +227,7 @@ venue:
             }
          }
       }
-  types:
+  java_types:
     Mixin: |
       // TODO
       public ArrayList<Topic> topics = new ArrayList<Topic>();
@@ -275,3 +275,49 @@ collection:
   albumIds:
     Array: String
   name: String
+news_list:
+  unseen: Fixnum
+  total: Fixnum
+  news:
+    Array: news
+news:
+  id: String
+  ids:
+    Array: String
+  aggregation: aggregation
+  comment: comment
+  user: user
+  album: album
+  photo: photo
+  body: String
+  title: String
+  url: String
+  thumbUrl: String
+  newsType: String
+  seen: FalseClass
+  updated: Date
+  itemType: String
+  java_methods:
+    Mixin: |
+      public boolean hasAggregation() { return ids != null && ids.size() > 0 && aggregation != null; }
+aggregation:
+  total: Fixnum
+  type: String
+  users:
+    Array: user
+  photos: photos
+  albums: albums
+  java_import:
+    ImportMixin: java.util.List
+  java_methods:
+    Mixin: |
+      public List list() {
+        if (type.equals("user")) {
+          return users;
+        } else if (type.equals("photo")) {
+          return photos.items;
+        } else if (type.equals("album")) {
+          return albums.items;
+        }
+        return java.util.Collections.emptyList();
+      }
