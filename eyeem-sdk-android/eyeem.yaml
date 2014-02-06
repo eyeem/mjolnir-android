@@ -325,3 +325,63 @@ aggregation:
         }
         return java.util.Collections.emptyList();
       }
+settings:
+  filters_unlocked: FalseClass
+  email_newsletter: FalseClass
+  push_album_contributor: FalseClass
+  facebook_userfollow: FalseClass
+  email_album_contributor: FalseClass
+  email_album_invite: FalseClass
+  facebook_albumlike: FalseClass
+  facebook_albumfavorite: FalseClass
+  push_user_joined: FalseClass
+  email_weekly_newsletter: FalseClass
+  push_photo_like: FalseClass
+  ab_show_friends: FalseClass
+  email_photo_comment: FalseClass
+  email_photo_tagged_person: FalseClass
+  email_photo_like: FalseClass
+  push_album_invite: FalseClass
+  onboarding_collections: FalseClass
+  facebook_photodiscover: FalseClass
+  facebook_photolike: FalseClass
+  facebook_timeline_popup: FalseClass
+  facebook_upload: FalseClass
+  email_user_follower: FalseClass
+  facebook_albumcontribution: FalseClass
+  email_user_joined: FalseClass
+  email_photo_comment_mention: FalseClass
+  push_photo_comment: FalseClass
+  push_photo_comment_mention: FalseClass
+  push_photo_tagged_person: FalseClass
+  facebook_photocomment: FalseClass
+  push_user_follower: FalseClass
+  ab_friends_in_discover: FalseClass
+  ab_album_list: FalseClass
+services:
+  flickr: service
+  twitter: service
+  instagram: instagram_service
+  google: service
+  tumblr: service
+  foursquare: service
+  facebook: facebook_service
+service:
+  status: String
+  id: String
+  nickname: String
+instagram_service:
+  show_importer: FalseClass
+facebook_service:
+  primary: FalseClass
+  status: String
+  publish_actions: FalseClass
+  id: String
+  third_party_id: String
+  access_token: String
+  managedPages:
+    Array: facebook_page
+facebook_page:
+  id: String
+  name: String
+  posting: Fixnum
