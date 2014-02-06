@@ -176,11 +176,14 @@ public class EyeEm extends RequestBuilder {
          type = TYPE;
       }
 
-      public static Account fromJSON(JSONObject json) {
-         Account account = new Account();
+      public static Account fromJSON(Account account, JSONObject json) {
          OAuth2Account.fromJSON(account, json);
          account.user = User.fromJSON(json.optJSONObject("user"));
          return account;
+      }
+
+      public static Account fromJSON(JSONObject json) {
+         return fromJSON(new Account(), json);
       }
 
       @Override

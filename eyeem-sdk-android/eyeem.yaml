@@ -202,13 +202,15 @@ venue:
   serviceId: String
   category: String
   categoryName: String
+  venueServiceName: String
+  sentences:
+     Array: String
   java_import_iterator:
     ImportMixin: java.util.Iterator
   java_textUtils:
     ImportMixin: android.text.TextUtils
   java_init_topics:
     CtorMixin: |
-      // TODO
       JSONObject topics = json.optJSONObject("topics");
       
       if (topics != null) {
@@ -229,12 +231,10 @@ venue:
       }
   java_types:
     Mixin: |
-      // TODO
       public ArrayList<Topic> topics = new ArrayList<Topic>();
       public boolean isCity;
       public boolean newLocation;
       public boolean noLocation;
-      public String venueServiceName;
       public double newLat;
       public double newLon;
 city:
