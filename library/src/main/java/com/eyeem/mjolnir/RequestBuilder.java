@@ -6,6 +6,7 @@ import com.android.volley.Request;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -26,6 +27,7 @@ public class RequestBuilder implements Serializable {
    public PathDeclutter declutter;
    public HashMap<String, String> params = new HashMap<String, String>();
    public HashMap<String, String> headers = new HashMap<String, String>();
+   public HashMap<String, String> files = new HashMap<String, String>();
    public Account account;
    public int method = Request.Method.GET; // GET by default
    public String content;
@@ -84,6 +86,12 @@ public class RequestBuilder implements Serializable {
       return this;
    }
 
+   public RequestBuilder filepath(String key, String filepath) {
+      if (!TextUtils.isEmpty(filepath) && new File(filepath).exists())
+      files.put(key, filepath);
+      return this;
+   }
+
    public RequestBuilder param(String key, String value) {
       if (TextUtils.isEmpty(value))
          return this;
@@ -126,7 +134,7 @@ public class RequestBuilder implements Serializable {
    public String toUrl() {
       StringBuilder sb = new StringBuilder();
       sb.append(host).append(path);
-      if (params.size() > 0) {
+      if (params.size() > 0 && method != Request.Method.PUT && method != Request.Method.POST) {
          sb.append('?').append(toQuery());
       }
       return sb.toString();
