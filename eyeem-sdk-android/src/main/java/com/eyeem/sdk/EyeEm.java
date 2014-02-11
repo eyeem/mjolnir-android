@@ -124,6 +124,10 @@ public class EyeEm extends RequestBuilder {
       return (EyeEm)param("numLikers", count);
    }
 
+   public EyeEm offset(int count) {
+      return (EyeEm)param("offset", count);
+   }
+
    public EyeEm latlng(String lat, String lng) {
       if (TextUtils.isEmpty(lat) || TextUtils.isEmpty(lng))
          return this;

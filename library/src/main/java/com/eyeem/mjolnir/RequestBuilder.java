@@ -96,6 +96,11 @@ public class RequestBuilder implements Serializable {
       return this;
    }
 
+   public RequestBuilder params(HashMap<String, String> params) {
+      this.params.putAll(params);
+      return this;
+   }
+
    public RequestBuilder declutter(PathDeclutter declutter) {
       this.declutter = declutter;
       return this;
@@ -128,18 +133,22 @@ public class RequestBuilder implements Serializable {
    }
 
    public SyncClient sync() {
+      sign();
       return new SyncClient(this);
    }
 
    public VolleyListRequestExecutor listOf(Class clazz) {
+      sign();
       return new VolleyListRequestExecutor(this, clazz);
    }
 
    public VolleyObjectRequestExecutor objectOf(Class clazz) {
+      sign();
       return new VolleyObjectRequestExecutor(this, clazz);
    }
 
    public StorageRequestExecutor store(Class clazz) {
+      sign();
       return new StorageRequestExecutor(this, clazz);
    }
 
