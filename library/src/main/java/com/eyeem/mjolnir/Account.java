@@ -3,7 +3,6 @@ package com.eyeem.mjolnir;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
-import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -104,6 +103,10 @@ public abstract class Account implements Serializable {
    public void save(Context context) {
       HashSet<Account> accounts = getAccounts(context);
       accounts.add(this);
+      save(context, accounts);
+   }
+
+   protected void save(Context context, HashSet<Account> accounts) {
       JSONArray accountsJSONArray = new JSONArray();
       for (Account account : accounts) {
          try {
