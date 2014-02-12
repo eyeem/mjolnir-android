@@ -104,6 +104,11 @@ public class RequestBuilder implements Serializable {
       return this;
    }
 
+   public RequestBuilder param(String key, long value) {
+      params.put(key, String.valueOf(value));
+      return this;
+   }
+
    public RequestBuilder params(HashMap<String, String> params) {
       this.params.putAll(params);
       return this;

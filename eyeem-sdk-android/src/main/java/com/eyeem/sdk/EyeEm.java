@@ -69,8 +69,28 @@ public class EyeEm extends RequestBuilder {
       return (EyeEm) new EyeEm("/v2/users/" + id + "/photos").jsonpath("photos.items");
    }
 
+   public static EyeEm userLikedPhotos(String id) {
+      return (EyeEm) new EyeEm("/v2/users/" + id + "/photos").jsonpath("photos.items");
+   }
+
    public static EyeEm albumPhotos(String id) {
       return (EyeEm) new EyeEm("/v2/albums/" + id + "/photos").jsonpath("photos.items");
+   }
+
+   public static EyeEm popularPhotos() {
+      return (EyeEm) new EyeEm("/v2/photos/popular").jsonpath("photos.items");
+   }
+
+   public static EyeEm radiusPhotos(String lat, String lng) {
+      return albumPhotos("radius:" + lat + ":" + lng);
+   }
+
+   public static EyeEm nearbyPhotos(String lat, String lng) {
+      return (EyeEm) new EyeEm("/v2/collection").latlng(lat, lng).param("type", "nearbyLive").jsonpath("photos.items");
+   }
+
+   public static EyeEm userFriendsPhotos(String id) {
+      return (EyeEm) new EyeEm("/v2/users/" + id + "/friendsPhotos").jsonpath("friendsPhotos.items");
    }
 
    public static EyeEm albumSearch(String query) {
@@ -83,9 +103,11 @@ public class EyeEm extends RequestBuilder {
          .includeLikers()
          .includePeople()
          .includePhotos()
+         .includeComments()
          .limit(30)
          .numComments(3)
-         .numLikers(2);
+         .numLikers(2)
+         .numPeople(10);
    }
 
    public EyeEm detailed() {
@@ -116,12 +138,20 @@ public class EyeEm extends RequestBuilder {
       return (EyeEm)param("includePhotos", "1");
    }
 
+   public EyeEm includeComments() {
+      return (EyeEm)param("includeComments", "1");
+   }
+
    public EyeEm numComments(int count) {
       return (EyeEm)param("numComments", count);
    }
 
    public EyeEm numLikers(int count) {
       return (EyeEm)param("numLikers", count);
+   }
+
+   public EyeEm numPeople(int count) {
+      return (EyeEm)param("numPeople", count);
    }
 
    public EyeEm offset(int count) {
