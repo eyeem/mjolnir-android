@@ -53,6 +53,7 @@ public class EyeEm extends RequestBuilder {
       return new EyeEm(path);
    }
 
+//// API CALLS
    public static EyeEm discover() {
       return (EyeEm) new EyeEm("/v2/users/me/discover").jsonpath("discover");
    }
@@ -97,6 +98,31 @@ public class EyeEm extends RequestBuilder {
       return (EyeEm) new EyeEm("/v2/albums").param("q", query).jsonpath("albums.items");
    }
 
+   public static EyeEm userFollowers(String id) {
+      return (EyeEm) new EyeEm("/v2/users/" + id + "/followers").jsonpath("followers.items");
+   }
+
+   public static EyeEm userFriends(String id) {
+      return (EyeEm) new EyeEm("/v2/users/" + id + "/friends").jsonpath("friends.items");
+   }
+
+   public static EyeEm userFavoritedAlbums(String id) {
+      return (EyeEm) new EyeEm("/v2/users/" + id + "/favoritedAlbums").jsonpath("likedAlbums.items");
+   }
+
+   public static EyeEm missions() {
+      return (EyeEm) new EyeEm("/v2/missions/lightweight").jsonpath("missions.items");
+   }
+
+   public static EyeEm topics() {
+      return (EyeEm) new EyeEm("/v2/topics").jsonpath("topics.items");
+   }
+
+   public static EyeEm favoriteAlbum(String id) {
+      return (EyeEm) new EyeEm("/v2/albums/" + id + "/favoriters/me");
+   }
+
+///// PARAMS
    public EyeEm defaults() {
       return detailed()
          .includeAlbums()
@@ -152,6 +178,10 @@ public class EyeEm extends RequestBuilder {
 
    public EyeEm numPeople(int count) {
       return (EyeEm)param("numPeople", count);
+   }
+
+   public EyeEm numPhotos(int count) {
+      return (EyeEm)param("numPhotos", count);
    }
 
    public EyeEm offset(int count) {
