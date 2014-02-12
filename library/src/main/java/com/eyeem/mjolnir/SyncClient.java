@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -20,6 +21,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.GeneralSecurityException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -88,6 +90,7 @@ public class SyncClient {
             connection.setDoInput(true);
             connection.setDoOutput(true);
             connection.setDoOutput(true);
+            connection.setChunkedStreamingMode(FilePart.MAX_BUFFER_SIZE);
 
             Multipart.Builder mb = new Multipart.Builder();
             mb.type(Multipart.Type.FORM);
@@ -106,11 +109,10 @@ public class SyncClient {
                File file = new File(e.getValue());
                if (!file.exists()) continue;
                mb.addPart(
-                  new Part.Builder()
+                  new FilePart(file)
+                     .callback(callback)
                      .contentType("application/octet-stream")
                      .contentDisposition("form-data; name=\"" + e.getKey() + "\"; filename=\"" + file.getName() + "\"")
-                     .body(file)
-                     .build()
                );
             }
 
@@ -215,5 +217,68 @@ public class SyncClient {
          }
       }
       return sb.toString();
+   }
+
+   public static final class FilePart implements Part {
+      public final static int MAX_BUFFER_SIZE = 8*1024;
+
+      private final File file;
+      private final byte[] buffer = new byte[MAX_BUFFER_SIZE];
+      private final Map<String, String> headers;
+      private ProgressCallback callback;
+
+      @Override public Map<String, String> getHeaders() {
+         return headers;
+      }
+
+      public FilePart(File file) {
+         this.headers = new HashMap<String, String>();
+         this.file = file;
+      }
+
+      public FilePart contentDisposition(String contentDisposition) {
+         if (contentDisposition != null) {
+            headers.put("Content-Disposition", contentDisposition);
+         }
+         return this;
+      }
+
+      public FilePart contentType(String contentType) {
+         if (contentType != null) {
+            headers.put("Content-Type", contentType);
+         }
+         return this;
+      }
+
+      public FilePart callback(ProgressCallback callback) {
+         this.callback = callback;
+         return this;
+      }
+
+      @Override public void writeBodyTo(OutputStream out) throws IOException {
+         InputStream in = null;
+         try {
+            in = new FileInputStream(file);
+            long totalBytes = file.length();
+            long bytesUploaded = 0;
+            int bytesRead;
+            while ((bytesRead = in.read(buffer)) != -1) {
+               out.write(buffer);
+               bytesUploaded += bytesRead;
+               if (callback != null) callback.transferred(file, bytesUploaded, totalBytes);
+            }
+         } finally {
+            if (in != null) {
+               try {
+                  in.close();
+               } catch (IOException ignored) {
+               }
+            }
+         }
+      }
+   }
+
+   public interface ProgressCallback {
+      public void transferred(File file, long bytesUploaded, long totalBytes);
    }
 }
