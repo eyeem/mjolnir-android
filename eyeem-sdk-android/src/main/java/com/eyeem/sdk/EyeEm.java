@@ -74,6 +74,10 @@ public class EyeEm extends RequestBuilder {
       return (EyeEm) new EyeEm("/v2/users/" + id + "/photos").jsonpath("photos.items");
    }
 
+   public static EyeEm album(String id) {
+      return (EyeEm) new EyeEm("/v2/albums/" + id).jsonpath("album");
+   }
+
    public static EyeEm albumPhotos(String id) {
       return (EyeEm) new EyeEm("/v2/albums/" + id + "/photos").jsonpath("photos.items");
    }
@@ -119,7 +123,35 @@ public class EyeEm extends RequestBuilder {
    }
 
    public static EyeEm favoriteAlbum(String id) {
-      return (EyeEm) new EyeEm("/v2/albums/" + id + "/favoriters/me");
+      return new EyeEm("/v2/albums/" + id + "/favoriters/me");
+   }
+
+   public static EyeEm follow(String id) {
+      return new EyeEm("/v2/users/me/friends/" + id);
+   }
+
+   public static EyeEm likePhoto(String id) {
+      return new EyeEm("/v2/photos/" + id + "/likers/me");
+   }
+
+   public static EyeEm albumContributors(String id) {
+      return (EyeEm) new EyeEm("/v2/albums/" + id + "/contributors").jsonpath("contributors.items");
+   }
+
+   public static EyeEm photo(String id) {
+      return (EyeEm) new EyeEm("/v2/photos/" + id).jsonpath("photo");
+   }
+
+   public static EyeEm photoLikers(String id) {
+      return (EyeEm) new EyeEm("/v2/photos/" + id + "/likers").jsonpath("likers.items");
+   }
+
+   public static EyeEm photoComments(String id) {
+      return (EyeEm) new EyeEm("/v2/photos/" + id + "/comments").jsonpath("comments.items");
+   }
+
+   public static EyeEm postComment(String id, String message) {
+      return (EyeEm) new EyeEm("/v2/photos/" + id + "/comments").jsonpath("comment").param("message", message).post();
    }
 
 ///// PARAMS
