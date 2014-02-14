@@ -154,6 +154,10 @@ public class EyeEm extends RequestBuilder {
       return (EyeEm) new EyeEm("/v2/photos/" + id + "/comments").jsonpath("comment").param("message", message).post();
    }
 
+   public static EyeEm deleteComment(String photoId, String commentId) {
+      return (EyeEm) new EyeEm("/v2/photos/" + photoId + "/comments/" + commentId).delete();
+   }
+
 ///// PARAMS
    public EyeEm defaults() {
       return detailed()

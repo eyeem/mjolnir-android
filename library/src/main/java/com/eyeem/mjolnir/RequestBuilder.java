@@ -25,7 +25,7 @@ public class RequestBuilder implements Serializable {
    public String host;
    public String path;
    public PathDeclutter declutter;
-   public HashMap<String, String> params = new HashMap<String, String>();
+   public HashMap<String, StringWrapper> params = new HashMap<String, StringWrapper>();
    public HashMap<String, String> headers = new HashMap<String, String>();
    public HashMap<String, String> files = new HashMap<String, String>();
    public Account account;
@@ -95,22 +95,31 @@ public class RequestBuilder implements Serializable {
    public RequestBuilder param(String key, String value) {
       if (TextUtils.isEmpty(value))
          return this;
-      params.put(key, value);
+      params.put(key, new StringWrapper(value));
+      return this;
+   }
+
+   public RequestBuilder paramEncoded(String key, String value) {
+      if (TextUtils.isEmpty(value))
+         return this;
+      params.put(key, new StringWrapper(value, true));
       return this;
    }
 
    public RequestBuilder param(String key, int value) {
-      params.put(key, String.valueOf(value));
+      param(key, String.valueOf(value));
       return this;
    }
 
    public RequestBuilder param(String key, long value) {
-      params.put(key, String.valueOf(value));
+      param(key, String.valueOf(value));
       return this;
    }
 
    public RequestBuilder params(HashMap<String, String> params) {
-      this.params.putAll(params);
+      for (Map.Entry<String, String> e : params.entrySet()) {
+         param(e.getKey(), e.getValue());
+      }
       return this;
    }
 
@@ -126,10 +135,10 @@ public class RequestBuilder implements Serializable {
    public String toQuery() {
       ArrayList<String> pairs = new ArrayList<String>();
       try {
-      for (Map.Entry<String, String> entry : params.entrySet()) {
+      for (Map.Entry<String, StringWrapper> entry : params.entrySet()) {
          pairs.add(String.format("%s=%s",
             URLEncoder.encode(entry.getKey(), "UTF-8"),
-            URLEncoder.encode(entry.getValue(), "UTF-8")
+            entry.getValue().encoded ? entry.getValue().value : URLEncoder.encode(entry.getValue().value, "UTF-8")
          ));
       }
       } catch (UnsupportedEncodingException uee) {}
@@ -203,5 +212,20 @@ public class RequestBuilder implements Serializable {
       catch(IOException e) {}
       catch(ClassNotFoundException cnfe) {}
       return copy;
+   }
+
+   public final static class StringWrapper {
+      public final String value;
+      public final boolean encoded;
+
+      public StringWrapper(String value) {
+         this.encoded = false;
+         this.value = value;
+      }
+
+      public StringWrapper(String value, boolean encoded) {
+         this.encoded = encoded;
+         this.value = value;
+      }
    }
 }

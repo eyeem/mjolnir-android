@@ -95,12 +95,12 @@ public class SyncClient {
             Multipart.Builder mb = new Multipart.Builder();
             mb.type(Multipart.Type.FORM);
 
-            for (Map.Entry<String, String> e : rb.params.entrySet()) {
+            for (Map.Entry<String, RequestBuilder.StringWrapper> e : rb.params.entrySet()) {
                mb.addPart(
                   new Part.Builder()
                      .contentType("text/plain; charset=UTF-8")
                      .contentDisposition("form-data; name=\"" + e.getKey() + "\"")
-                     .body(e.getValue())
+                     .body(e.getValue().value)
                      .build()
                );
             }
