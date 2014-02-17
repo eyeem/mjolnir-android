@@ -15,7 +15,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -215,7 +214,7 @@ public class RequestBuilder implements Serializable {
       return copy;
    }
 
-   public final static class StringWrapper {
+   public final static class StringWrapper implements Serializable {
       public final String value;
       public final boolean encoded;
 
