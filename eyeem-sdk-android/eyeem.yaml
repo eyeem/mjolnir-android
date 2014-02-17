@@ -48,10 +48,20 @@ user:
   totalPhotos: Fixnum
   totalLikedPhotos: Fixnum
   totalLikedAlbums: Fixnum
+  java_textUtils:
+    ImportMixin: android.text.TextUtils
+  java_fix_null_description:
+    CtorMixin: if ("null".equals(description)) description = "";
+  java_photofilename_init:
+    CtorMixin: photofilename = Utils.lastSegment(thumbUrl);
   java_entities:
     Mixin: |
-      // TODO
       public String photofilename;
+      @Override public boolean equals(Object user) {
+      return user != null && (user instanceof User)
+         && !TextUtils.isEmpty(id) && !TextUtils.isEmpty(((User) user).id)
+         && id.equals(((User) user).id);
+      }
 comments:
   offset: Fixnum
   limit: Fixnum

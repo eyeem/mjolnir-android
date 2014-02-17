@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Created by vishna on 29/10/13.
@@ -25,7 +26,7 @@ public class RequestBuilder implements Serializable {
    public String host;
    public String path;
    public PathDeclutter declutter;
-   public HashMap<String, StringWrapper> params = new HashMap<String, StringWrapper>();
+   public TreeMap<String, StringWrapper> params = new TreeMap<String, StringWrapper>();
    public HashMap<String, String> headers = new HashMap<String, String>();
    public HashMap<String, String> files = new HashMap<String, String>();
    public Account account;
@@ -227,5 +228,7 @@ public class RequestBuilder implements Serializable {
          this.encoded = encoded;
          this.value = value;
       }
+
+      @Override public String toString() { return value; }
    }
 }
