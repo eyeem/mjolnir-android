@@ -169,7 +169,7 @@ public class SyncClient {
          code = connection.getResponseCode();
 
          if (code >= 500 && code < 600)
-            throw new Exception(String.format("%d : %s", code, rb.toUrl()));
+            throw new Mjolnir(rb, code);
          if (Constants.DEBUG && code / 200 != 2)
             Log.i(Constants.TAG, String.format("%d : %s", code, rb.toUrl()));
 
@@ -183,7 +183,7 @@ public class SyncClient {
          final String s = convertStreamToString(is);
 
          if (code < 200 || code >= 300) {
-            throw new Exception(String.format("%d : %s", code, rb.toUrl()));
+            throw new Mjolnir(rb, code, s);
          }
 
          if (Constants.DEBUG)
