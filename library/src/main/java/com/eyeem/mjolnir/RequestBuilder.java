@@ -215,9 +215,11 @@ public class RequestBuilder implements Serializable {
       return copy;
    }
 
-   public final static class StringWrapper {
-      public final String value;
-      public final boolean encoded;
+   public final static class StringWrapper implements Serializable {
+      public String value;
+      public boolean encoded;
+
+      public StringWrapper() {}
 
       public StringWrapper(String value) {
          this.encoded = false;
