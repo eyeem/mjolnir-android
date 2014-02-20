@@ -13,6 +13,7 @@ import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HttpStack;
 
 import java.io.File;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -69,22 +70,24 @@ public class ObservableRequestQueue extends RequestQueue {
 
    HashMap<String, Integer> statuses = new HashMap<String, Integer>();
 
-   Set<Listener> listeners = new HashSet<Listener>();
+   // TODO ComparableWeakReference
+   Set<WeakReference<Listener>> listeners = new HashSet<WeakReference<Listener>>();
 
    public void report(Request request, int status, Object data) {
       // TODO some sort of status id reporting
-      for (Listener listener : listeners) {
-         listener.onStatusUpdate(request, status, data);
+      for (WeakReference<Listener> _listener : listeners) {
+         Listener listener = _listener.get();
+         if (listener != null) listener.onStatusUpdate(request, status, data);
       }
    }
 
    public void registerListener(Listener listener) {
-      listeners.add(listener);
+      listeners.add(new WeakReference<Listener>(listener));
    }
 
-   public void unregisterListener(Listener listener) {
-      listeners.remove(listener);
-   }
+//   public void unregisterListener(Listener listener) {
+//      listeners.remove(listener);
+//   }
 
    public interface Listener {
       public void onStatusUpdate(Request request, int status, Object data);
