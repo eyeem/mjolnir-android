@@ -28,6 +28,7 @@ public class RequestBuilder implements Serializable {
    public TreeMap<String, StringWrapper> params = new TreeMap<String, StringWrapper>();
    public HashMap<String, String> headers = new HashMap<String, String>();
    public HashMap<String, String> files = new HashMap<String, String>();
+   public HashMap<String, String> meta = new HashMap<String, String>();
    public Account account;
    public int method = Request.Method.GET; // GET by default
    public String content;
@@ -84,6 +85,20 @@ public class RequestBuilder implements Serializable {
    public RequestBuilder header(String key, String value) {
       headers.put(key, value);
       return this;
+   }
+
+   public RequestBuilder meta(String key, String value) {
+      meta.put(key, value);
+      return this;
+   }
+
+   public RequestBuilder metaTag(String value) {
+      meta.put("tag", value);
+      return this;
+   }
+
+   public String metaTag() {
+      return meta.get("tag");
    }
 
    public RequestBuilder filepath(String key, String filepath) {

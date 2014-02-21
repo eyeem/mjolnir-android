@@ -85,9 +85,14 @@ public class ObservableRequestQueue extends RequestQueue {
       listeners.add(new WeakReference<Listener>(listener));
    }
 
-//   public void unregisterListener(Listener listener) {
-//      listeners.remove(listener);
-//   }
+   public void unregisterListener(Listener listener) {
+      Set<WeakReference<Listener>> toBeRemoved = new HashSet<WeakReference<Listener>>();
+      for (WeakReference<Listener> _listener : listeners) {
+         Listener aListener = _listener.get();
+         if (listener == null || aListener == listener) toBeRemoved.add(_listener);
+      }
+      listeners.removeAll(toBeRemoved);
+   }
 
    public interface Listener {
       public void onStatusUpdate(Request request, int status, Object data);

@@ -4,6 +4,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.eyeem.storage.Storage;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -29,8 +30,11 @@ public class StorageRequestExecutor {
       return this;
    }
 
-   public VolleyListRequestExecutor fetchFront() {
+   public VolleyListRequestExecutor fetchFront(HashMap<String, String> metaParams) {
       RequestBuilder frontRequest = requestBuilder.copy().fetchFront(list);
+      if (metaParams != null) {
+         frontRequest.meta.putAll(metaParams);
+      }
       return new VolleyListRequestExecutor(frontRequest, objectClass)
          .listener(new Response.Listener<List>() {
             @Override
@@ -46,8 +50,11 @@ public class StorageRequestExecutor {
          });
    }
 
-   public VolleyListRequestExecutor fetchBack() {
+   public VolleyListRequestExecutor fetchBack(HashMap<String, String> metaParams) {
       RequestBuilder backRequest = requestBuilder.copy().fetchBack(list);
+      if (metaParams != null) {
+         backRequest.meta.putAll(metaParams);
+      }
       return new VolleyListRequestExecutor(backRequest, objectClass)
          .listener(new Response.Listener<List>() {
             @Override
