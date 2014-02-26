@@ -36,6 +36,8 @@ public class ObservableRequestQueue extends RequestQueue {
       super(cache, network, threadPoolSize, delivery);
    }
 
+   public Handler handler = new Handler(Looper.getMainLooper());
+
    public static ObservableRequestQueue newInstance(Context context, HttpStack stack) {
       File cacheDir = new File(context.getCacheDir(), DEFAULT_CACHE_DIR);
 
@@ -73,12 +75,16 @@ public class ObservableRequestQueue extends RequestQueue {
    // TODO ComparableWeakReference
    Set<WeakReference<Listener>> listeners = new HashSet<WeakReference<Listener>>();
 
-   public void report(Request request, int status, Object data) {
-      // TODO some sort of status id reporting
-      for (WeakReference<Listener> _listener : listeners) {
-         Listener listener = _listener.get();
-         if (listener != null) listener.onStatusUpdate(request, status, data);
-      }
+   public void report(final Request request, final int status, final Object data) {
+      handler.post(new Runnable() {
+         @Override
+         public void run() {
+            for (WeakReference<Listener> _listener : listeners) {
+               Listener listener = _listener.get();
+               if (listener != null) listener.onStatusUpdate(request, status, data);
+            }
+         }
+      });
    }
 
    public void registerListener(Listener listener) {

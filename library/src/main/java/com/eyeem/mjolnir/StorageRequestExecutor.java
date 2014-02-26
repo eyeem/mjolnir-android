@@ -30,7 +30,7 @@ public class StorageRequestExecutor {
       return this;
    }
 
-   public VolleyListRequestExecutor fetchFront(HashMap<String, String> metaParams) {
+   public VolleyListRequestExecutor fetchFront(final HashMap<String, String> metaParams) {
       RequestBuilder frontRequest = requestBuilder.copy().fetchFront(list);
       if (metaParams != null) {
          frontRequest.meta.putAll(metaParams);
@@ -39,7 +39,14 @@ public class StorageRequestExecutor {
          .listener(new Response.Listener<List>() {
             @Override
             public void onResponse(List response) {
-               list.addUpFront(response, null);
+               if (metaParams != null && metaParams.containsKey(FORCE_FETCH_FRONT)) {
+                  list.mute();
+                  list.clear();
+                  list.addAll(response);
+                  list.commit(new Storage.Subscription.Action(Storage.Subscription.ADD_UPFRONT));
+               } else {
+                  list.addUpFront(response, null);
+               }
             }
          })
          .errorListener(new Response.ErrorListener() {
@@ -72,4 +79,11 @@ public class StorageRequestExecutor {
          });
    }
 
+   public final static String FORCE_FETCH_FRONT = "forceFetchFront";
+
+   public static HashMap<String, String> forceFrontFetch() {
+      HashMap<String, String> params = new HashMap<String, String>();
+      params.put("forceFrontFetch", "true");
+      return params;
+   }
 }
