@@ -71,7 +71,7 @@ public class EyeEm extends RequestBuilder {
    }
 
    public static EyeEm userLikedPhotos(String id) {
-      return (EyeEm) new EyeEm("/v2/users/" + id + "/photos").jsonpath("photos.items");
+      return (EyeEm) new EyeEm("/v2/users/" + id + "/likedPhotos").jsonpath("photos.items");
    }
 
    public static EyeEm album(String id) {
