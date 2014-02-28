@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by vishna on 02/11/13.
  */
-public class StorageRequestExecutor {
+public class ListStorageRequestExecutor {
 
    public Storage storage;
    public Storage.List list;
@@ -18,12 +18,12 @@ public class StorageRequestExecutor {
    public Class objectClass;
    public boolean exhausted;
 
-   public StorageRequestExecutor(RequestBuilder requestBuilder, Class objectClass) {
+   public ListStorageRequestExecutor(RequestBuilder requestBuilder, Class objectClass) {
       this.requestBuilder = requestBuilder;
       this.objectClass = objectClass;
    }
 
-   public StorageRequestExecutor in(Storage storage) {
+   public ListStorageRequestExecutor in(Storage storage) {
       this.storage = storage;
       list = storage.obtainList(requestBuilder.toUrl());
       list.enableDedupe(true);

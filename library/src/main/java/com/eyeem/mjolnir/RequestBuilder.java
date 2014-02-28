@@ -184,9 +184,14 @@ public class RequestBuilder implements Serializable {
       return new VolleyObjectRequestExecutor(this, clazz);
    }
 
-   public StorageRequestExecutor store(Class clazz) {
+   public ListStorageRequestExecutor storeList(Class clazz) {
       sign();
-      return new StorageRequestExecutor(this, clazz);
+      return new ListStorageRequestExecutor(this, clazz);
+   }
+
+   public ObjectStorageRequestExecutor storeObject(Class clazz) {
+      sign();
+      return new ObjectStorageRequestExecutor(this, clazz);
    }
 
    public RequestBuilder fetchFront(Object info) {
