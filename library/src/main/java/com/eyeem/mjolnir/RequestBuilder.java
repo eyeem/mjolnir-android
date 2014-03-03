@@ -194,6 +194,11 @@ public class RequestBuilder implements Serializable {
       return new ObjectStorageRequestExecutor(this, clazz);
    }
 
+   public PersistentRequest.Builder persistent() {
+      sign();
+      return new PersistentRequest.Builder(this);
+   }
+
    public RequestBuilder fetchFront(Object info) {
       return this;
    }

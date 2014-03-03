@@ -30,6 +30,8 @@ dependencies {
     compile 'com.eyeem.volley:volley:0.1.0-SNAPSHOT@aar'
     compile 'com.squareup.okhttp:okhttp:1.2.1'
     compile 'com.squareup.mimecraft:mimecraft:1.1.0'
+    compile 'com.squareup:tape:1.2.0'
+    compile 'com.esotericsoftware.kryo:kryo:2.20'
 
     testCompile 'junit:junit:4.10'
     testCompile 'org.robolectric:robolectric:2.1.+'

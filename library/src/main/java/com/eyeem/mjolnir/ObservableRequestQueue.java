@@ -63,6 +63,7 @@ public class ObservableRequestQueue extends RequestQueue {
    @Override
    public Request add(Request request) {
       if (ongoing.contains(request)) {
+         report(request, STATUS_ADDED, null);
          return request;
       }
       ongoing.add(request);
@@ -70,6 +71,7 @@ public class ObservableRequestQueue extends RequestQueue {
       return super.add(request);
    }
 
+   public final static int STATUS_ALREADY_ADDED = -1;
    public final static int STATUS_ADDED = 0;
    public final static int STATUS_FAILED = 1;
    public final static int STATUS_SUCCESS = 2;
