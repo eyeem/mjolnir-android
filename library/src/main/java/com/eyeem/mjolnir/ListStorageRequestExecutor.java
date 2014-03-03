@@ -43,6 +43,7 @@ public class ListStorageRequestExecutor {
                   list.mute();
                   list.clear();
                   list.addAll(response);
+                  exhausted = false;
                   list.commit(new Storage.Subscription.Action(Storage.Subscription.ADD_UPFRONT));
                } else {
                   list.addUpFront(response, null);

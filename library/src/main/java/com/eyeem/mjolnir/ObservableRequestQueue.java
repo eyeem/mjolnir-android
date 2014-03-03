@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Vector;
 
 /**
  * Created by vishna on 15/12/13.
@@ -61,6 +62,10 @@ public class ObservableRequestQueue extends RequestQueue {
 
    @Override
    public Request add(Request request) {
+      if (ongoing.contains(request)) {
+         return request;
+      }
+      ongoing.add(request);
       report(request, STATUS_ADDED, null);
       return super.add(request);
    }
@@ -70,12 +75,13 @@ public class ObservableRequestQueue extends RequestQueue {
    public final static int STATUS_SUCCESS = 2;
    public final static int STATUS_CANCELLED = 3;
 
-   HashMap<String, Integer> statuses = new HashMap<String, Integer>();
+   private Vector<Request> ongoing = new Vector<Request>();
 
    // TODO ComparableWeakReference
    Set<WeakReference<Listener>> listeners = new HashSet<WeakReference<Listener>>();
 
    public void report(final Request request, final int status, final Object data) {
+      if (status > STATUS_ADDED) ongoing.remove(request);
       handler.post(new Runnable() {
          @Override
          public void run() {
@@ -103,4 +109,6 @@ public class ObservableRequestQueue extends RequestQueue {
    public interface Listener {
       public void onStatusUpdate(Request request, int status, Object data);
    }
+
+   public Vector<Request> ongoing() { return (Vector<Request>) ongoing.clone(); }
 }

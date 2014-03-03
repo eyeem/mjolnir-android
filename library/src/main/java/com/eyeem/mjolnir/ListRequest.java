@@ -69,4 +69,10 @@ public class ListRequest extends JsonRequest<List> {
    public RequestBuilder getRequestBuilder() {
       return b;
    };
+
+   @Override
+   public boolean equals(Object o) {
+      if (!(o instanceof ListRequest)) return false;
+      return b.toUrl().equals(((ListRequest)o).b.toUrl());
+   }
 }
