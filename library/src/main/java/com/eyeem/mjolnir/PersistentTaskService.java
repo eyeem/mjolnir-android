@@ -32,6 +32,9 @@ public class PersistentTaskService extends Service implements ObservableRequestQ
    public void onStatusUpdate(Request request, int status, Object data) {
       if (!(request instanceof PersistentRequest)) return;
 
+      PersistentRequest pr = (PersistentRequest) request;
+      Log.i(TAG, "[" + status + "] onStatusUpdate: " + pr.getRequestBuilder().toUrl());
+
       switch (status) {
          case ObservableRequestQueue.STATUS_CANCELLED:
          case ObservableRequestQueue.STATUS_SUCCESS:

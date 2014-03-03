@@ -14,6 +14,10 @@ import java.io.UnsupportedEncodingException;
  * Created by vishna on 03/03/14.
  */
 public class PersistentRequest extends ObjectRequest {
+
+   public NetworkResponse response;
+   public JSONObject jsonObject;
+
    public PersistentRequest(RequestBuilder b, Response.Listener<Object> listener, Response.ErrorListener errorListener) {
       super(b, Object.class, listener, errorListener);
    }
@@ -21,8 +25,9 @@ public class PersistentRequest extends ObjectRequest {
    @Override
    protected Response<Object> parseNetworkResponse(NetworkResponse response) {
       try {
+         this.response = response;
          String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
-         JSONObject jsonObject = new JSONObject(jsonString);
+         jsonObject = new JSONObject(jsonString);
          return Response.success((Object)jsonObject,
             HttpHeaderParser.parseCacheHeaders(response));
       } catch (UnsupportedEncodingException e) {
@@ -52,6 +57,13 @@ public class PersistentRequest extends ObjectRequest {
       }
 
       public PersistentRequest build() {
+         if (listener == null) {
+            // dummy listener to avoid crashes
+            listener = new Response.Listener<Object> () {
+               @Override
+               public void onResponse(Object o) {}
+            };
+         }
          return new PersistentRequest(rb, listener, errorListener);
       }
    }

@@ -37,7 +37,7 @@ public class PersistentTaskQueue extends TaskQueue<PersistentTask> {
    }
 
    public static PersistentTaskQueue create(Context context) {
-      FileObjectQueue.Converter<PersistentTask> converter = new KryoConverter<PersistentTask>(PersistentTask.class);
+      FileObjectQueue.Converter<PersistentTask> converter = new ObjectConverter<PersistentTask>(PersistentTask.class);
       File queueFile = new File(context.getFilesDir(), FILENAME);
       FileObjectQueue<PersistentTask> delegate;
       try {

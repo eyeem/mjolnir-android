@@ -21,7 +21,7 @@ import java.util.Map;
  * Created by vishna on 16/11/13.
  */
 public class ObjectRequest extends JsonRequest<Object> {
-   RequestBuilder b;
+   private RequestBuilder b;
    Class clazz;
 
    public ObjectRequest(RequestBuilder b, Class clazz, Response.Listener<Object> listener,
@@ -66,4 +66,6 @@ public class ObjectRequest extends JsonRequest<Object> {
          return null;
       }
    }
+
+   public RequestBuilder getRequestBuilder() {return b;}
 }
