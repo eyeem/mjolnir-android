@@ -55,11 +55,15 @@ public class PersistentTaskService extends Service implements ObservableRequestQ
                waitForNetworkConnected(this);
                return;
             }
-            break;
+            boolean retry = pr.task.onError(pr, data);
+            if (retry) return; // intentional fallthru
          case ObservableRequestQueue.STATUS_CANCELLED:
          case ObservableRequestQueue.STATUS_SUCCESS:
          case ObservableRequestQueue.STATUS_ALREADY_ADDED:
             persistenceHandler.sendEmptyMessage(PersistenceHandler.REMOVE);
+            if (status == ObservableRequestQueue.STATUS_SUCCESS) {
+               pr.task.onSuccess(pr, data);
+            }
             break;
          default:
             // NO-OP;

@@ -17,9 +17,11 @@ public class PersistentRequest extends ObjectRequest {
 
    public NetworkResponse response;
    public JSONObject jsonObject;
+   public PersistentTask task;
 
-   public PersistentRequest(RequestBuilder b, Response.Listener<Object> listener, Response.ErrorListener errorListener) {
+   public PersistentRequest(RequestBuilder b, PersistentTask task, Response.Listener<Object> listener, Response.ErrorListener errorListener) {
       super(b, Object.class, listener, errorListener);
+      this.task = task;
    }
 
    @Override
@@ -56,7 +58,7 @@ public class PersistentRequest extends ObjectRequest {
          return this;
       }
 
-      public PersistentRequest build() {
+      public PersistentRequest build(PersistentTask task) {
          if (listener == null) {
             // dummy listener to avoid crashes
             listener = new Response.Listener<Object> () {
@@ -64,7 +66,7 @@ public class PersistentRequest extends ObjectRequest {
                public void onResponse(Object o) {}
             };
          }
-         return new PersistentRequest(rb, listener, errorListener);
+         return new PersistentRequest(rb, task, listener, errorListener);
       }
    }
 }
