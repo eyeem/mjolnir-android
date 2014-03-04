@@ -2,10 +2,12 @@ package com.eyeem.mjolnir;
 
 import com.squareup.tape.Task;
 
+import java.io.Serializable;
+
 /**
  * Created by vishna on 03/03/14.
  */
-public class PersistentTask implements Task<ObservableRequestQueue> {
+public class PersistentTask implements Task<ObservableRequestQueue>, Serializable {
 
    RequestBuilder rb;
 

@@ -36,7 +36,7 @@ public class PersistentTaskQueue extends TaskQueue<PersistentTask> {
       startService();
    }
 
-   public static PersistentTaskQueue create(Context context) {
+   static PersistentTaskQueue create(Context context) {
       FileObjectQueue.Converter<PersistentTask> converter = new ObjectConverter<PersistentTask>(PersistentTask.class);
       File queueFile = new File(context.getFilesDir(), FILENAME);
       FileObjectQueue<PersistentTask> delegate;
