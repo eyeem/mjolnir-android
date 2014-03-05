@@ -1,6 +1,8 @@
 package com.eyeem.mjolnir;
 
+import android.app.AlarmManager;
 import android.app.Application;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -55,8 +57,28 @@ public class PersistentTaskService extends Service implements ObservableRequestQ
                waitForNetworkConnected(this);
                return;
             }
-            boolean retry = pr.task.onError(pr, data);
-            if (retry) return; // intentional fallthru
+
+            long retryTime = pr.task.onError(pr, data);
+
+            if (retryTime == 0) {
+               // don't remove the task from the queue, we will retry immediatelly
+               break;
+            }
+
+            if (retryTime > 0) {
+               // this will stop service and restart it the future
+               Intent intent = new Intent(this, PersistentTaskService.class);
+               PendingIntent pi = PendingIntent.getService(this,
+                  0,
+                  intent,
+                  PendingIntent.FLAG_UPDATE_CURRENT);
+
+               AlarmManager am = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+               am.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + retryTime, pi);
+               stopSelf();
+               return;
+            }
+            // intentional fallthru, will remove the task from the queue
          case ObservableRequestQueue.STATUS_CANCELLED:
          case ObservableRequestQueue.STATUS_SUCCESS:
          case ObservableRequestQueue.STATUS_ALREADY_ADDED:

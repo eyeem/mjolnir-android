@@ -3,6 +3,7 @@ package com.eyeem.mjolnir;
 import android.content.Context;
 import android.content.Intent;
 
+import com.squareup.tape.FileException;
 import com.squareup.tape.FileObjectQueue;
 import com.squareup.tape.ObjectQueue;
 import com.squareup.tape.TaskQueue;
@@ -46,5 +47,15 @@ public class PersistentTaskQueue extends TaskQueue<PersistentTask> {
          throw new RuntimeException("Unable to create file queue.", e);
       }
       return new PersistentTaskQueue(delegate, context);
+   }
+
+   @Override
+   public PersistentTask peek() {
+      try {
+         return super.peek();
+      } catch (FileException fe) {
+         remove();
+         return peek();
+      }
    }
 }

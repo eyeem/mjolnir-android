@@ -28,10 +28,10 @@ public class PersistentTask implements Task<ObservableRequestQueue>, Serializabl
    public void onSuccess(PersistentRequest request, Object data) {}
 
    /**
-    * @return true if task should be resumed
+    * @return milliseconds to wait for a retry, negative value means abort
     */
-   public boolean onError(PersistentRequest request, Object data) {
-      return false;
+   public long onError(PersistentRequest request, Object data) {
+      return -1;
    }
 
    public void start(Context context) {
