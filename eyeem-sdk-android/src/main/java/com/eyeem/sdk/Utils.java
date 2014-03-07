@@ -9,12 +9,17 @@ import com.eyeem.chips.DefaultBubbles;
 import com.eyeem.chips.Linkify;
 import com.eyeem.chips.Regex;
 
+import java.util.Locale;
 import java.util.regex.Matcher;
 
 /**
  * Created by vishna on 14/11/13.
  */
 public class Utils {
+
+   public static String CDN_PATH = "cdn.eyeem.com";
+   public static String PHOTO_PATH = "http://" + CDN_PATH + "/";
+   public static String THUMB_BASE = "thumb/";
 
    private static Application app;
    public static int with;
@@ -195,5 +200,38 @@ public class Utils {
       } catch (Exception e) {
          return null;
       }
+   }
+
+   private final static int[] THUMB_HEIGHT_VALUES = {75, 180, 240, 375, 480, 600};
+
+   public static int normalizeSize(int size) {
+      if (size >= THUMB_HEIGHT_VALUES[THUMB_HEIGHT_VALUES.length - 1]) {
+         size = THUMB_HEIGHT_VALUES[THUMB_HEIGHT_VALUES.length - 1];
+      } else for (int i = 0; i < THUMB_HEIGHT_VALUES.length; i++) {
+         if (size <= THUMB_HEIGHT_VALUES[i]) {
+            size = THUMB_HEIGHT_VALUES[i];
+            break;
+         }
+      }
+      return size;
+   }
+
+   public static String getThumbnailPathByHeight(int height, String filename) {
+      return PHOTO_PATH + THUMB_BASE + "h/" + normalizeSize(height) + "/" + filename;
+   }
+
+   public static String getThumbnailPathByWidth(int width, String filename) {
+      return PHOTO_PATH + THUMB_BASE + "w/" + normalizeSize(width) + "/" + filename;
+   }
+
+   public static String getSquareThumbnail(int side, User user) {
+      if (TextUtils.isEmpty(user.thumbUrl)) {
+         return "http://cdn.eyeem.com/thumb/sq/" + side + "/placeholder.jpg";
+      }
+      if (user.thumbUrl.startsWith("https://graph.facebook.com"))
+         return user.thumbUrl + String.format(Locale.US, "&width=%d&height=%d", side, side);
+      if (user.thumbUrl.contains("eyeem"))
+         return PHOTO_PATH + THUMB_BASE + "sq/" + side + "/" + user.photofilename;
+      return user.thumbUrl;
    }
 }

@@ -62,6 +62,9 @@ user:
          && !TextUtils.isEmpty(id) && !TextUtils.isEmpty(((User) user).id)
          && id.equals(((User) user).id);
       }
+      public String thumbUrl(int size) {
+         return Utils.getSquareThumbnail(size, this);
+      }
 comments:
   offset: Fixnum
   limit: Fixnum
