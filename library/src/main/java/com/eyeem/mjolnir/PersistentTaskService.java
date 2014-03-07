@@ -113,7 +113,7 @@ public class PersistentTaskService extends Service implements ObservableRequestQ
    }
 
    @Override public int onStartCommand(Intent intent, int flags, int startId) {
-      if (intent.hasExtra(KEY_TASK)) {
+      if (intent != null && intent.hasExtra(KEY_TASK)) {
          PersistentTask task = (PersistentTask) intent.getSerializableExtra(KEY_TASK);
          add(task);
       }
