@@ -25,7 +25,7 @@ public class ListStorageRequestExecutor {
 
    public ListStorageRequestExecutor in(Storage storage) {
       this.storage = storage;
-      list = storage.obtainList(requestBuilder.toUrl());
+      list = storage.obtainList(String.valueOf(requestBuilder.toUrl().hashCode()));
       list.enableDedupe(true);
       return this;
    }
@@ -40,11 +40,11 @@ public class ListStorageRequestExecutor {
             @Override
             public void onResponse(List response) {
                if (metaParams != null && metaParams.containsKey(FORCE_FETCH_FRONT)) {
-                  list.mute();
-                  list.clear();
-                  list.addAll(response);
+                  Storage.List transaction = list.transaction();
+                  transaction.clear();
+                  transaction.addAll(response);
                   exhausted = false;
-                  list.commit(new Storage.Subscription.Action(Storage.Subscription.ADD_UPFRONT));
+                  transaction.commit(new Storage.Subscription.Action(Storage.Subscription.ADD_UPFRONT));
                } else {
                   list.addUpFront(response, null);
                }
@@ -84,7 +84,7 @@ public class ListStorageRequestExecutor {
 
    public static HashMap<String, String> forceFrontFetch() {
       HashMap<String, String> params = new HashMap<String, String>();
-      params.put("forceFrontFetch", "true");
+      params.put(FORCE_FETCH_FRONT, "true");
       return params;
    }
 }
