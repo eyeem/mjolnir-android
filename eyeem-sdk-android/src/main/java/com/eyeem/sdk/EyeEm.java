@@ -126,6 +126,10 @@ public class EyeEm extends RequestBuilder {
       return new EyeEm("/v2/albums/" + id + "/favoriters/me");
    }
 
+   public static EyeEm muteAlbum(String id) {
+      return (EyeEm) new EyeEm("/v2/albums/" + id + "/mute").delete();
+   }
+
    public static EyeEm follow(String id) {
       return new EyeEm("/v2/users/me/friends/" + id);
    }
