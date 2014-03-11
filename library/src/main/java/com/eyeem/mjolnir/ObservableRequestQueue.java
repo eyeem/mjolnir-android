@@ -11,6 +11,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.BasicNetwork;
 import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HttpStack;
+import com.eyeem.storage.WeakEqualReference;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
@@ -78,16 +79,15 @@ public class ObservableRequestQueue extends RequestQueue {
    public final static int STATUS_CANCELLED = 3;
 
    private Vector<Request> ongoing = new Vector<Request>();
-
-   // TODO ComparableWeakReference
-   Set<WeakReference<Listener>> listeners = new HashSet<WeakReference<Listener>>();
+   private Vector<WeakEqualReference<Listener>> listeners = new Vector<WeakEqualReference<Listener>>();
 
    public void report(final Request request, final int status, final Object data) {
       if (status > STATUS_ADDED) ongoing.remove(request);
       handler.post(new Runnable() {
          @Override
          public void run() {
-            for (WeakReference<Listener> _listener : listeners) {
+            Vector<WeakEqualReference<Listener>> threadSafeCopy = (Vector<WeakEqualReference<Listener>>)listeners.clone();
+            for (WeakEqualReference<Listener> _listener : threadSafeCopy) {
                Listener listener = _listener.get();
                if (listener != null) listener.onStatusUpdate(request, status, data);
             }
@@ -96,12 +96,15 @@ public class ObservableRequestQueue extends RequestQueue {
    }
 
    public void registerListener(Listener listener) {
-      listeners.add(new WeakReference<Listener>(listener));
+      WeakEqualReference<Listener> listener_ = new WeakEqualReference<Listener>(listener);
+      if (!listeners.contains(listener_)) {
+         listeners.add(listener_);
+      }
    }
 
    public void unregisterListener(Listener listener) {
-      Set<WeakReference<Listener>> toBeRemoved = new HashSet<WeakReference<Listener>>();
-      for (WeakReference<Listener> _listener : listeners) {
+      Vector<WeakEqualReference<Listener>> toBeRemoved = new Vector<WeakEqualReference<Listener>>();
+      for (WeakEqualReference<Listener> _listener : listeners) {
          Listener aListener = _listener.get();
          if (listener == null || aListener == listener) toBeRemoved.add(_listener);
       }
