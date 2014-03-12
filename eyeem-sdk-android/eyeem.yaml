@@ -315,6 +315,26 @@ news:
   java_methods:
     Mixin: |
       public boolean hasAggregation() { return ids != null && ids.size() > 0 && aggregation != null; }
+
+      // News types ===================================================================================
+      public static final String NEWS_TYPE_LIKE = "like";
+      public static final String NEWS_TYPE_FOLLOW = "follow";
+      public static final String NEWS_TYPE_COMMENT = "comment";
+      public static final String NEWS_TYPE_MENTION = "commentMention";
+      public static final String NEWS_TYPE_ALBUM_CONTRIBUTOR = "albumContributor";
+      public static final String NEWS_TYPE_INVITE = "albumInvite";
+      public static final String NEWS_TYPE_FOLLOW_FB = "fbFriend";
+      public static final String NEWS_TYPE_FOLLOW_TW = "twFriend";
+      @Deprecated
+      public static final String NEWS_TYPE_COMMENT_AFTER = "commentAfter";
+      public static final String NEWS_TYPE_PHOTO_TAG = "taggedPerson";
+      public static final String NEWS_TYPE_BLOG_POST = "blogPost";
+      public static final String NEWS_TYPE_OTHER = "other";
+      public static final String NEWS_TYPE_PAGE = "page";
+
+      // News item types ==============================================================================
+      public static final String NEWS_ITEM_TYPE_INSTAGRAM_IMPORTER = "instagramImporter";
+      public static final String NEWS_ITEM_TYPE_URL = "url";
 aggregation:
   total: Fixnum
   type: String
