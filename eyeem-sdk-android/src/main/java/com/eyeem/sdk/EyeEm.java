@@ -162,6 +162,10 @@ public class EyeEm extends RequestBuilder {
       return (EyeEm) new EyeEm("/v2/photos/" + photoId + "/comments/" + commentId).delete();
    }
 
+   public static EyeEm news() {
+      return new news();
+   }
+
 ///// PARAMS
    public EyeEm defaults() {
       return detailed()
@@ -344,4 +348,29 @@ public class EyeEm extends RequestBuilder {
    }
 
    public static HashMap<String, String> default_headers = new HashMap<String, String>();
+
+   public static class news extends EyeEm {
+
+      public news() {
+         super("/v2/news");
+         param("aggregated", "1");
+
+      }
+
+      @Override
+      public RequestBuilder fetchFront(Object info) {
+         // NO-OP
+         return this;
+      }
+
+      @Override
+      public RequestBuilder fetchBack(Object info) {
+         List list = (List) info;
+         if (list.size() > 0) {
+            News news = (News) list.get(list.size() - 1);
+            param("oldestId", news.id);
+         }
+         return this;
+      }
+   }
 }
