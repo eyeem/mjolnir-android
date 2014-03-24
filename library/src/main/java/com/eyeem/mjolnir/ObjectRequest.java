@@ -23,7 +23,7 @@ import java.util.Map;
  * Created by vishna on 16/11/13.
  */
 public class ObjectRequest extends JsonRequest<Object> {
-   private RequestBuilder b;
+   protected RequestBuilder b;
    Class clazz;
 
    public ObjectRequest(RequestBuilder b, Class clazz, Response.Listener<Object> listener,

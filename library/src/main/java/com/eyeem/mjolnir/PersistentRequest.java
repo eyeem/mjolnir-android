@@ -30,6 +30,7 @@ public class PersistentRequest extends ObjectRequest {
          this.response = response;
          String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
          jsonObject = new JSONObject(jsonString);
+         jsonObject = b.declutter == null ? jsonObject : b.declutter.jsonObject(jsonObject);
          return Response.success((Object)jsonObject,
             HttpHeaderParser.parseCacheHeaders(response));
       } catch (UnsupportedEncodingException e) {
