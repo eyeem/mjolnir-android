@@ -80,6 +80,15 @@ comment:
   updated: Date
   mentionedUsers:
     Array: user
+  java_textUtils:
+    ImportMixin: android.text.TextUtils
+  java_entities:
+    Mixin: |
+      @Override public boolean equals(Object comment) {
+      return comment != null && (comment instanceof Comment)
+         && !TextUtils.isEmpty(id) && !TextUtils.isEmpty(((Comment) comment).id)
+         && id.equals(((Comment) comment).id);
+      }
 users:
   offset: Fixnum
   limit: Fixnum
