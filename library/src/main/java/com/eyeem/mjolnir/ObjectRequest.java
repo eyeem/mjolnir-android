@@ -22,15 +22,10 @@ import java.util.Map;
 /**
  * Created by vishna on 16/11/13.
  */
-public class ObjectRequest extends JsonRequest<Object> {
-   protected RequestBuilder b;
-   Class clazz;
-
+public class ObjectRequest extends MjolnirRequest<Object> {
    public ObjectRequest(RequestBuilder b, Class clazz, Response.Listener<Object> listener,
                       Response.ErrorListener errorListener) {
-      super(b.method, b.toUrl(), null, listener, errorListener);
-      this.b = b;
-      this.clazz = clazz;
+      super(b, clazz, listener, errorListener);
    }
 
    protected Object fromJSON(JSONObject jsonObject) {
@@ -51,11 +46,6 @@ public class ObjectRequest extends JsonRequest<Object> {
       }
    }
 
-   @Override
-   public Map<String, String> getHeaders() throws AuthFailureError {
-      return b.headers;
-   }
-
    protected static Object fromJSON(Class clazz, JSONObject jsonObject) {
       try {
          java.lang.reflect.Method fromJSON = clazz.getMethod("fromJSON", JSONObject.class);
@@ -67,40 +57,5 @@ public class ObjectRequest extends JsonRequest<Object> {
       } catch (IllegalAccessException e) {
          return null;
       }
-   }
-
-   public RequestBuilder getRequestBuilder() {return b;}
-
-   @Override public String getBodyContentType() {
-      if (b.method != Request.Method.PUT && b.method != Request.Method.POST)
-         return super.getBodyContentType();
-
-      if (!TextUtils.isEmpty(b.content)) { // string content, e.g. json
-         return b.content_type;
-      } else if (b.files.entrySet().size() == 0) {
-         return "application/x-www-form-urlencoded;charset=UTF-8";
-      }
-
-      // TODO multipart upload??? volley not so good for this?
-      return super.getBodyContentType();
-   }
-
-   @Override public byte[] getBody() {
-      if (b.method != Request.Method.PUT && b.method != Request.Method.POST)
-         return super.getBody();
-
-      if (!TextUtils.isEmpty(b.content)) { // string content, e.g. json
-         return b.content.getBytes();
-      } else if (b.files.entrySet().size() == 0) {
-         try {
-            return b.toQuery().getBytes("UTF-8");
-         } catch (UnsupportedEncodingException e) {
-            return null;
-         }
-      }
-
-      // TODO multipart upload??? volley not so good for this?
-      // can we stream here?
-      return super.getBody();
    }
 }

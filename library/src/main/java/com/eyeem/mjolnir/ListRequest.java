@@ -19,16 +19,11 @@ import java.util.Map;
 /**
  * Created by vishna on 30/10/13.
  */
-public class ListRequest extends JsonRequest<List> {
-
-   RequestBuilder b;
-   Class clazz;
+public class ListRequest extends MjolnirRequest<List> {
 
    public ListRequest(RequestBuilder b, Class clazz, Response.Listener<List> listener,
                       Response.ErrorListener errorListener) {
-      super(b.method, b.toUrl(), null, listener, errorListener);
-      this.b = b;
-      this.clazz = clazz;
+      super(b, clazz, listener, errorListener);;
    }
 
    protected List fromArray(JSONArray jsonArray) {
@@ -48,11 +43,6 @@ public class ListRequest extends JsonRequest<List> {
       }
    }
 
-   @Override
-   public Map<String, String> getHeaders() throws AuthFailureError {
-      return b.headers;
-   }
-
    public static List fromArray(Class clazz, JSONArray jsonArray) {
       try {
          java.lang.reflect.Method fromJSONArray = clazz.getMethod("fromJSONArray", JSONArray.class);
@@ -64,15 +54,5 @@ public class ListRequest extends JsonRequest<List> {
       } catch (IllegalAccessException e) {
          return null;
       }
-   }
-
-   public RequestBuilder getRequestBuilder() {
-      return b;
-   };
-
-   @Override
-   public boolean equals(Object o) {
-      if (!(o instanceof ListRequest)) return false;
-      return b.toUrl().equals(((ListRequest)o).b.toUrl());
    }
 }
