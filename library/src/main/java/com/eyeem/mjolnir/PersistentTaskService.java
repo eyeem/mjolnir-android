@@ -139,10 +139,14 @@ public class PersistentTaskService extends Service implements ObservableRequestQ
       }
    }
 
-   public static void addPersistentTask(Context context, PersistentTask task) {
+   public static Intent persistentIntent(Context context, PersistentTask task) {
       Intent intent = new Intent(context, PersistentTaskService.class);
       intent.putExtra(KEY_TASK, task);
-      context.startService(intent);
+      return intent;
+   }
+
+   public static void addPersistentTask(Context context, PersistentTask task) {
+      context.startService(persistentIntent(context, task));
    }
 
    public static void startSerivceIfNecessary(final Context context) {
