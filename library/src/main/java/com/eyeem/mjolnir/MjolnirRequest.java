@@ -3,9 +3,15 @@ package com.eyeem.mjolnir;
 import android.text.TextUtils;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
@@ -13,7 +19,7 @@ import java.util.Map;
 /**
  * Created by vishna on 26/03/14.
  */
-public abstract class MjolnirRequest<T> extends JsonRequest<T> {
+public class MjolnirRequest<T> extends JsonRequest<T> {
 
    protected RequestBuilder b;
    protected Class clazz;
@@ -67,5 +73,22 @@ public abstract class MjolnirRequest<T> extends JsonRequest<T> {
    @Override public boolean equals(Object o) {
       if (!(o instanceof MjolnirRequest)) return false;
       return b.toUrl().equals(((MjolnirRequest)o).b.toUrl()) && b.method == ((MjolnirRequest)o).b.method;
+   }
+
+///// if you need to operate on raw data, just use the below to fit request to your needs
+   public static MjolnirRequest<Object> raw(RequestBuilder b) {
+      Response.Listener<Object> listener = new Response.Listener<Object>() { @Override public void onResponse(Object o) {} };
+      return new MjolnirRequest<Object>(b, null, listener, null);
+   }
+
+   @Override protected Response<T> parseNetworkResponse(NetworkResponse networkResponse) {
+      try {
+         String raw = new String(networkResponse.data, HttpHeaderParser.parseCharset(networkResponse.headers));
+         return Response.success(
+            (T)raw,
+            HttpHeaderParser.parseCacheHeaders(networkResponse));
+      } catch (UnsupportedEncodingException e) {
+         return Response.error(new ParseError(e));
+      }
    }
 }

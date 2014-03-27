@@ -199,6 +199,11 @@ public class RequestBuilder implements Serializable {
       return new PersistentRequest.Builder(this);
    }
 
+   public MjolnirRequest raw() {
+      sign();
+      return MjolnirRequest.raw(this);
+   }
+
    public RequestBuilder fetchFront(Object info) {
       return this;
    }
