@@ -175,6 +175,15 @@ album:
       public final static String TYPE_COUNTRY = "country";
       public final static String TYPE_TAG = "tag";
       public String filename;
+  java_textUtils:
+    ImportMixin: android.text.TextUtils
+  java_entities:
+    Mixin: |
+      @Override public boolean equals(Object album) {
+      return album != null && (album instanceof Album)
+         && !TextUtils.isEmpty(id) && !TextUtils.isEmpty(((Album) album).id)
+         && id.equals(((Album) album).id);
+      }
 location:
   latitude: String
   longitude: String
