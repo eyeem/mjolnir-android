@@ -121,6 +121,11 @@ person:
         fullnameASCII = FlattenToASCII.removeDiacritic(fullname).toLowerCase();
   java_toString:
     Mixin: |
+      @Override public boolean equals(Object person) {
+      return person != null && (person instanceof Person)
+         && !TextUtils.isEmpty(serviceId) && !TextUtils.isEmpty(((Person) person).serviceId)
+         && serviceId.equals(((Person) person).serviceId);
+      }
       public String fullnameASCII;
       @Override public String toString() {
             if (!TextUtils.isEmpty(fullname))
