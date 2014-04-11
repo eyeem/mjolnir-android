@@ -225,13 +225,22 @@ public class Utils {
    }
 
    public static String getSquareThumbnail(int side, User user) {
-      if (TextUtils.isEmpty(user.thumbUrl)) {
+      return getSquareThumbnail(side, user.thumbUrl, user.photofilename);
+   }
+
+   public static String getSquareThumbnail(int side, String thumbUrl, String photofilename) {
+      if (TextUtils.isEmpty(thumbUrl)) {
          return "http://cdn.eyeem.com/thumb/sq/" + side + "/placeholder.jpg";
       }
-      if (user.thumbUrl.startsWith("https://graph.facebook.com"))
-         return user.thumbUrl + String.format(Locale.US, "&width=%d&height=%d", side, side);
-      if (user.thumbUrl.contains("eyeem"))
-         return PHOTO_PATH + THUMB_BASE + "sq/" + side + "/" + user.photofilename;
-      return user.thumbUrl;
+      if (thumbUrl.startsWith("https://graph.facebook.com") || thumbUrl.startsWith("http://graph.facebook.com"))
+         return thumbUrl + String.format(Locale.US, "&width=%d&height=%d", side, side);
+      if (thumbUrl.contains("pbs.twimg.com/profile_images/")) {
+         return thumbUrl.replace("_normal", "");
+      }
+      if (thumbUrl.contains("eyeem")) {
+         if (photofilename == null) photofilename = Utils.lastSegment(thumbUrl);
+         return PHOTO_PATH + THUMB_BASE + "sq/" + side + "/" + photofilename;
+      }
+      return thumbUrl;
    }
 }
