@@ -437,6 +437,19 @@ facebook_service:
   access_token: String
   managedPages:
     Array: facebook_page
+  java_add_own_timeline:
+      CtorMixin: |
+        boolean containsMe = false;
+        for (FacebookPage page : managedPages) {
+          if ("me".equals(page.id)) {
+            containsMe = true; break;
+          }
+        }
+        if (!containsMe) {
+           FacebookPage ownTimeline = new FacebookPage();
+           ownTimeline.id = "me";
+           managedPages.add(0, ownTimeline);
+        }
 facebook_page:
   id: String
   name: String
