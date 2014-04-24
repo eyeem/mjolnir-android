@@ -43,7 +43,7 @@ public class ListStorageRequestExecutor {
                   Storage.List transaction = list.transaction();
                   transaction.clear();
                   transaction.addAll(response);
-                  exhausted = false;
+                  exhausted = (transaction.size() == 0);
                   transaction.commit(new Storage.Subscription.Action(Storage.Subscription.ADD_UPFRONT));
                } else {
                   list.addUpFront(response, null);
