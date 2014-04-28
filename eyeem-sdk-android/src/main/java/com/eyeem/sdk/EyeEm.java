@@ -163,7 +163,7 @@ public class EyeEm extends RequestBuilder {
    }
 
    public static EyeEm news() {
-      return new news();
+      return new NewsRequestBuilder();
    }
 
 ///// PARAMS
@@ -349,9 +349,9 @@ public class EyeEm extends RequestBuilder {
 
    public static HashMap<String, String> default_headers = new HashMap<String, String>();
 
-   public static class news extends EyeEm {
+   public static class NewsRequestBuilder extends EyeEm {
 
-      public news() {
+      public NewsRequestBuilder() {
          super("/v2/news");
          param("aggregated", "1");
 

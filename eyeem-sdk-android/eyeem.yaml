@@ -32,6 +32,13 @@ photo:
       public String entityfiedDescription;
       public float getAspectRatio() { return height == 0 ? 0 : (float) width / (float) height; }
       public String filename;
+      @Override
+      public boolean equals(Object o) {
+         if (o instanceof Photo)
+            return ((Photo) o).id.equals(id);
+         else
+            return super.equals(o);
+      }
 user:
   id: String
   nickname: String
