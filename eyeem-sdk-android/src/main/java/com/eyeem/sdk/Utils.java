@@ -232,6 +232,9 @@ public class Utils {
       if (TextUtils.isEmpty(thumbUrl)) {
          return "http://cdn.eyeem.com/thumb/sq/" + side + "/placeholder.jpg";
       }
+
+      if (thumbUrl.startsWith("file://")) return thumbUrl;
+
       if (thumbUrl.startsWith("https://graph.facebook.com") || thumbUrl.startsWith("http://graph.facebook.com"))
          return thumbUrl + String.format(Locale.US, "&width=%d&height=%d", side, side);
       if (thumbUrl.contains("pbs.twimg.com/profile_images/")) {
