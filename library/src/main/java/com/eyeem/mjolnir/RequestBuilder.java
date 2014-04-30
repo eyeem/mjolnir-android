@@ -219,6 +219,10 @@ public class RequestBuilder implements Serializable {
       return this;
    }
 
+   public boolean compareAccount(Account other) {
+      return other.equals(account);
+   }
+
    /**
     * Returns a copy of the object, or null if the object cannot
     * be serialized.
