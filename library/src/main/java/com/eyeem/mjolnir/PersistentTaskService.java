@@ -22,6 +22,7 @@ import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
 
 import java.lang.ref.WeakReference;
+import java.util.NoSuchElementException;
 import java.util.Vector;
 
 /**
@@ -201,10 +202,14 @@ public class PersistentTaskService extends Service implements ObservableRequestQ
 
       @Override
       public void handleMessage(Message msg) {
-         switch (msg.what) {
-            case NEXT: next(); break;
-            case REMOVE: persistentQueue().remove(); break;
-            case ADD: persistentQueue().add((PersistentTask) msg.obj); break;
+         try {
+            switch (msg.what) {
+               case NEXT: next(); break;
+               case REMOVE: persistentQueue().remove(); break;
+               case ADD: persistentQueue().add((PersistentTask) msg.obj); break;
+            }
+         } catch (NoSuchElementException e) {
+            // can happen, don't crash the app
          }
       }
 
