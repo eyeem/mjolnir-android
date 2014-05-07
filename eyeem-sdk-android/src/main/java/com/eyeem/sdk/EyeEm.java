@@ -180,6 +180,10 @@ public class EyeEm extends RequestBuilder {
          .numPeople(10);
    }
 
+   public EyeEm param(String key, boolean value) {
+      return (EyeEm)param(key, value ? "1" : "0");
+   }
+
    public EyeEm detailed() {
       return (EyeEm)param("detailed", "1");
    }
