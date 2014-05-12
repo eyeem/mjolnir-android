@@ -31,7 +31,7 @@ dependencies {
     compile 'com.eyeem.volley:volley:0.1.0-SNAPSHOT@aar'
     compile 'com.squareup.okhttp:okhttp:1.2.1'
 
-    compile project(':mjolnir-android:library')
+    compile project(':library')
 
     testCompile 'junit:junit:4.10'
     testCompile 'org.robolectric:robolectric:2.1.+'
@@ -92,6 +92,10 @@ uploadArchives {
     configuration = configurations.archives
     repositories.mavenDeployer {
         beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+        snapshotRepository(url: sonatypeSnapshotRepo) {
+            authentication(userName: sonatypeUsername, password: sonatypePassword)
+        }
 
         repository(url: sonatypeRepo) {
             authentication(userName: sonatypeUsername,
