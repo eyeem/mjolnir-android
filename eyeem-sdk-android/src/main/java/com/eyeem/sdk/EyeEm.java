@@ -46,7 +46,7 @@ public class EyeEm extends RequestBuilder {
       param("client_id", ID);
       header("X-Api-Version", "2.3.1");
       header("X-hourOfDay", String.valueOf(Calendar.getInstance().get(Calendar.HOUR_OF_DAY)));
-      headers.putAll(default_headers);
+      if (default_headers != null) headers.putAll(default_headers.get());
    }
 
    public static EyeEm path(String path) {
@@ -351,7 +351,7 @@ public class EyeEm extends RequestBuilder {
       }
    }
 
-   public static HashMap<String, String> default_headers = new HashMap<String, String>();
+   public static DefaultHeaders default_headers;
 
    public static class NewsRequestBuilder extends EyeEm {
 
@@ -376,5 +376,9 @@ public class EyeEm extends RequestBuilder {
          }
          return this;
       }
+   }
+
+   public interface DefaultHeaders {
+      public HashMap<String, String> get();
    }
 }
