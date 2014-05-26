@@ -48,6 +48,7 @@ user:
   photoUrl: String
   description: String
   following: FalseClass
+  follower: FalseClass
   blocked: FalseClass
   restricted: FalseClass
   totalFollowers: Fixnum
@@ -302,10 +303,18 @@ contact:
   thumbUrl: String
   user: user
 mission:
+  id: String
   title: String
+  partnerName: String
+  deadline: Date
+  prize: String
+  prizeCaption: String
+  terms: String
+  brief: String
   description: String
   url: String
   thumbUrl: String
+  headerPhoto: photo
   album: Album
 search_result:
   totalUsers: Fixnum

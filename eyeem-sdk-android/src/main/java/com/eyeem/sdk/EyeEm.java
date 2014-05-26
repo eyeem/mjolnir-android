@@ -44,7 +44,7 @@ public class EyeEm extends RequestBuilder {
    private EyeEm(String path) {
       super(API_URL, path);
       param("client_id", ID);
-      header("X-Api-Version", "2.3.1");
+      header("X-Api-Version", "2.3.2");
       header("X-hourOfDay", String.valueOf(Calendar.getInstance().get(Calendar.HOUR_OF_DAY)));
       if (default_headers != null) headers.putAll(default_headers.get());
    }
