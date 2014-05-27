@@ -56,6 +56,7 @@ user:
   totalPhotos: Fixnum
   totalLikedPhotos: Fixnum
   totalLikedAlbums: Fixnum
+  coverPhoto: photo
   java_textUtils:
     ImportMixin: android.text.TextUtils
   java_fix_null_description:
