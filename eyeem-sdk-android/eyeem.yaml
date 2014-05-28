@@ -168,7 +168,7 @@ album:
   id: String
   name: String
   type: String
-  thumbUrl: String
+  coverPhoto: photo
   webUrl: String
   updated: Date
   location: location
@@ -179,8 +179,6 @@ album:
   hidden: FalseClass
   favorited: FalseClass
   subtitle: String
-  java_init_filename:
-    CtorMixin: "filename = Utils.lastSegment(thumbUrl);"
   java_types:
     Mixin: |
       public final static String TYPE_CITY = "city";
@@ -188,7 +186,6 @@ album:
       public final static String TYPE_EVENT = "event";
       public final static String TYPE_COUNTRY = "country";
       public final static String TYPE_TAG = "tag";
-      public String filename;
   java_textUtils:
     ImportMixin: android.text.TextUtils
   java_entities:
