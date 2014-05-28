@@ -225,7 +225,12 @@ public class PersistentTaskService extends Service implements ObservableRequestQ
          PersistentTask task = persistentQueue().peek();
          if (task != null) {
             if (isNetworkConnected(app)) {
-               task.execute(requestQueue);
+               try {
+                  task.execute(requestQueue);
+               } catch (IllegalStateException e) {
+                  persistentQueue().remove();
+                  next();
+               }
             } else {
                waitForNetworkConnected(app);
             }

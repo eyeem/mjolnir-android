@@ -25,6 +25,7 @@ public class PersistentTask implements Task<ObservableRequestQueue>, Serializabl
 
    @Override
    public void execute(ObservableRequestQueue requestQueue) {
+      if (rb == null) throw new IllegalStateException("Request Builder must not be null");
       requestQueue.add(rb.persistent().build(this));
    }
 
