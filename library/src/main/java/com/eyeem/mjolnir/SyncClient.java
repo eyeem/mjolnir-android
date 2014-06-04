@@ -7,6 +7,7 @@ import com.android.volley.Request;
 import com.squareup.mimecraft.Multipart;
 import com.squareup.mimecraft.Part;
 import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.OkUrlFactory;
 
 import org.json.JSONObject;
 
@@ -137,17 +138,9 @@ public class SyncClient {
    protected HttpURLConnection buildConnection() throws IOException {
       URL url = new URL(rb.toUrl());
       OkHttpClient client = new OkHttpClient();
-      SSLContext sslContext; // workaround for okhttp issue #184, should be fixed in 2.0
-      try {
-         sslContext = SSLContext.getInstance("TLS");
-         sslContext.init(null, null, null);
-      } catch (GeneralSecurityException e) {
-         throw new AssertionError(); // The system has no TLS. Just give up.
-      }
-      client.setSslSocketFactory(sslContext.getSocketFactory());
       client.setConnectTimeout(Constants.CONNECTION_TIMEOUT_IN_SEC, TimeUnit.SECONDS);
       client.setReadTimeout(Constants.CONNECTION_TIMEOUT_IN_SEC, TimeUnit.SECONDS);
-      HttpURLConnection connection = client.open(url);
+      HttpURLConnection connection = new OkUrlFactory(client).open(url);
 
       connection.setRequestProperty("Accept-Encoding", "gzip");
       connection.setRequestMethod(rb.method());

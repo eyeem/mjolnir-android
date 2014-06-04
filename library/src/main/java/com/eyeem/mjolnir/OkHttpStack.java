@@ -2,6 +2,7 @@ package com.eyeem.mjolnir;
 
 import com.android.volley.toolbox.HurlStack;
 import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.OkUrlFactory;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -14,7 +15,7 @@ import javax.net.ssl.SSLContext;
  * uses OkHttp as its transport.
  */
 public class OkHttpStack extends HurlStack {
-   private final OkHttpClient client;
+   private final OkUrlFactory client;
 
    public OkHttpStack() {
       this(new OkHttpClient());
@@ -24,19 +25,11 @@ public class OkHttpStack extends HurlStack {
       if (client == null) {
          throw new NullPointerException("Client must not be null.");
       }
-      this.client = client;
+      this.client = new OkUrlFactory(client);
    }
 
-   public static OkHttpStack withSslWorkaround() {
+   public static OkHttpStack newInstance() {
       OkHttpClient client = new OkHttpClient();
-      SSLContext sslContext; // workaround for okhttp issue #184, should be fixed in 2.0
-      try {
-         sslContext = SSLContext.getInstance("TLS");
-         sslContext.init(null, null, null);
-      } catch (GeneralSecurityException e) {
-         throw new AssertionError(); // The system has no TLS. Just give up.
-      }
-      client.setSslSocketFactory(sslContext.getSocketFactory());
       return new OkHttpStack(client);
    }
 
