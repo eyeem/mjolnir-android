@@ -30,7 +30,7 @@ dependencies {
     compile 'com.eyeem.volley:volley:0.1.0-SNAPSHOT@aar'
     compile 'com.squareup.okhttp:okhttp:2.0.0-RC1'
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.0.0-SNAPSHOT'
-    compile 'com.squareup.okio:okio:2.0.0-SNAPSHOT'
+    compile 'com.squareup.okio:okio:1.0.0'
     compile 'com.squareup.mimecraft:mimecraft:1.1.0'
     compile 'com.squareup:tape:1.2.0'
     compile 'com.esotericsoftware.kryo:kryo:2.20'
@@ -56,6 +56,10 @@ task generateSources {
 android {
     compileSdkVersion project.ver.compileSdk
     buildToolsVersion project.ver.buildTools
+
+    lintOptions {
+        abortOnError false
+    }
 
     sourceSets {
         main {
