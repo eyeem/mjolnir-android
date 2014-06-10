@@ -82,11 +82,16 @@ public class PersistentTaskService extends Service implements ObservableRequestQ
             // intentional fallthru, will remove the task from the queue
          case ObservableRequestQueue.STATUS_CANCELLED:
          case ObservableRequestQueue.STATUS_SUCCESS:
-         case ObservableRequestQueue.STATUS_ALREADY_ADDED:
-            persistenceHandler.sendEmptyMessage(PersistenceHandler.REMOVE);
+            // if there was enqueued PersistenceHandler.NEXT in the meantime
+            // make sure we don't pick what's on the peek of the persistent queue,
+            // as we will duplicate ourselves
+            Message m = new Message();
+            m.what = PersistenceHandler.REMOVE;
+            persistenceHandler.sendMessageAtFrontOfQueue(m);
             if (status == ObservableRequestQueue.STATUS_SUCCESS) {
                pr.task.onSuccess(pr, data);
             }
+         case ObservableRequestQueue.STATUS_ALREADY_ADDED:
             break;
          default:
             // NO-OP;
