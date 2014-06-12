@@ -63,7 +63,7 @@ public class EyeEm extends RequestBuilder {
    }
 
    public static EyeEm userSearch(String query) {
-      return (EyeEm) new EyeEm("/v2/users").param("q", query).jsonpath("users.items");
+      return (EyeEm) new EyeEm("/v2/search").param("q", query).param("includeUsers", "1").jsonpath("users.items");
    }
 
    public static EyeEm userPhotos(String id) {
@@ -99,7 +99,7 @@ public class EyeEm extends RequestBuilder {
    }
 
    public static EyeEm albumSearch(String query) {
-      return (EyeEm) new EyeEm("/v2/albums").param("q", query).jsonpath("albums.items");
+      return (EyeEm) new EyeEm("/v2/search").includeAlbums().param("q", query).jsonpath("albums.items");
    }
 
    public static EyeEm userFollowers(String id) {
