@@ -314,6 +314,8 @@ mission:
   thumbUrl: String
   headerPhoto: photo
   album: Album
+  samplePhotos:
+    Array: photo
 search_result:
   totalUsers: Fixnum
   totalAlbums: Fixnum
