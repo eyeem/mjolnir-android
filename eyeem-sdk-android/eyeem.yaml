@@ -351,6 +351,7 @@ news:
   seen: FalseClass
   updated: Date
   itemType: String
+  mission: mission
   java_methods:
     Mixin: |
       public boolean hasAggregation() { return ids != null && ids.size() > 0 && aggregation != null; }
@@ -370,6 +371,7 @@ news:
       public static final String TYPE_BLOG_POST = "blogPost";
       public static final String TYPE_OTHER = "other";
       public static final String TYPE_PAGE = "page";
+      public static final String TYPE_MISSION = "mission";
 
       // News item types ==============================================================================
       public static final String ITEM_TYPE_INSTAGRAM_IMPORTER = "instagramImporter";
