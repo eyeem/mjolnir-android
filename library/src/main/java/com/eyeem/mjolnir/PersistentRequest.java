@@ -1,5 +1,6 @@
 package com.eyeem.mjolnir;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
 import com.android.volley.Response;
@@ -22,6 +23,10 @@ public class PersistentRequest extends ObjectRequest {
    public PersistentRequest(RequestBuilder b, PersistentTask task, Response.Listener<Object> listener, Response.ErrorListener errorListener) {
       super(b, Object.class, listener, errorListener);
       this.task = task;
+      setRetryPolicy(new DefaultRetryPolicy(
+                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
+                0, // we disable retry policy as this is handled by PersistentService
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
    }
 
    @Override
