@@ -32,7 +32,7 @@ dependencies {
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.4.0'
     compile 'com.squareup.okio:okio:1.5.0'
 
-    compile project(':library')
+    compile project(':mjolnir-android:library')
 
     testCompile 'junit:junit:4.10'
     testCompile 'org.robolectric:robolectric:3.0'
