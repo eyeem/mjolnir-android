@@ -25,6 +25,8 @@ import java.lang.ref.WeakReference;
 import java.util.NoSuchElementException;
 import java.util.Vector;
 
+import java.io.InterruptedIOException;
+
 /**
  * Created by vishna on 03/03/14.
  */
@@ -54,12 +56,20 @@ public class PersistentTaskService extends Service implements ObservableRequestQ
 
       switch (status) {
          case ObservableRequestQueue.STATUS_FAILED:
+            boolean shouldAbort = false;
             if (data instanceof NoConnectionError) {
-               waitForNetworkConnected(this);
-               return;
+               NoConnectionError nce = (NoConnectionError) data;
+               if (nce.getCause() instanceof InterruptedIOException) {
+                  // i/o issues, abort to avoid duplicates
+                  shouldAbort = true;
+               } else {
+                  // network unavailable
+                  waitForNetworkConnected(this);
+                  return;
+               }
             }
 
-            long retryTime = pr.task.onError(pr, data);
+            long retryTime = shouldAbort ? -1 : pr.task.onError(pr, data);
 
             if (retryTime == 0) {
                // don't remove the task from the queue, we will retry immediatelly

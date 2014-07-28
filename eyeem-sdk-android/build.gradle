@@ -30,8 +30,8 @@ dependencies {
     compile 'com.eyeem.chips:library:0.9.1-SNAPSHOT@aar'
     compile 'com.eyeem.volley:volley:0.1.0-SNAPSHOT@aar'
     compile 'com.squareup.okio:okio:1.0.0'
-    compile 'com.squareup.okhttp:okhttp:2.0.0-RC1'
-    compile 'com.squareup.okhttp:okhttp-urlconnection:2.0.0-SNAPSHOT'
+    compile 'com.squareup.okhttp:okhttp:2.0.0'
+    compile 'com.squareup.okhttp:okhttp-urlconnection:2.0.0'
 
     compile project(':library')
 

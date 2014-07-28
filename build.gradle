@@ -1,7 +1,7 @@
 class ProjectSettings{
-    int compileSdk = 18
+    int compileSdk = 19
     int targetSdk = 19
-    String buildTools = '19.0.1'
+    String buildTools = '20.0.0'
     String androidPlugin = 'com.android.tools.build:gradle:0.7.+'
 }
 project.extensions.create("ver", ProjectSettings)
