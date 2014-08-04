@@ -170,7 +170,7 @@ public class PersistentTaskService extends Service implements ObservableRequestQ
          @Override
          public void run() {
             PersistentTaskQueue persistentQueue = PersistentTaskQueue.create(context);
-            if (persistentQueue.peek() != null) {
+            if (persistentQueue != null && persistentQueue.peek() != null) {
                context.startService(new Intent(context, PersistentTaskService.class));
             }
          }
@@ -223,8 +223,9 @@ public class PersistentTaskService extends Service implements ObservableRequestQ
                case REMOVE: persistentQueue().remove(); break;
                case ADD: persistentQueue().add((PersistentTask) msg.obj); break;
             }
-         } catch (NoSuchElementException e) {
-            // can happen, don't crash the app
+         } catch (Throwable t) {
+            // log tape failures
+            android.util.Log.w(TAG, "handleMessage() failed", t);
          }
       }
 

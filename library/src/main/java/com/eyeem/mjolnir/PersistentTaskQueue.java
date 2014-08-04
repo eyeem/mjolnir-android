@@ -16,6 +16,7 @@ import java.io.IOException;
  */
 public class PersistentTaskQueue extends TaskQueue<PersistentTask> {
    private static final String FILENAME = "persistent_task_queue";
+   private static final String TAG = "PersistentTaskQueue";
 
    private final Context context;
 
@@ -44,9 +45,20 @@ public class PersistentTaskQueue extends TaskQueue<PersistentTask> {
       try {
          delegate = new FileObjectQueue<PersistentTask>(queueFile, converter);
       } catch (IOException e) {
-         throw new RuntimeException("Unable to create file queue.", e);
+         // try deleting file
+         deleteFile(queueFile);
+         return null;
       }
       return new PersistentTaskQueue(delegate, context);
+   }
+
+   private static boolean deleteFile(File file) {
+      try {
+         return file.delete();
+      } catch (Throwable t) {
+         android.util.Log.w(TAG, "failed to delete a file", t);
+         return false;
+      }
    }
 
    @Override
