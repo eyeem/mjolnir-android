@@ -118,6 +118,10 @@ public class EyeEm extends RequestBuilder {
       return (EyeEm) new EyeEm("/v2/missions/lightweight").jsonpath("missions.items");
    }
 
+   public static EyeEm mission(String id) {
+      return (EyeEm) new EyeEm("/v2/missions/lightweight/" + id).jsonpath("mission");
+   }
+
    public static EyeEm topics() {
       return (EyeEm) new EyeEm("/v2/topics").jsonpath("topics.items");
    }
