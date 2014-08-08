@@ -26,7 +26,8 @@ import java.util.Locale;
  */
 public class EyeEm extends RequestBuilder {
 
-   private static final String API_URL = "https://api.eyeem.com";
+   public final static String PRODUCTION_API_URL = "https://api.eyeem.com";
+   private static String API_URL = PRODUCTION_API_URL;
 
    public static String ID = "";
    public static String SECRET = "";
@@ -262,6 +263,10 @@ public class EyeEm extends RequestBuilder {
    @Override
    public RequestBuilder fetchBack(Object info) {
       return param("offset", ((List) info).size());
+   }
+
+   public static void setStagingEnv(String api_url) {
+      API_URL = TextUtils.isEmpty(api_url) ? PRODUCTION_API_URL : api_url;
    }
 
    public final static Comparator photoSort = new Comparator() {
