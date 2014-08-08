@@ -63,6 +63,9 @@ public class ObservableRequestQueue extends RequestQueue {
 
    @Override
    public Request add(Request request) {
+      if (onAddRequestListener != null) {
+         onAddRequestListener.onAddRequest(request);
+      }
       if (ongoing.contains(request)) {
          report(request, STATUS_ADDED, null);
          return request;
@@ -80,6 +83,7 @@ public class ObservableRequestQueue extends RequestQueue {
 
    private Vector<Request> ongoing = new Vector<Request>();
    private Vector<WeakEqualReference<Listener>> listeners = new Vector<WeakEqualReference<Listener>>();
+   private OnAddRequestListener onAddRequestListener;
 
    public void report(final Request request, final int status, final Object data) {
       if (status > STATUS_ADDED) ongoing.remove(request);
@@ -111,9 +115,25 @@ public class ObservableRequestQueue extends RequestQueue {
       listeners.removeAll(toBeRemoved);
    }
 
+   public void setOnAddRequestListener(OnAddRequestListener onAddRequestListener) {
+      this.onAddRequestListener = onAddRequestListener;
+   }
+
+   /**
+    * Can be used to indicate status update of request, e.g progress spinner.
+    * Listeners must not modify the request object
+    */
    public interface Listener {
       public void onStatusUpdate(Request request, int status, Object data);
    }
 
    public Vector<Request> ongoing() { return (Vector<Request>) ongoing.clone(); }
+
+   /**
+    * Can be used to modifiy request just before adding it to the network queue
+    * e.g. applying different RetryPolicy
+    */
+   public interface OnAddRequestListener {
+      public void onAddRequest(Request request);
+   }
 }
