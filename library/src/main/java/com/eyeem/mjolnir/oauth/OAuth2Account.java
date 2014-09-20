@@ -45,7 +45,7 @@ public abstract class OAuth2Account extends Account {
       oauthRequest()
          .param("grant_type", "authorization_code")
          .param("client_secret", secret())
-         .param("redirect_uri", callbackUrl)
+         .param("redirect_uri", callbackUrl())
          .param("code", Uri.parse(callbackUrl).getQueryParameter("code"))
          .objectOf(Auth.class)
          .listener(new Response.Listener<Object>() {

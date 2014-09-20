@@ -1,0 +1,13 @@
+---
+IGUser:
+  id: String
+  username: String
+  bio: String
+  website: String
+  profile_picture: String
+  full_name: String
+  counts: IGCounts
+IGCounts:
+  media: Fixnum
+  followed_by: Fixnum
+  follows: Fixnum

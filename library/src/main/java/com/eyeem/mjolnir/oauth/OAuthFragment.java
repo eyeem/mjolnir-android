@@ -1,5 +1,8 @@
 package com.eyeem.mjolnir.oauth;
 
+import android.app.Activity;
+import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
@@ -22,6 +25,8 @@ import com.android.volley.VolleyError;
 
 import com.eyeem.mjolnir.R;
 
+import java.lang.ref.WeakReference;
+
 /**
  * Created by vishna on 15/11/13.
  */
@@ -30,11 +35,14 @@ public class OAuthFragment extends DialogFragment implements OAuth2Account.UICal
    public final static String TAG = "com.eyeem.mjolnir.oauth.OAuthFragment.TAG";
 
    public final static String KEY_ACCOUNT = "account";
+   public final static String KEY_IMPLICT_MODE = "implict_mode";
 
    private WebView webViewOauth;
    private FrameLayout webViewContainer;
    private OAuth2Account account;
+   private boolean implictMode;
    private boolean loadLaunched;
+   private Context appContext;
 
    RequestQueue queue;
 
@@ -44,8 +52,7 @@ public class OAuthFragment extends DialogFragment implements OAuth2Account.UICal
 
    @Override
    public void onAuth(OAuth2Account account) {
-      if (webViewOauth != null)
-         Toast.makeText(webViewOauth.getContext(), "Connected successfully", Toast.LENGTH_SHORT).show();
+      Toast.makeText(appContext, "Connected successfully", Toast.LENGTH_SHORT).show();
    }
 
    @Override
@@ -61,7 +68,7 @@ public class OAuthFragment extends DialogFragment implements OAuth2Account.UICal
          txt = new String(error.networkResponse.data, "UTF-8");
       } catch (Exception e) {
       }
-      Toast.makeText(getView().getContext(), txt, Toast.LENGTH_LONG).show();
+      Toast.makeText(appContext, txt, Toast.LENGTH_LONG).show();
    }
 
    private class OAuth2ViewClient extends WebViewClient {
@@ -71,7 +78,15 @@ public class OAuthFragment extends DialogFragment implements OAuth2Account.UICal
          // this test depend of your API
          if (url.startsWith(account.callbackUrl())) {
             // save your token
-            account.requestAccessToken(url, queue, webViewOauth.getContext().getApplicationContext(), OAuthFragment.this);
+            if (implictMode) { // client-side
+               Auth auth = new Auth();
+               auth.access_token = Uri.parse(url).getFragment().replace("access_token=", "");
+               account.setAuth(auth);
+               onAuth(account);
+               account.postAuth(queue, appContext, new WeakReference<OAuth2Account.UICallback>(OAuthFragment.this));
+            } else { // server-side mode (safe if this code runs on a server)
+               account.requestAccessToken(url, queue, appContext, OAuthFragment.this);
+            }
             dismiss();
             return true;
          }
@@ -102,8 +117,14 @@ public class OAuthFragment extends DialogFragment implements OAuth2Account.UICal
       webViewContainer.addView(webViewOauth,
          FrameLayout.LayoutParams.MATCH_PARENT,
          FrameLayout.LayoutParams.MATCH_PARENT);
-      if (account == null)
+
+      if (account == null) {
          account = (OAuth2Account) getArguments().get(KEY_ACCOUNT);
+      }
+
+      if (getArguments().containsKey(KEY_IMPLICT_MODE)) {
+         implictMode = getArguments().getBoolean(KEY_IMPLICT_MODE);
+      }
       return view;
    }
 
@@ -130,7 +151,7 @@ public class OAuthFragment extends DialogFragment implements OAuth2Account.UICal
       }
    }
 
-   public static void show(FragmentManager fm, RequestQueue queue, OAuth2Account account) {
+   public static void show(FragmentManager fm, RequestQueue queue, OAuth2Account account, boolean implictMode) {
       FragmentTransaction ft = fm.beginTransaction();
       ft.addToBackStack(null);
 
@@ -138,6 +159,7 @@ public class OAuthFragment extends DialogFragment implements OAuth2Account.UICal
       OAuthFragment newFragment = new OAuthFragment();
       Bundle args = new Bundle();
       args.putSerializable(KEY_ACCOUNT, account);
+      args.putBoolean(KEY_IMPLICT_MODE, implictMode);
       newFragment.setArguments(args);
       newFragment.setRequestQueue(queue);
       newFragment.show(ft, TAG);
@@ -154,5 +176,11 @@ public class OAuthFragment extends DialogFragment implements OAuth2Account.UICal
    public void onSaveInstanceState(Bundle outState) {
       super.onSaveInstanceState(outState);
       webViewContainer.removeAllViews();
+   }
+
+   @Override
+   public void onAttach(Activity activity) {
+      super.onAttach(activity);
+      appContext = activity.getApplicationContext();
    }
 }

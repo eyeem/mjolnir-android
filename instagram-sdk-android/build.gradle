@@ -1,0 +1,140 @@
+buildscript {
+    repositories {
+        maven {
+            url 'https://oss.sonatype.org/content/repositories/snapshots/'
+        }
+        mavenCentral()
+        mavenLocal()
+    }
+    dependencies {
+        classpath project.ver.androidPlugin
+        classpath 'com.squareup.gradle:gradle-android-test-plugin:0.9.1-SNAPSHOT'
+    }
+}
+
+apply plugin: 'android-library'
+//apply plugin: 'android-test'
+
+dependencies {
+    repositories {
+        maven {
+            url 'https://oss.sonatype.org/content/repositories/snapshots/'
+        }
+        mavenCentral()
+        mavenLocal()
+    }
+
+    compile 'com.android.support:support-v4:18.0.+'
+
+    compile 'com.eyeem.potato:library:0.9.2-SNAPSHOT@aar'
+    compile 'com.eyeem.chips:library:0.9.1-SNAPSHOT@aar'
+    compile 'com.eyeem.volley:volley:0.1.0-SNAPSHOT@aar'
+    compile 'com.squareup.okio:okio:1.0.0'
+    compile 'com.squareup.okhttp:okhttp:2.0.0'
+    compile 'com.squareup.okhttp:okhttp-urlconnection:2.0.0'
+
+    compile project(':mjolnir-android:library')
+
+    //testCompile 'junit:junit:4.10'
+    //testCompile 'org.robolectric:robolectric:2.1.+'
+    //testCompile 'com.squareup:fest-android:1.0.+'
+}
+
+task generateSources {
+    //
+    doFirst {
+        println "Mjolnir source code generation..."
+        exec {
+            commandLine 'rm', '-rf', 'src/javagen'
+        }
+        exec {
+            commandLine 'mjolnir-package', '--yaml', 'instagram.yaml', '--packagename', 'com.eyeem.sdk.instagram', '--output', 'src/javagen'
+        }
+    }
+}
+
+android {
+    compileSdkVersion project.ver.compileSdk
+    buildToolsVersion project.ver.buildTools
+
+    lintOptions {
+        abortOnError false
+    }
+
+    sourceSets {
+        main {
+            java {
+                srcDirs 'src/javagen'
+            }
+        }
+    }
+
+    libraryVariants.all { variant ->
+        variant.javaCompile.dependsOn generateSources
+    }
+}
+
+// SONATYPE DEPLOYMENT
+// in order to deploy, run: gradle uploadArchives
+
+apply plugin: 'maven'
+apply plugin: 'signing'
+
+version = "0.0.1-SNAPSHOT"
+group = "com.eyeem.sdk"
+
+configurations {
+    archives {
+        extendsFrom configurations.default
+    }
+}
+
+signing {
+    required { has("release") && gradle.taskGraph.hasTask("uploadArchives") }
+    sign configurations.archives
+}
+
+uploadArchives {
+    configuration = configurations.archives
+    repositories.mavenDeployer {
+        beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+        snapshotRepository(url: sonatypeSnapshotRepo) {
+            authentication(userName: sonatypeUsername, password: sonatypePassword)
+        }
+
+        repository(url: sonatypeRepo) {
+            authentication(userName: sonatypeUsername,
+                    password: sonatypePassword)
+        }
+
+        pom.project {
+            name 'Instagram Android SDK'
+            packaging 'aar'
+            description 'Instagram Android SDK'
+            url 'https://github.com/eyeem/mjolnir-android'
+
+            scm {
+                url 'scm:git@github.com:eyeem/mjolnir-android.git'
+                connection 'scm:git@github.com:eyeem/mjolnir-android.git'
+                developerConnection 'scm:git@github.com:eyeem/mjolnir-android.git'
+            }
+
+            licenses {
+                license {
+                    name 'The Apache Software License, Version 2.0'
+                    url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    distribution 'repo'
+                }
+            }
+
+            developers {
+                developer {
+                    id 'vishna'
+                    name 'Lukasz Wisniewski'
+                    email 'lukasz@eyeem.com'
+                }
+            }
+        }
+    }
+}

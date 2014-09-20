@@ -1,2 +1,3 @@
 include 'library'
 include 'eyeem-sdk-android'
+include 'instagram-sdk-android'
