@@ -11,3 +11,55 @@ IGCounts:
   media: Fixnum
   followed_by: Fixnum
   follows: Fixnum
+IGPhoto:
+  location: IGLocation
+  comments: IGComments
+  caption: IGCaption
+  filter: String
+  link: String
+  created_time: Date
+  likes: IGLikes
+  images: IGImages
+  users_in_photo:
+    Array: IGUserTag
+  id: String
+  tags:
+    Array: String
+  user: IGUser
+IGLocation:
+  id: String
+  latitude: Float
+  longitude: Float
+  name: String
+IGComments:
+  count: Fixnum
+  data:
+    Array: IGComment
+IGComment:
+  created_time: Date
+  text: String
+  from: IGUser
+  id: String
+IGLikes:
+  count: Fixnum
+  data:
+    Array: IGUser
+IGImages:
+  low_resolution: IGImage
+  thumbnail: IGImage
+  standard_resolution: IGImage
+IGImage:
+  url: String
+  width: Fixnum
+  height: Fixnum
+IGCaption:
+  created_time: Date
+  text: String
+  from: IGUser
+  id: String
+IGUserTag:
+  position: IGUserPosition
+  user: IGUser
+IGUserPosition:
+  y: Float
+  x: Float

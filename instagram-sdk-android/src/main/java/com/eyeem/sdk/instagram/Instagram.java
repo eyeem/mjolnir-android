@@ -8,21 +8,17 @@ import com.android.volley.Response;
 import com.eyeem.mjolnir.DateParser;
 import com.eyeem.mjolnir.RequestBuilder;
 import com.eyeem.mjolnir.oauth.OAuth2Account;
+import com.eyeem.storage.Storage;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 
 /**
- * Client side implict authentication
  *
  * Created by vishna on 28/10/13.
  */
@@ -67,18 +63,22 @@ public class Instagram extends RequestBuilder {
       return (Instagram) new Instagram("/v1/users/" + id).jsonpath("data");
    }
 
+   public static Instagram userSelfFeed() {
+      return (Instagram) new Instagram("/v1/users/self/feed").jsonpath("data");
+   }
 
    static {
       new DateParser("com.eyeem.sdk.instagram") {
          @Override public long toSeconds(String date) {
-            try { return new SimpleDateFormat(
-               "yyyy-MM-dd'T'HH:mm:ssZ",
-               Locale.getDefault()).parse(date).getTime()/1000;
-            } catch (ParseException e) { return 0; }
+            try { return Long.valueOf(date);
+            } catch (Throwable e) { return 0; }
          }
       };
    }
 
+   /**
+    * Client side implict authentication
+    */
    public static class Account extends OAuth2Account {
 
       public static List<String> SCOPES;
@@ -159,4 +159,31 @@ public class Instagram extends RequestBuilder {
    public interface DefaultHeaders {
       public HashMap<String, String> get();
    }
+
+//// Pagination support
+   @Override
+   public RequestBuilder fetchFront(Object info) {
+      if (decapsulator != null) {
+         return decapsulator.fetchFront(this, info);
+      }
+      return this;
+   }
+
+   @Override
+   public RequestBuilder fetchBack(Object info) {
+      if (decapsulator != null) {
+         return decapsulator.fetchBack(this, info);
+      }
+      Storage.List list = (Storage.List) info;
+      if (list.size() == 0) return this;
+      return param("max_id", list.lastId());
+   }
+
+/// customizable pagination
+   public interface PaginationDecapsulator {
+      public RequestBuilder fetchBack(RequestBuilder rb, Object info);
+      public RequestBuilder fetchFront(RequestBuilder rb, Object info);
+   }
+
+   public static PaginationDecapsulator decapsulator;
 }
