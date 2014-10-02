@@ -20,6 +20,7 @@ photo:
   people: people
   albums: albums
   liked: FalseClass
+  blacklisted: FalseClass
   java_import_linkify:
     ImportMixin: com.eyeem.chips.Linkify
   java_init_entities:
@@ -57,6 +58,7 @@ user:
   totalLikedPhotos: Fixnum
   totalLikedAlbums: Fixnum
   coverPhoto: photo
+  blacklisted: FalseClass
   java_textUtils:
     ImportMixin: android.text.TextUtils
   java_fix_null_description:
@@ -179,6 +181,7 @@ album:
   hidden: FalseClass
   favorited: FalseClass
   subtitle: String
+  blacklisted: FalseClass
   java_types:
     Mixin: |
       public final static String TYPE_CITY = "city";
@@ -432,6 +435,7 @@ settings:
   push_user_follower: FalseClass
   ab_friends_in_discover: FalseClass
   ab_album_list: FalseClass
+  show_nsfw_content: FalseClass
 services:
   flickr: service
   twitter: service
