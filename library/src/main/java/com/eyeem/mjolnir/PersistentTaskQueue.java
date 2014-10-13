@@ -10,6 +10,7 @@ import com.squareup.tape.TaskQueue;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.OutOfMemoryError;
 
 /**
  * Created by vishna on 03/03/14.
@@ -61,13 +62,18 @@ public class PersistentTaskQueue extends TaskQueue<PersistentTask> {
       }
    }
 
-   @Override
-   public PersistentTask peek() {
-      try {
-         return super.peek();
-      } catch (FileException fe) {
-         remove();
-         return peek();
+   @Override public PersistentTask peek() {
+      int maxTries = 10;
+      while (maxTries > 0) {
+         try {
+            return super.peek();
+         } catch (FileException fe) {
+            remove();
+         } catch (OutOfMemoryError ooe) {
+            remove();
+         }
+         maxTries--;
       }
+      return null;
    }
 }
