@@ -28,7 +28,7 @@ public class VolleyObjectRequestExecutor {
       return this;
    }
 
-   public Request build() {
+   public MjolnirRequest build() {
       if (listener == null) { listener = MjolnirRequest.dummy; }
       return new ObjectRequest(requestBuilder, objectClass, listener, errorListener);
    }

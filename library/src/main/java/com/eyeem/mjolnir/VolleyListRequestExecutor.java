@@ -31,7 +31,7 @@ public class VolleyListRequestExecutor {
       return this;
    }
 
-   public Request build() {
+   public MjolnirRequest build() {
       if (listener == null) { listener = dummy; }
       return new ListRequest(requestBuilder, objectClass, listener, errorListener);
    }
