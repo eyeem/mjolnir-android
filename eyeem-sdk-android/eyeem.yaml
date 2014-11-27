@@ -476,3 +476,29 @@ facebook_page:
   id: String
   name: String
   posting: Fixnum
+upload_spec:
+  filename: String              # mandatory, obtained from MULTIPART POST /v2/photos/upload
+  people:
+    Array: String               # handle from Person object, handle = {serviceType + ":" + serviceId + ":" + name}
+  description: String
+  cc: String
+  city: String
+  venueId: String
+  venueServiceName: String
+  noLocation: String            # values: "0"|"1"
+  services: String              # comma separated list of services e.g. "twitter,facebook,tumblr"
+  original_filename: String     # device local full path to the uploaded image before any transformations were applied
+  filtered_filename: String     # iOS specific
+  open_edit: open_edit
+open_edit:
+  version: String               # 1 (filter specification version)
+  cropped: FalseClass
+  rotated: FalseClass
+  perspective: FalseClass
+  transformations:
+    Array: transformation
+transformation:
+  type: String                  # values: "adjustment"|"filter"
+  name: String                  # e.g.: "capa", "fresh 1", "unsharp mask"
+  params:
+    Array: Float                # transformation defining values, most transformations should only have one value but this should be easily expandable
