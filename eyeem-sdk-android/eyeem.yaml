@@ -487,9 +487,9 @@ upload_spec:
   venueServiceName: String
   noLocation: String            # values: "0"|"1"
   services: String              # comma separated list of services e.g. "twitter,facebook,tumblr"
-  original_filename: String     # device local full path to the uploaded image before any transformations were applied
-  filtered_filename: String     # iOS specific
-  open_edit: open_edit
+  originalFilename: String      # device local full path to the uploaded image before any transformations were applied
+  filteredFilename: String      # iOS specific
+  openEdit: open_edit
 open_edit:
   version: String               # 1 (filter specification version)
   cropped: FalseClass
