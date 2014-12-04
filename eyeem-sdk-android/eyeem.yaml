@@ -154,11 +154,7 @@ person:
          name = nickname;
       }
       
-      try {
-         return URLEncoder.encode(serviceType + ":" + serviceId + ":" + name, "UTF-8");
-      } catch (UnsupportedEncodingException e) {
-         return null;
-      }
+      return serviceType + ":" + serviceId + ":" + name;
       }
 albums:
   offset: Fixnum
@@ -486,7 +482,8 @@ upload_spec:
   venueId: String
   venueServiceName: String
   noLocation: String            # values: "0"|"1"
-  services: String              # comma separated list of services e.g. "twitter,facebook,tumblr"
+  services:
+    Array: String
   originalFilename: String      # device local full path to the uploaded image before any transformations were applied
   filteredFilename: String      # iOS specific
   openEdit: open_edit
