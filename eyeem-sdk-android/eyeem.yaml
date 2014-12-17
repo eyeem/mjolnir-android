@@ -21,6 +21,7 @@ photo:
   albums: albums
   liked: FalseClass
   blacklisted: FalseClass
+  openEdit: open_edit
   java_import_linkify:
     ImportMixin: com.eyeem.chips.Linkify
   java_init_entities:
