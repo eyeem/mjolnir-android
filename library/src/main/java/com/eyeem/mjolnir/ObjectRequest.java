@@ -43,6 +43,8 @@ public class ObjectRequest extends MjolnirRequest<Object> {
          return Response.error(new ParseError(e));
       } catch (JSONException je) {
          return Response.error(new ParseError(je));
+      } catch (OutOfMemoryError oome) {
+         return Response.error(new ParseError(oome));
       }
    }
 
