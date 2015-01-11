@@ -41,6 +41,7 @@ IGComment:
   from: IGUser
   id: String
 IGLikes:
+  viewer_has_liked: FalseClass
   count: Fixnum
   data:
     Array: IGUser
