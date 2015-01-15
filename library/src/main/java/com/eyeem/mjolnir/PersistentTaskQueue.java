@@ -1,5 +1,7 @@
 package com.eyeem.mjolnir;
 
+import com.google.gson.Gson;
+
 import android.content.Context;
 import android.content.Intent;
 
@@ -16,7 +18,7 @@ import java.lang.OutOfMemoryError;
  * Created by vishna on 03/03/14.
  */
 public class PersistentTaskQueue extends TaskQueue<PersistentTask> {
-   private static final String FILENAME = "persistent_task_queue";
+   private static final String FILENAME = "persistent_task_queue.json";
    private static final String TAG = "PersistentTaskQueue";
 
    private final Context context;
@@ -40,7 +42,7 @@ public class PersistentTaskQueue extends TaskQueue<PersistentTask> {
    }
 
    static PersistentTaskQueue create(Context context) {
-      FileObjectQueue.Converter<PersistentTask> converter = new ObjectConverter<PersistentTask>(PersistentTask.class);
+      FileObjectQueue.Converter<PersistentTask> converter = new ObjectConverter<PersistentTask>(new Gson(), PersistentTask.class);
       File queueFile = new File(context.getFilesDir(), FILENAME);
       FileObjectQueue<PersistentTask> delegate;
       try {
