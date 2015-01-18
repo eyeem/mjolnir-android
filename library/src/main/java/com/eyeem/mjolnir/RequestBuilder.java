@@ -281,5 +281,35 @@ public class RequestBuilder implements Serializable {
       }
 
       @Override public String toString() { return value; }
+
+      @Override
+      public boolean equals(Object o) {
+         if (o == null || !(o instanceof StringWrapper)) return false;
+         StringWrapper other = (StringWrapper) o;
+         return _equal(value, other.value) && encoded == other.encoded;
+      }
+   }
+
+   @Override public boolean equals(Object o) {
+      // not the request builder instance
+      if (!(o instanceof RequestBuilder)) return false;
+      RequestBuilder other = (RequestBuilder) o;
+
+      // different subtypes
+      if (!o.getClass().getCanonicalName().equals(this.getClass().getCanonicalName())) return false;
+
+      return method == other.method
+         && _equal(account, other.account)
+         && _equal(host, other.host)
+         && _equal(path, other.path)
+         && _equal(content, other.content)
+         && _equal(content_type, other.content_type)
+         && _equal(params, other.params)
+         && _equal(files, other.files)
+         && _equal(meta, other.meta);
+   }
+
+   private static boolean _equal(Object a, Object b) {
+      return (a != null && a.equals(b)) || (b == null);
    }
 }
