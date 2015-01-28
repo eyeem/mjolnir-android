@@ -372,6 +372,7 @@ news:
       public static final String TYPE_BLOG_POST = "blogPost";
       public static final String TYPE_OTHER = "other";
       public static final String TYPE_PAGE = "page";
+      public static final String TYPE_MARKET = "market";
 
       // News item types ==============================================================================
       public static final String ITEM_TYPE_INSTAGRAM_IMPORTER = "instagramImporter";
