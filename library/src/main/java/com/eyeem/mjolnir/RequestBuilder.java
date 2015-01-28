@@ -18,6 +18,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.json.JSONObject;
+
 /**
  * Created by vishna on 29/10/13.
  */
@@ -79,6 +81,12 @@ public class RequestBuilder implements Serializable {
    public RequestBuilder content(String content, String content_type) {
       this.content = content;
       this.content_type = content_type;
+      return this;
+   }
+
+   public RequestBuilder content(JSONObject jsonContent) {
+      this.content = jsonContent.toString();
+      this.content_type = "application/json";
       return this;
    }
 
