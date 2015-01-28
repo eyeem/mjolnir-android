@@ -22,6 +22,7 @@ photo:
   liked: FalseClass
   blacklisted: FalseClass
   openEdit: open_edit
+  submittedToMarket: FalseClass
   java_import_linkify:
     ImportMixin: com.eyeem.chips.Linkify
   java_init_entities:
@@ -433,6 +434,7 @@ settings:
   ab_friends_in_discover: FalseClass
   ab_album_list: FalseClass
   show_nsfw_content: FalseClass
+  account_market_seller: FalseClass
 services:
   flickr: service
   twitter: service
