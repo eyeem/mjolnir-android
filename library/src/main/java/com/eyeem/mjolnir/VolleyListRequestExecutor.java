@@ -32,10 +32,13 @@ public class VolleyListRequestExecutor {
    }
 
    public Request build() {
+      if (listener == null) { listener = dummy; }
       return new ListRequest(requestBuilder, objectClass, listener, errorListener);
    }
 
    public void enqueue(RequestQueue queue) {
       queue.add(build());
    }
+
+   static Response.Listener<List> dummy = new Response.Listener<List>() { @Override public void onResponse(List o) {} };
 }

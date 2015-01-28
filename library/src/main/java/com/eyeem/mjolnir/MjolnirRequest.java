@@ -77,8 +77,7 @@ public class MjolnirRequest<T> extends JsonRequest<T> {
 
 ///// if you need to operate on raw data, just use the below to fit request to your needs
    public static MjolnirRequest<Object> raw(RequestBuilder b) {
-      Response.Listener<Object> listener = new Response.Listener<Object>() { @Override public void onResponse(Object o) {} };
-      return new MjolnirRequest<Object>(b, null, listener, null);
+      return new MjolnirRequest<Object>(b, null, dummy, null);
    }
 
    @Override protected Response<T> parseNetworkResponse(NetworkResponse networkResponse) {
@@ -91,4 +90,6 @@ public class MjolnirRequest<T> extends JsonRequest<T> {
          return Response.error(new ParseError(e));
       }
    }
+
+   static Response.Listener<Object> dummy = new Response.Listener<Object>() { @Override public void onResponse(Object o) {} };
 }
