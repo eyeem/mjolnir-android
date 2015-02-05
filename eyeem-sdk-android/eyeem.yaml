@@ -437,6 +437,10 @@ settings:
   ab_show_market_access: FalseClass
   show_nsfw_content: FalseClass
   account_market_seller: FalseClass
+  email_market: FalseClass
+  email_community_updates: FalseClass
+  push_market: FalseClass
+  push_community_updates: FalseClass
 services:
   flickr: service
   twitter: service
