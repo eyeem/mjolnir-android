@@ -71,6 +71,10 @@ public class Instagram extends RequestBuilder {
       return (Instagram) new Instagram("/v1/users/" + userId + "/media/recent").jsonpath("data");
    }
 
+   public static Instagram usersSearch(String query) {
+      return (Instagram) new Instagram("/v1/users/search").param("q", query).jsonpath("data");
+   }
+
    public static Instagram tagMediaRecent(String tagName) {
       return (Instagram) new Instagram("/v1/tags/" + tagName + "/media/recent").jsonpath("data");
    }
