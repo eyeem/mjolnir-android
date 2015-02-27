@@ -132,6 +132,10 @@ public class EyeEm extends RequestBuilder {
    }
 
    public static EyeEm muteAlbum(String id) {
+      return (EyeEm) new EyeEm("/v2/albums/" + id + "/mute").post();
+   }
+
+   public static EyeEm unmuteAlbum(String id) {
       return (EyeEm) new EyeEm("/v2/albums/" + id + "/mute").delete();
    }
 
