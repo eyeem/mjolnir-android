@@ -177,6 +177,7 @@ album:
   totalContributors: Fixnum
   photos: photos
   hidden: FalseClass
+  muted: FalseClass
   favorited: FalseClass
   subtitle: String
   blacklisted: FalseClass
