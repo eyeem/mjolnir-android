@@ -99,6 +99,10 @@ public class EyeEm extends RequestBuilder {
       return (EyeEm) new EyeEm("/v2/users/" + id + "/friendsPhotos").jsonpath("friendsPhotos.items");
    }
 
+   public static EyeEm userRecommendedPhotos() {
+      return (EyeEm) new EyeEm("/v2/users/recommended/photos").jsonpath("photos.items");
+   }
+
    public static EyeEm albumSearch(String query) {
       return (EyeEm) new EyeEm("/v2/search").includeAlbums().param("q", query).jsonpath("albums.items");
    }
