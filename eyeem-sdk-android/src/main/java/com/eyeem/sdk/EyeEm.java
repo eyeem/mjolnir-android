@@ -27,6 +27,7 @@ import java.util.Locale;
 public class EyeEm extends RequestBuilder {
 
    public final static String PRODUCTION_API_URL = "https://api.eyeem.com";
+   public static String API_VERSION = "2.3.3";
    private static String API_URL = PRODUCTION_API_URL;
 
    public static String ID = "";
@@ -42,10 +43,10 @@ public class EyeEm extends RequestBuilder {
 
    public EyeEm() { /*kryo*/ }
 
-   private EyeEm(String path) {
+   protected EyeEm(String path) {
       super(API_URL, path);
       param("client_id", ID);
-      header("X-Api-Version", "2.3.2");
+      header("X-Api-Version", API_VERSION);
       header("X-hourOfDay", String.valueOf(Calendar.getInstance().get(Calendar.HOUR_OF_DAY)));
       if (default_headers != null) headers.putAll(default_headers.get());
    }
