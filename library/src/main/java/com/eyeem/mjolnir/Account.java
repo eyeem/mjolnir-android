@@ -100,6 +100,16 @@ public abstract class Account implements Serializable {
       return accounts;
    }
 
+   public static Account getByTypeAndId(Context context, String type, String id) {
+      if (TextUtils.isEmpty(type))
+         return null;
+      for (Account account : getAccounts(context)) {
+         if (!TextUtils.isEmpty(account.type) && account.type.equals(type) && account.id.equals(id))
+            return account;
+      }
+      return null;
+   }
+
    public void save(Context context) {
       HashSet<Account> accounts = getAccounts(context);
       accounts.add(this);
