@@ -11,7 +11,7 @@ import java.util.ArrayList;
  */
 public class PathDeclutter implements Serializable {
 
-   ArrayList<String> keys;
+   public ArrayList<String> keys;
 
    public PathDeclutter() { /*kryo*/ }
 
