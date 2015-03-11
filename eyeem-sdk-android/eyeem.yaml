@@ -374,11 +374,15 @@ news:
       public static final String TYPE_OTHER = "other";
       public static final String TYPE_PAGE = "page";
       public static final String TYPE_MARKET = "market";
+      public static final String TYPE_GETTY_APPROVED = "gettyApproval";
+      public static final String TYPE_SOLD = "sold";
 
       // News item types ==============================================================================
       public static final String ITEM_TYPE_INSTAGRAM_IMPORTER = "instagramImporter";
       public static final String ITEM_TYPE_URL = "url";
       public static final String ITEM_TYPE_MISSION = "mission";
+      public static final String ITEM_TYPE_PHOTO = "photo";
+
 aggregation:
   total: Fixnum
   type: String
