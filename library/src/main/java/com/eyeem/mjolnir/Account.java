@@ -116,6 +116,12 @@ public abstract class Account implements Serializable {
       save(context, accounts);
    }
 
+   public void delete(Context context) {
+      HashSet<Account> accounts = getAccounts(context);
+      accounts.remove(this);
+      save(context, accounts);
+   }
+
    protected void save(Context context, HashSet<Account> accounts) {
       JSONArray accountsJSONArray = new JSONArray();
       for (Account account : accounts) {
