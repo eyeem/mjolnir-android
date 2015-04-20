@@ -344,14 +344,13 @@ public class EyeEm extends RequestBuilder {
       @Override public String secret() { return SECRET; }
       @Override public RequestBuilder oauthRequest() { return new EyeEm("/v2/oauth/token"); }
       @Override public String avatarUrl() { return user != null ? user.thumbUrl : ""; }
-      @Override public String displayName() {
-         if (user == null)
-            return "";
-         else if (!TextUtils.isEmpty(user.fullname))
-            return user.fullname;
-         else if (!TextUtils.isEmpty(user.nickname))
-            return user.nickname;
-         return "";
+
+      @Override public String userName() {
+         return (user == null || TextUtils.isEmpty(user.nickname)) ? "" : user.nickname;
+      }
+
+      @Override public String fullName() {
+         return (user == null || TextUtils.isEmpty(user.fullname)) ? "" : user.fullname;
       }
 
       @Override

@@ -130,14 +130,13 @@ public class Instagram extends RequestBuilder {
       @Override public String secret() { return SECRET; }
       @Override public RequestBuilder oauthRequest() { return new Instagram("/oauth/access_token").post(); }
       @Override public String avatarUrl() { return user != null ? user.profile_picture : ""; }
-      @Override public String displayName() {
-         if (user == null)
-            return "";
-         else if (!TextUtils.isEmpty(user.full_name))
-            return user.full_name;
-         else if (!TextUtils.isEmpty(user.username))
-            return user.username;
-         return "";
+
+      @Override public String userName() {
+         return (user == null || TextUtils.isEmpty(user.username)) ? "" : user.username;
+      }
+
+      @Override public String fullName() {
+         return (user == null || TextUtils.isEmpty(user.full_name)) ? "" : user.full_name;
       }
 
       @Override public RequestBuilder sign(RequestBuilder requestBuilder) {

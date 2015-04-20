@@ -27,7 +27,17 @@ public abstract class Account implements Serializable {
    public abstract RequestBuilder sign(RequestBuilder requestBuilder);
 
    public String avatarUrl() { return ""; }
-   public String displayName() { return ""; }
+
+   public String displayName() {
+      if (!TextUtils.isEmpty(fullName()))
+         return fullName();
+      else if (!TextUtils.isEmpty(userName()))
+         return userName();
+      return "";
+   }
+
+   public String fullName() { return ""; }
+   public String userName() { return ""; }
 
    public JSONObject toJSON(JSONObject json) throws JSONException {
       json.put("type", type);
