@@ -501,6 +501,7 @@ upload_spec:
   originalFilename: String      # device local full path to the uploaded image before any transformations were applied
   filteredFilename: String      # iOS specific
   openEdit: open_edit
+  market: String                # values: "0"|"1"
 open_edit:
   version: String               # 1 (filter specification version)
   cropped: FalseClass
