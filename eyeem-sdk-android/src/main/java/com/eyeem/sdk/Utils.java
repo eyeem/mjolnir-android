@@ -270,6 +270,19 @@ public class Utils {
       return String.valueOf(java.util.UUID.randomUUID().getMostSignificantBits());
    }
 
+   /* package */ static String feedItemId(FeedItem feedItem) {
+      try {
+         if (FeedItem.TYPE_PHOTO.equals(feedItem.type)) {
+            return FeedItem.TYPE_PHOTO+feedItem.photo.id;
+         } else if (FeedItem.TYPE_ALBUM.equals(feedItem.type)) {
+            return FeedItem.TYPE_ALBUM+feedItem.album.id;
+         }
+      } catch (Exception e) {}
+
+      // random id when other stuff fails
+      return String.valueOf(java.util.UUID.randomUUID().getMostSignificantBits());
+   }
+
    /* package */ static void calculateBatchIds(Batch batch) {
       batch.id = String.valueOf(batch.generated);
       if (batch.cards == null || batch.cards.items == null) return;

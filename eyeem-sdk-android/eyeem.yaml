@@ -566,3 +566,17 @@ blog_post:
   title: String
   thumbUrl: String
   url: String
+feed_item:
+  id: String
+  newPhotos: Fixnum
+  type: String
+  photo: photo
+  album: album
+  java_id:
+      CtorMixin: |
+        id = com.eyeem.sdk.Utils.feedItemId(this);
+  java_methods:
+    Mixin: |
+      // Card types ===================================================================================
+      public static final String TYPE_ALBUM = "album";
+      public static final String TYPE_PHOTO = "photo";
