@@ -45,6 +45,7 @@ public class Utils {
                for (Album a : p.albums.items) {
                   if (a.id.equals(id)) {
                      entity.text = a.name;
+                     entity.data = a;
                      break;
                   }
                }
@@ -110,7 +111,9 @@ public class Utils {
          if (sb.length() > 0)
             sb.append(" ");
          sb.append(getString(verb_at)).append(" ");
-         p.entities.add(new Linkify.Entity(sb.length(), sb.length() + venue.name.length(), venue.id, venue.name, Linkify.Entity.VENUE));
+         Linkify.Entity venueEntity = new Linkify.Entity(sb.length(), sb.length() + venue.name.length(), venue.id, venue.name, Linkify.Entity.VENUE);
+         venueEntity.data = venue;
+         p.entities.add(venueEntity);
          sb.append(venue.name);
       }
       if (city != null && !TextUtils.isEmpty(city.name)) {
@@ -119,7 +122,9 @@ public class Utils {
          if (venue == null || TextUtils.isEmpty(venue.name)) {
             sb.append(getString(verb_in)).append(" ");
          }
-         p.entities.add(new Linkify.Entity(sb.length(), sb.length()+city.name.length(), city.id, city.name, Linkify.Entity.CITY));
+         Linkify.Entity cityEntity = new Linkify.Entity(sb.length(), sb.length()+city.name.length(), city.id, city.name, Linkify.Entity.CITY);
+         cityEntity.data = city;
+         p.entities.add(cityEntity);
          sb.append(city.name);
          if (country != null && !TextUtils.isEmpty(country.name)) {
             sb.append(",");
@@ -131,7 +136,9 @@ public class Utils {
          if ((venue == null || TextUtils.isEmpty(venue.name)) && (city == null || TextUtils.isEmpty(city.name))) {
             sb.append(getString(verb_in)).append(" ");
          }
-         p.entities.add(new Linkify.Entity(sb.length(), sb.length()+country.name.length(), country.id, country.name, Linkify.Entity.COUNTRY));
+         Linkify.Entity countryEntity = new Linkify.Entity(sb.length(), sb.length()+country.name.length(), country.id, country.name, Linkify.Entity.COUNTRY);
+         countryEntity.data = country;
+         p.entities.add(countryEntity);
          sb.append(country.name);
       }
 
