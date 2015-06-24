@@ -1,14 +1,9 @@
 buildscript {
     repositories {
-        maven {
-            url 'https://oss.sonatype.org/content/repositories/snapshots/'
-        }
-        mavenCentral()
-        mavenLocal()
+        jcenter()
     }
     dependencies {
         classpath project.ver.androidPlugin
-        classpath 'com.squareup.gradle:gradle-android-test-plugin:0.9.1-SNAPSHOT'
     }
 }
 
