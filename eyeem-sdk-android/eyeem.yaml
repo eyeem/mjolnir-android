@@ -446,6 +446,11 @@ settings:
   email_community_updates: FalseClass
   push_market: FalseClass
   push_community_updates: FalseClass
+  discover_content_global: FalseClass
+  discover_content_local_de_de: FalseClass
+  discover_content_local_de_en: FalseClass
+  discover_content_local_es_es: FalseClass
+  discover_content_local_es_en: FalseClass
 services:
   flickr: service
   twitter: service
