@@ -63,16 +63,20 @@ public class PersistentTaskQueue extends TaskQueue<PersistentTask> {
    }
 
    @Override public PersistentTask peek() {
-      int maxTries = 10;
-      while (maxTries > 0) {
-         try {
-            return super.peek();
-         } catch (FileException fe) {
-            remove();
-         } catch (OutOfMemoryError ooe) {
-            remove();
+      try {
+         int maxTries = 10;
+         while (maxTries > 0) {
+            try {
+               return super.peek();
+            } catch (FileException fe) {
+               remove();
+            } catch (OutOfMemoryError ooe) {
+               remove();
+            }
+            maxTries--;
          }
-         maxTries--;
+      } catch (FileException outerFe) {
+         // exception thrown while calling remove (EOF)
       }
       return null;
    }
