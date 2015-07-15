@@ -31,17 +31,22 @@ public class ObjectStorageRequestExecutor {
          fetchRequest.meta.putAll(metaParams);
       }
       return new VolleyObjectRequestExecutor(fetchRequest, objectClass)
-         .listener(new Response.Listener<Object>() {
-            @Override
-            public void onResponse(Object object) {
-               storage.retain(object);
-            }
-         })
-         .errorListener(new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-               //Toast.makeText(App.the, error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-         });
+         .listener(new FetchObjectListener(storage))
+         .errorListener(new ListStorageRequestExecutor.DummmyErrorListener());
+   }
+
+   static class FetchObjectListener implements Response.Listener<Object> {
+
+      Storage storage;
+
+      FetchObjectListener(Storage storage) {
+         this.storage = storage;
+      }
+
+      @Override
+      public void onResponse(Object object) {
+         storage.retain(object);
+      }
+
    }
 }

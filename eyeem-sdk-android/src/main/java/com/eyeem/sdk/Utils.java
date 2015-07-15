@@ -246,4 +246,50 @@ public class Utils {
       }
       return thumbUrl;
    }
+
+   /* package */ static String cardItemId(CardItem cardItem) {
+      try {
+         if (Card.TYPE_BLOG_POST.equals(cardItem.type)) {
+            return String.valueOf(cardItem.blogPost.url);
+         } else if (Card.TYPE_FEATURED_USER.equals(cardItem.type)) {
+            return cardItem.user.id;
+         } else if (Card.TYPE_FEATURED_ALBUM.equals(cardItem.type) || Card.TYPE_FEATURED_CITY.equals(cardItem.type)) {
+            return cardItem.album.id;
+         } else if (Card.TYPE_AROUND_YOU.equals(cardItem.type)) {
+            return Card.TYPE_AROUND_YOU + cardItem.lat + cardItem.lng;
+         } else if (Card.TYPE_POPULAR.equals(cardItem.type)) {
+            StringBuilder sb = new StringBuilder(Card.TYPE_POPULAR);
+            for (Photo photo : cardItem.photos) {
+               sb.append(photo.id);
+            }
+            return sb.toString();
+         }
+      } catch (Exception e) {}
+
+      // random id when other stuff fails
+      return String.valueOf(java.util.UUID.randomUUID().getMostSignificantBits());
+   }
+
+   /* package */ static String feedItemId(FeedItem feedItem) {
+      try {
+         if (FeedItem.TYPE_PHOTO.equals(feedItem.type)) {
+            return FeedItem.TYPE_PHOTO+feedItem.photo.id;
+         } else if (FeedItem.TYPE_ALBUM.equals(feedItem.type)) {
+            return FeedItem.TYPE_ALBUM+feedItem.album.id;
+         }
+      } catch (Exception e) {}
+
+      // random id when other stuff fails
+      return String.valueOf(java.util.UUID.randomUUID().getMostSignificantBits());
+   }
+
+   /* package */ static void calculateBatchIds(Batch batch) {
+      batch.id = String.valueOf(batch.generated);
+      if (batch.cards == null || batch.cards.items == null) return;
+      for (int i = 0; i < batch.cards.items.size(); i++) {
+         Card card = batch.cards.items.get(i);
+         if (card == null) continue;
+         card.id = batch.id + "_" + i;
+      }
+   }
 }

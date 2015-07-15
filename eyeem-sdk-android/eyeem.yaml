@@ -446,6 +446,11 @@ settings:
   email_community_updates: FalseClass
   push_market: FalseClass
   push_community_updates: FalseClass
+  discover_content_global: FalseClass
+  discover_content_local_de_de: FalseClass
+  discover_content_local_de_en: FalseClass
+  discover_content_local_es_es: FalseClass
+  discover_content_local_es_en: FalseClass
 services:
   flickr: service
   twitter: service
@@ -514,3 +519,69 @@ transformation:
   name: String                  # e.g.: "capa", "fresh 1", "unsharp mask"
   params:
     Array: Float                # transformation defining values, most transformations should only have one value but this should be easily expandable
+batch:
+  id: String                    # String.valueOf(generated)
+  title: String
+  generated: Date
+  cards: cards
+  java_calculate_ids:
+      CtorMixin: |
+        com.eyeem.sdk.Utils.calculateBatchIds(this);
+cards:
+  items:
+    Array: card
+card:
+  id: String                    # generated locally based of batch.generated or random
+  items:
+    Array: card_item
+  created_at: Date
+  type: String
+  java_id:
+      CtorMixin: |
+        id = String.valueOf(java.util.UUID.randomUUID().getMostSignificantBits());
+  java_methods:
+    Mixin: |
+      // Card types ===================================================================================
+      public static final String TYPE_BLOG_POST = "blogPost";
+      public static final String TYPE_FEATURED_USER = "featuredUser";
+      public static final String TYPE_FEATURED_ALBUM = "featuredAlbum";
+      public static final String TYPE_FEATURED_CITY = "featuredCity";
+      public static final String TYPE_AROUND_YOU = "aroundYou";
+      public static final String TYPE_POPULAR = "popular";
+      public static final String TYPE_MISSION = "mission";
+card_item:
+  id: String
+  title: String
+  subtitle: String
+  type: String
+  blogPost: blog_post
+  mission: mission
+  photos:
+    Array: photo
+  user: user
+  lat: String
+  lng: String
+  album: album
+  java_id:
+      CtorMixin: |
+        id = com.eyeem.sdk.Utils.cardItemId(this);
+blog_post:
+  body: String
+  category: String
+  title: String
+  thumbUrl: String
+  url: String
+feed_item:
+  id: String
+  newPhotos: Fixnum
+  type: String
+  photo: photo
+  album: album
+  java_id:
+      CtorMixin: |
+        id = com.eyeem.sdk.Utils.feedItemId(this);
+  java_methods:
+    Mixin: |
+      // Card types ===================================================================================
+      public static final String TYPE_ALBUM = "album";
+      public static final String TYPE_PHOTO = "photo";
