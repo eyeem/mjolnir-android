@@ -73,6 +73,7 @@ public class ListStorageRequestExecutor {
       }
 
       @Override public void onResponse(List response) {
+         if (response == null) return;
          if (metaParams != null && metaParams.containsKey(FORCE_FETCH_FRONT)) {
             Storage.List transaction = list.transaction();
             transaction.clear();
@@ -96,6 +97,7 @@ public class ListStorageRequestExecutor {
       }
 
       @Override public void onResponse(List response) {
+         if (response == null) return;
          Storage.List transaction = list.transaction();
          int before = transaction.size();
          transaction.addAll(response);
