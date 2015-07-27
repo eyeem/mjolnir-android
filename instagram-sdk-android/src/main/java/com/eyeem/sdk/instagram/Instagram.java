@@ -83,6 +83,10 @@ public class Instagram extends RequestBuilder {
       return (Instagram) new Instagram("/v1/locations/" + locationId + "/media/recent").jsonpath("data");
    }
 
+   public static Instagram mediaComments(String mediaId) {
+      return (Instagram) new Instagram("/v1/media/" + mediaId + "/comments").jsonpath("data");
+   }
+
    static {
       new DateParser("com.eyeem.sdk.instagram") {
          @Override public long toSeconds(String date) {
