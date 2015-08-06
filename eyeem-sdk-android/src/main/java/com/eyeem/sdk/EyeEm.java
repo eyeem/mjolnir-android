@@ -27,7 +27,7 @@ import java.util.Locale;
 public class EyeEm extends RequestBuilder {
 
    public final static String PRODUCTION_API_URL = "https://api.eyeem.com";
-   public static String API_VERSION = "2.3.3";
+   public static String API_VERSION = "2.3.4";
    private static String API_URL = PRODUCTION_API_URL;
 
    public static String ID = "";
