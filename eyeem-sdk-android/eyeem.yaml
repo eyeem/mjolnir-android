@@ -376,6 +376,7 @@ news:
       public static final String TYPE_MARKET = "market";
       public static final String TYPE_GETTY_APPROVED = "gettyApproval";
       public static final String TYPE_SOLD = "sold";
+      public static final String TYPE_PHOTO_SOLD_GETTY = "photoSoldGetty";
 
       // News item types ==============================================================================
       public static final String ITEM_TYPE_INSTAGRAM_IMPORTER = "instagramImporter";
