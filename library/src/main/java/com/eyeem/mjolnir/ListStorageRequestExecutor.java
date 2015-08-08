@@ -73,16 +73,18 @@ public class ListStorageRequestExecutor {
       }
 
       @Override public void onResponse(List response) {
-         if (response == null) return;
-         if (metaParams != null && metaParams.containsKey(FORCE_FETCH_FRONT)) {
-            Storage.List transaction = list.transaction();
-            transaction.clear();
-            transaction.addAll(response);
-            transaction.setMeta(EXHAUSTED, (transaction.size() == 0));
-            transaction.commit(new Storage.Subscription.Action(Storage.Subscription.ADD_UPFRONT));
-         } else {
-            list.addUpFront(response, null);
-         }
+         try {
+            if (response == null) return;
+            if (metaParams != null && metaParams.containsKey(FORCE_FETCH_FRONT)) {
+               Storage.List transaction = list.transaction();
+               transaction.clear();
+               transaction.addAll(response);
+               transaction.setMeta(EXHAUSTED, (transaction.size() == 0));
+               transaction.commit(new Storage.Subscription.Action(Storage.Subscription.ADD_UPFRONT));
+            } else {
+               list.addUpFront(response, null);
+            }
+         } catch (Throwable t) {}
       }
    }
 
@@ -97,12 +99,14 @@ public class ListStorageRequestExecutor {
       }
 
       @Override public void onResponse(List response) {
-         if (response == null) return;
-         Storage.List transaction = list.transaction();
-         int before = transaction.size();
-         transaction.addAll(response);
-         transaction.setMeta(EXHAUSTED, before == transaction.size());
-         transaction.commit(new Storage.Subscription.Action(Storage.Subscription.ADD_ALL));
+         try {
+            if (response == null) return;
+            Storage.List transaction = list.transaction();
+            int before = transaction.size();
+            transaction.addAll(response);
+            transaction.setMeta(EXHAUSTED, before == transaction.size());
+            transaction.commit(new Storage.Subscription.Action(Storage.Subscription.ADD_ALL));
+         } catch (Throwable t) {}
       }
    }
 }
