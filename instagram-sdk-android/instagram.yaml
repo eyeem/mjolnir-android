@@ -64,3 +64,6 @@ IGUserTag:
 IGUserPosition:
   y: Float
   x: Float
+IGTag:
+  media_count: Fixnum
+  name: String
