@@ -35,6 +35,7 @@ public class RequestBuilder implements Serializable {
    public int method = Request.Method.GET; // GET by default
    public String content;
    public String content_type;
+   public Pagination pagination;
 
    public RequestBuilder() { /*kryo*/ }
 
@@ -146,6 +147,11 @@ public class RequestBuilder implements Serializable {
       return this;
    }
 
+   public RequestBuilder pagination(Pagination pagination) {
+      this.pagination = pagination;
+      return this;
+   }
+
    public RequestBuilder declutter(PathDeclutter declutter) {
       this.declutter = declutter;
       return this;
@@ -213,10 +219,12 @@ public class RequestBuilder implements Serializable {
    }
 
    public RequestBuilder fetchFront(Object info) {
+      if (pagination != null) pagination.fetchFront(this, info);
       return this;
    }
 
    public RequestBuilder fetchBack(Object info) {
+      if (pagination != null) pagination.fetchBack(this, info);
       return this;
    }
 

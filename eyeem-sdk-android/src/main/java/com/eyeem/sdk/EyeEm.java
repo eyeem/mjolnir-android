@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.eyeem.mjolnir.DateParser;
+import com.eyeem.mjolnir.Pagination;
 import com.eyeem.mjolnir.RequestBuilder;
 import com.eyeem.mjolnir.oauth.OAuth2Account;
 
@@ -177,7 +178,7 @@ public class EyeEm extends RequestBuilder {
    }
 
    public static EyeEm news() {
-      return new NewsRequestBuilder();
+      return (EyeEm) new EyeEm("/v2/news").jsonpath("news.items").param("aggregated", "1").pagination(new NewsPagination());
    }
 
 ///// PARAMS
@@ -266,12 +267,12 @@ public class EyeEm extends RequestBuilder {
 
    @Override
    public RequestBuilder fetchFront(Object info) {
-      return param("offset", 0);
+      return pagination == null ? param("offset", 0) : super.fetchFront(info);
    }
 
    @Override
    public RequestBuilder fetchBack(Object info) {
-      return param("offset", ((List) info).size());
+      return pagination == null ? param("offset", ((List) info).size()) : super.fetchBack(info);
    }
 
    public static void setStagingEnv(String api_url) {
@@ -369,32 +370,18 @@ public class EyeEm extends RequestBuilder {
       }
    }
 
-   public static DefaultHeaders default_headers;
-
-   public static class NewsRequestBuilder extends EyeEm {
-
-      public NewsRequestBuilder() {
-         super("/v2/news");
-         param("aggregated", "1");
-
-      }
-
-      @Override
-      public RequestBuilder fetchFront(Object info) {
-         // NO-OP
-         return this;
-      }
-
-      @Override
-      public RequestBuilder fetchBack(Object info) {
+   public static class NewsPagination implements Pagination {
+      @Override public void fetchFront(RequestBuilder rb, Object info) {}
+      @Override public void fetchBack(RequestBuilder rb, Object info) {
          List list = (List) info;
          if (list.size() > 0) {
-            News news = (News) list.get(list.size() - 1);
-            param("oldestId", news.id);
+            com.eyeem.sdk.News news = (com.eyeem.sdk.News) list.get(list.size() - 1);
+            rb.param("oldestId", news.id);
          }
-         return this;
       }
    }
+
+   public static DefaultHeaders default_headers;
 
    public interface DefaultHeaders {
       public HashMap<String, String> get();

@@ -8,12 +8,10 @@ buildscript {
     }
     dependencies {
         classpath project.ver.androidPlugin
-        classpath 'com.squareup.gradle:gradle-android-test-plugin:0.9.1-SNAPSHOT'
     }
 }
 
-apply plugin: 'android-library'
-apply plugin: 'android-test'
+apply plugin: 'com.android.library'
 
 dependencies {
     repositories {
@@ -37,8 +35,8 @@ dependencies {
     compile project(':library')
 
     testCompile 'junit:junit:4.10'
-    testCompile 'org.robolectric:robolectric:2.1.+'
-    testCompile 'com.squareup:fest-android:1.0.+'
+    testCompile 'org.robolectric:robolectric:3.0'
+    testCompile 'com.squareup:fest-android:1.0.8'
 }
 
 task generateSources {
@@ -81,7 +79,7 @@ android {
 apply plugin: 'maven'
 apply plugin: 'signing'
 
-version = "2.3.4-SNAPSHOT"
+version = "2.3.4.1-SNAPSHOT"
 group = "com.eyeem.sdk"
 
 configurations {
