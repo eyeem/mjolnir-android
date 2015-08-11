@@ -70,6 +70,9 @@ new EyeEm("/v2/users/me")
 .enqueue(queue);
 ```
 
+Unit testing
+============
+https://github.com/codepath/android_guides/wiki/Robolectric-Installation-for-Unit-Testing
 
 Developed By
 ============
