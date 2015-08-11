@@ -1,8 +1,6 @@
 import com.eyeem.sdk.BuildConfig;
-import com.eyeem.sdk.OpenEdit;
 import com.eyeem.sdk.Photo;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Before;
