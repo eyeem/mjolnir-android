@@ -579,6 +579,7 @@ feed_item:
   newPhotos: Fixnum
   type: String
   photo: photo
+  photoGroup: photo_group
   album: album
   java_id:
       CtorMixin: |
@@ -588,3 +589,11 @@ feed_item:
       // Card types ===================================================================================
       public static final String TYPE_ALBUM = "album";
       public static final String TYPE_PHOTO = "photo";
+      public static final String TYPE_PHOTO_GROUP = "photoGroup";
+photo_group:
+  sample:
+    Array: photo
+  photoIds:
+    Array: String
+  updated: Date
+  userId: String

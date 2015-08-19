@@ -6,9 +6,10 @@ import android.text.TextUtils;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.eyeem.mjolnir.DateParser;
-import com.eyeem.mjolnir.Pagination;
 import com.eyeem.mjolnir.RequestBuilder;
 import com.eyeem.mjolnir.oauth.OAuth2Account;
+import com.eyeem.sdk.pagination.IDPagination;
+import com.eyeem.sdk.pagination.NewsPagination;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,7 +29,7 @@ import java.util.Locale;
 public class EyeEm extends RequestBuilder {
 
    public final static String PRODUCTION_API_URL = "https://api.eyeem.com";
-   public static String API_VERSION = "2.3.4";
+   public static String API_VERSION = "2.3.5";
    private static String API_URL = PRODUCTION_API_URL;
 
    public static String ID = "";
@@ -58,7 +59,7 @@ public class EyeEm extends RequestBuilder {
 
 //// API CALLS
    public static EyeEm discover() {
-      return (EyeEm) new EyeEm("/v2/users/me/discover").jsonpath("discover");
+      return (EyeEm) EyeEm.path("/v2/discover/batch").jsonpath("discover.items");
    }
 
    public static EyeEm user(String id) {
@@ -99,6 +100,10 @@ public class EyeEm extends RequestBuilder {
 
    public static EyeEm userFriendsPhotos(String id) {
       return (EyeEm) new EyeEm("/v2/users/" + id + "/friendsPhotos").jsonpath("friendsPhotos.items");
+   }
+
+   public static EyeEm feedFollow() {
+      return (EyeEm) EyeEm.path("/v2/feed/follow").jsonpath("follow.items");
    }
 
    public static EyeEm userRecommendedPhotos() {
@@ -159,6 +164,10 @@ public class EyeEm extends RequestBuilder {
 
    public static EyeEm photo(String id) {
       return (EyeEm) new EyeEm("/v2/photos/" + id).jsonpath("photo");
+   }
+
+   public static EyeEm photos(IDPagination pagination) {
+      return (EyeEm) new EyeEm("/v2/photos").jsonpath("photos.items").pagination(pagination);
    }
 
    public static EyeEm photoLikers(String id) {
@@ -289,6 +298,8 @@ public class EyeEm extends RequestBuilder {
    static {
       new DateParser("com.eyeem.sdk") {
          @Override public long toSeconds(String date) {
+            // Java doesn't handle well ISO-8601
+            date = date.replaceAll("Z$", "+0000");
             try { return new SimpleDateFormat(
                "yyyy-MM-dd'T'HH:mm:ssZ",
                Locale.getDefault()).parse(date).getTime()/1000;
@@ -367,17 +378,6 @@ public class EyeEm extends RequestBuilder {
                }
             })
             .enqueue(queue);
-      }
-   }
-
-   public static class NewsPagination implements Pagination {
-      @Override public void fetchFront(RequestBuilder rb, Object info) {}
-      @Override public void fetchBack(RequestBuilder rb, Object info) {
-         List list = (List) info;
-         if (list.size() > 0) {
-            com.eyeem.sdk.News news = (com.eyeem.sdk.News) list.get(list.size() - 1);
-            rb.param("oldestId", news.id);
-         }
       }
    }
 

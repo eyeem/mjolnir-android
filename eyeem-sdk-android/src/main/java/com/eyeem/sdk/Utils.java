@@ -9,6 +9,8 @@ import com.eyeem.chips.DefaultBubbles;
 import com.eyeem.chips.Linkify;
 import com.eyeem.chips.Regex;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
 
@@ -276,6 +278,8 @@ public class Utils {
             return FeedItem.TYPE_PHOTO+feedItem.photo.id;
          } else if (FeedItem.TYPE_ALBUM.equals(feedItem.type)) {
             return FeedItem.TYPE_ALBUM+feedItem.album.id;
+         } else if (FeedItem.TYPE_PHOTO_GROUP.equals(feedItem.type)) {
+            return FeedItem.TYPE_PHOTO_GROUP+feedItem.photoGroup.updated;
          }
       } catch (Exception e) {}
 
@@ -291,5 +295,57 @@ public class Utils {
          if (card == null) continue;
          card.id = batch.id + "_" + i;
       }
+   }
+
+   /**
+    * Return ids of photo items that should be removed
+    * @param list (should be frozen)
+    * @return
+    */
+   public static ArrayList<String> dedupePhotoGroups(List list) {
+      ArrayList<String> ids = new ArrayList<>();
+
+      int n = list.size();
+      for (int i = 0; i < n - 1; i++) {
+         FeedItem item = validPhotoGroupFeedItem(list.get(i));
+         if (item == null) continue;
+         if (item.photoGroup.photoIds.size() == 0) {
+            ids.add(item.id);
+            continue;
+         }
+
+         // now check other groups in the list and mark them for removal if they overlap
+         for (int j = i + 1; j < n; j++) {
+            FeedItem otherItem = validPhotoGroupFeedItem(list.get(j));
+            if (otherItem == null || ids.contains(otherItem.id)) continue;
+            if (otherItem.photoGroup.photoIds.size() == 0) {
+               ids.add(otherItem.id);
+               continue;
+            }
+            if (!FeedItem.TYPE_PHOTO_GROUP.equals(otherItem.type)) continue;
+
+            // photo groups must be of the same user
+            if (!item.photoGroup.userId.equals(otherItem.photoGroup.userId)) continue;
+
+            ArrayList<String> IDs = new ArrayList<>(item.photoGroup.photoIds);
+            ArrayList<String> otherIDs = new ArrayList<>(otherItem.photoGroup.photoIds);
+
+            IDs.retainAll(otherIDs);
+
+            if (IDs.size() > 0) { // Intersection between groups exists. Remove.
+               ids.add(otherItem.id);
+            }
+         }
+      }
+
+      return ids;
+   }
+
+   public static FeedItem validPhotoGroupFeedItem(Object o) {
+      if (!(o instanceof FeedItem)) return null;
+      FeedItem item = (FeedItem) o;
+      if (!FeedItem.TYPE_PHOTO_GROUP.equals(item.type)) return null;
+      if (item.photoGroup != null && item.photoGroup.photoIds != null && !TextUtils.isEmpty(item.photoGroup.userId)) return item;
+      return null;
    }
 }
