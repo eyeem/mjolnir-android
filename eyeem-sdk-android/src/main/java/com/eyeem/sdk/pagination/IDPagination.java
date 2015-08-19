@@ -32,7 +32,15 @@ public class IDPagination implements Pagination {
    @Override public void fetchBack(RequestBuilder rb, Object info) {
       int currentCount = ((List) info).size();
       List<String> subIDs = subList(currentCount, Math.min(currentCount + limitPerPage, idsSize()));
-      if (subIDs.size() == 0) return;
+      if (subIDs.size() == 0) {
+         // normally putting no ids should return empty array but our servers return error code 417
+         // so instead we'll always try to query for last ID when at the end of pagination
+         if (ids != null && ids.size() > 0) {
+            rb.paramEncoded("ids", ids.get(ids.size() - 1));
+            return;
+         }
+         // ...well we tried to be nice
+      }
       rb.paramEncoded("ids", TextUtils.join(",", subIDs));
    }
 

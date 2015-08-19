@@ -52,7 +52,7 @@ public class PaginationTest {
 
       assertEquals("photosFeed.size()", photosFeed.size(), 30);
 
-      EyeEm paginatedRequest = (EyeEm) request.fetchBack(photosFeed);
+      EyeEm paginatedRequest = (EyeEm) request.copy().fetchBack(photosFeed);
 
       assertEquals("pagination Url", "https://api.eyeem.com/v2/albums/10359833/photos?offset=30", paginatedRequest.toUrl());
    }
@@ -63,7 +63,7 @@ public class PaginationTest {
 
       assertEquals("newsFeed.size()", newsFeed.size(), 30);
 
-      EyeEm paginatedRequest = (EyeEm) request.fetchBack(newsFeed);
+      EyeEm paginatedRequest = (EyeEm) request.copy().fetchBack(newsFeed);
 
       assertEquals("pagination Url", "https://api.eyeem.com/v2/news?aggregated=1&oldestId=804019524", paginatedRequest.toUrl());
    }
@@ -82,34 +82,34 @@ public class PaginationTest {
 
       assertEquals("photosFeed.size()", photosFeed.size(), 0);
 
-      EyeEm paginatedRequest = (EyeEm) request.fetchFront(photosFeed);
+      EyeEm paginatedRequest = (EyeEm) request.copy().fetchFront(photosFeed);
 
       assertEquals("pagination Url", "https://api.eyeem.com/v2/photos?ids=1,2,3", paginatedRequest.toUrl());
       appendPhotos(photosFeed, limitPerPage);
       assertEquals("photosFeed.size()", photosFeed.size(), 3);
 
-      paginatedRequest = (EyeEm) request.fetchBack(photosFeed);
+      paginatedRequest = (EyeEm) request.copy().fetchBack(photosFeed);
       assertEquals("pagination Url", "https://api.eyeem.com/v2/photos?ids=4,5,6", paginatedRequest.toUrl());
       appendPhotos(photosFeed, limitPerPage);
       assertEquals("photosFeed.size()", photosFeed.size(), 6);
 
-      paginatedRequest = (EyeEm) request.fetchBack(photosFeed);
+      paginatedRequest = (EyeEm) request.copy().fetchBack(photosFeed);
       assertEquals("pagination Url", "https://api.eyeem.com/v2/photos?ids=7,8,9", paginatedRequest.toUrl());
       appendPhotos(photosFeed, limitPerPage);
       assertEquals("photosFeed.size()", photosFeed.size(), 9);
 
-      paginatedRequest = (EyeEm) request.fetchBack(photosFeed);
+      paginatedRequest = (EyeEm) request.copy().fetchBack(photosFeed);
       assertEquals("pagination Url", "https://api.eyeem.com/v2/photos?ids=10,11,12", paginatedRequest.toUrl());
       appendPhotos(photosFeed, limitPerPage);
       assertEquals("photosFeed.size()", photosFeed.size(), 12);
 
-      paginatedRequest = (EyeEm) request.fetchBack(photosFeed);
+      paginatedRequest = (EyeEm) request.copy().fetchBack(photosFeed);
       assertEquals("pagination Url", "https://api.eyeem.com/v2/photos?ids=13", paginatedRequest.toUrl());
       appendPhotos(photosFeed, 1);
       assertEquals("photosFeed.size()", photosFeed.size(), 13);
 
       // FEED EXHAUSTED
-      paginatedRequest = (EyeEm) request.fetchBack(photosFeed);
+      paginatedRequest = (EyeEm) request.copy().fetchBack(photosFeed);
       assertEquals("pagination Url", "https://api.eyeem.com/v2/photos?ids=13", paginatedRequest.toUrl());
       appendPhotos(photosFeed, 0);
       assertEquals("photosFeed.size()", photosFeed.size(), 13);
