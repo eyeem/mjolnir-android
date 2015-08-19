@@ -6,9 +6,10 @@ import android.text.TextUtils;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.eyeem.mjolnir.DateParser;
-import com.eyeem.mjolnir.Pagination;
 import com.eyeem.mjolnir.RequestBuilder;
 import com.eyeem.mjolnir.oauth.OAuth2Account;
+import com.eyeem.sdk.pagination.IDPagination;
+import com.eyeem.sdk.pagination.NewsPagination;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -163,6 +164,10 @@ public class EyeEm extends RequestBuilder {
 
    public static EyeEm photo(String id) {
       return (EyeEm) new EyeEm("/v2/photos/" + id).jsonpath("photo");
+   }
+
+   public static EyeEm photos(IDPagination pagination) {
+      return (EyeEm) new EyeEm("/v2/photos").jsonpath("photos.items").pagination(pagination);
    }
 
    public static EyeEm photoLikers(String id) {
@@ -373,17 +378,6 @@ public class EyeEm extends RequestBuilder {
                }
             })
             .enqueue(queue);
-      }
-   }
-
-   public static class NewsPagination implements Pagination {
-      @Override public void fetchFront(RequestBuilder rb, Object info) {}
-      @Override public void fetchBack(RequestBuilder rb, Object info) {
-         List list = (List) info;
-         if (list.size() > 0) {
-            com.eyeem.sdk.News news = (com.eyeem.sdk.News) list.get(list.size() - 1);
-            rb.param("oldestId", news.id);
-         }
       }
    }
 
