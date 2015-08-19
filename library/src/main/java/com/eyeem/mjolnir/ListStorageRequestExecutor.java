@@ -1,5 +1,7 @@
 package com.eyeem.mjolnir;
 
+import android.text.TextUtils;
+
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.eyeem.storage.Storage;
@@ -11,6 +13,8 @@ import java.util.List;
  * Created by vishna on 02/11/13.
  */
 public class ListStorageRequestExecutor {
+
+   private final static String META_LIST_NAME = "ListStorageRequestExecutor.META_LIST_NAME";
 
    public Storage storage;
    public Storage.List list;
@@ -24,7 +28,7 @@ public class ListStorageRequestExecutor {
 
    public ListStorageRequestExecutor in(Storage storage) {
       this.storage = storage;
-      list = storage.obtainList(String.valueOf(requestBuilder.toUrl().hashCode()));
+      list = storage.obtainList(executorListName(requestBuilder));
       list.enableDedupe(true);
       return this;
    }
@@ -108,5 +112,20 @@ public class ListStorageRequestExecutor {
             transaction.commit(new Storage.Subscription.Action(Storage.Subscription.ADD_ALL));
          } catch (Throwable t) {}
       }
+   }
+
+   public static String executorListName(RequestBuilder rb) {
+      String listName = null;
+      try { listName = rb.meta.get(META_LIST_NAME); } catch (Exception e) {}
+
+      if (TextUtils.isEmpty(listName)) {
+         listName = String.valueOf(rb.toUrl().hashCode());
+      }
+
+      return listName;
+   }
+
+   public static void setExecutorListName(String name, RequestBuilder rb) {
+      rb.meta(META_LIST_NAME, name);
    }
 }
