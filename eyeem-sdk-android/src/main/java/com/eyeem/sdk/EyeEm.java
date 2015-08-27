@@ -29,7 +29,7 @@ import java.util.Locale;
 public class EyeEm extends RequestBuilder {
 
    public final static String PRODUCTION_API_URL = "https://api.eyeem.com";
-   public static String API_VERSION = "2.3.5";
+   public static String API_VERSION = "2.3.6";
    private static String API_URL = PRODUCTION_API_URL;
 
    public static String ID = "";
@@ -258,6 +258,10 @@ public class EyeEm extends RequestBuilder {
 
    public EyeEm offset(int count) {
       return (EyeEm)param("offset", count);
+   }
+
+   public EyeEm marketTotals() {
+      return (EyeEm)param("marketTotals", "1");
    }
 
    public EyeEm latlng(String lat, String lng) {

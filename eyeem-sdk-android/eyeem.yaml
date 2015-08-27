@@ -61,6 +61,7 @@ user:
   totalLikedAlbums: Fixnum
   coverPhoto: photo
   blacklisted: FalseClass
+  marketTotals: market_totals
   java_textUtils:
     ImportMixin: android.text.TextUtils
   java_fix_null_description:
@@ -597,3 +598,7 @@ photo_group:
     Array: String
   updated: Date
   userId: String
+market_totals:
+  editorial: Fixnum
+  commercial: Fixnum
+  getty: Fixnum

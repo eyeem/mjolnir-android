@@ -1,0 +1,27 @@
+{
+  "user": {
+    "id": "14854922",
+    "nickname": "jonnytest",
+    "fullname": "John snow",
+    "webUrl": "http://www.eyeem.com/u/jonnytest",
+    "thumbUrl": "http://www.eyeem.com/thumb/sq/50/426d0ad722a152d7fcc4d8383e03b57987242683-1438338689",
+    "photoUrl": "http://www.eyeem.com/thumb/sq/200/426d0ad722a152d7fcc4d8383e03b57987242683-1438338689",
+    "hidden": false,
+    "blacklisted": false,
+    "totalPhotos": 1500,
+    "totalFollowers": 216,
+    "totalFriends": 308,
+    "totalLikedAlbums": 76,
+    "totalLikedPhotos": 1217,
+    "description": "oh hi there did I did I did I'd is so do dibs do inbdodnodh",
+    "follower": true,
+    "following": false,
+    "restricted": false,
+    "blocked": false,
+    "marketTotals": {
+      "editorial": 95,
+      "commercial": 112,
+      "getty": 18
+    }
+  }
+}
