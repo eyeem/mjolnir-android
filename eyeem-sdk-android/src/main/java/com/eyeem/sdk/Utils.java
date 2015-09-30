@@ -227,7 +227,7 @@ public class Utils {
    }
 
    public static String getSquareThumbnail(int side, User user) {
-      return getSquareThumbnail(side, user.thumbUrl, user.photofilename);
+      return getSquareThumbnail(side, user.thumbUrl, user.file_id);
    }
 
    public static String getSquareThumbnail(int side, String thumbUrl, String photofilename) {
@@ -244,7 +244,7 @@ public class Utils {
       }
       if (thumbUrl.contains("eyeem")) {
          if (photofilename == null) photofilename = Utils.lastSegment(thumbUrl);
-         return PHOTO_PATH + THUMB_BASE + "sq/" + side + "/" + photofilename;
+         return PHOTO_PATH + THUMB_BASE + photofilename + "/sq/" + side;
       }
       return thumbUrl;
    }

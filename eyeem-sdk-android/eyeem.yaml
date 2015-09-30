@@ -23,18 +23,16 @@ photo:
   blacklisted: FalseClass
   openEdit: open_edit
   submittedToMarket: FalseClass
+  file_id: String
   java_import_linkify:
     ImportMixin: com.eyeem.chips.Linkify
   java_init_entities:
     CtorMixin: "Utils.computeEntities(this);"
-  java_init_filename:
-    CtorMixin: "filename = Utils.lastSegment(thumbUrl);"
   java_entities:
     Mixin: |
       public Linkify.Entities entities = new Linkify.Entities();
       public String entityfiedDescription;
       public float getAspectRatio() { return height == 0 ? 0 : (float) width / (float) height; }
-      public String filename;
       @Override
       public boolean equals(Object o) {
          if (o instanceof Photo)
@@ -62,15 +60,13 @@ user:
   coverPhoto: photo
   blacklisted: FalseClass
   marketTotals: market_totals
+  file_id: String
   java_textUtils:
     ImportMixin: android.text.TextUtils
   java_fix_null_description:
     CtorMixin: if ("null".equals(description)) description = "";
-  java_photofilename_init:
-    CtorMixin: photofilename = Utils.lastSegment(thumbUrl);
   java_entities:
     Mixin: |
-      public String photofilename;
       @Override public boolean equals(Object user) {
       return user != null && (user instanceof User)
          && !TextUtils.isEmpty(id) && !TextUtils.isEmpty(((User) user).id)
