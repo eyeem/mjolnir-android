@@ -119,6 +119,7 @@ person:
   serviceId: String
   facebook: FalseClass
   twitter: FalseClass
+  file_id: String
   java_textUtils:
     ImportMixin: android.text.TextUtils
   java_urlException:
@@ -299,6 +300,7 @@ contact:
   serviceType: String
   thumbUrl: String
   user: user
+  file_id: String
 mission:
   id: String
   title: String
@@ -571,6 +573,7 @@ blog_post:
   title: String
   thumbUrl: String
   url: String
+  file_id: String
 feed_item:
   id: String
   newPhotos: Fixnum
