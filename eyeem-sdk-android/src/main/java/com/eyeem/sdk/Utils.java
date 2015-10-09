@@ -232,7 +232,7 @@ public class Utils {
 
    public static String getSquareThumbnail(int side, String thumbUrl, String photofilename) {
       if (TextUtils.isEmpty(thumbUrl)) {
-         return "http://cdn.eyeem.com/thumb/sq/" + side + "/placeholder.jpg";
+         return "http://cdn.eyeem.com/thumb/placeholder.jpg/sq/" + side;
       }
 
       if (thumbUrl.startsWith("file://")) return thumbUrl;
@@ -243,7 +243,7 @@ public class Utils {
          return thumbUrl.replace("_normal", "");
       }
       if (thumbUrl.contains("eyeem")) {
-         if (photofilename == null) photofilename = Utils.lastSegment(thumbUrl);
+         if (TextUtils.isEmpty(photofilename)) photofilename = "placeholder.jpg";
          return PHOTO_PATH + THUMB_BASE + photofilename + "/sq/" + side;
       }
       return thumbUrl;
