@@ -384,6 +384,13 @@ news:
       public static final String ITEM_TYPE_URL = "url";
       public static final String ITEM_TYPE_MISSION = "mission";
       public static final String ITEM_TYPE_PHOTO = "photo";
+      public static final String ITEM_TYPE_USER = "user";
+      public static final String ITEM_TYPE_ALBUM = "album";
+      public static final String ITEM_TYPE_PROFILE = "profile";
+      public static final String ITEM_TYPE_CAMERA = "camera";
+      public static final String ITEM_TYPE_FRIENDS = "friends";
+      public static final String ITEM_TYPE_DISCOVER = "discover";
+      public static final String ITEM_TYPE_FIND_FRIENDS = "findfriends";
 
 aggregation:
   total: Fixnum
