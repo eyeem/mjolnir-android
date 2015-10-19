@@ -83,6 +83,10 @@ public class Instagram extends RequestBuilder {
       return (Instagram) new Instagram("/v1/locations/" + locationId + "/media/recent").jsonpath("data");
    }
 
+   public static Instagram locationSearch(String lat, String lng, int distance) {
+      return (Instagram) new Instagram("/v1/media/search").param("lat", lat).param("lng", lng).param("distance", distance).jsonpath("data");
+   }
+
    public static Instagram mediaComments(String mediaId) {
       return (Instagram) new Instagram("/v1/media/" + mediaId + "/comments").jsonpath("data");
    }
