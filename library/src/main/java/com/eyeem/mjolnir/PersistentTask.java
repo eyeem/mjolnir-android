@@ -14,7 +14,7 @@ import java.io.Serializable;
  */
 public class PersistentTask implements Task<ObservableRequestQueue>, Serializable {
 
-   private RequestBuilder rb;
+   protected RequestBuilder rb;
 
    public PersistentTask() { /*kryo*/ }
 
