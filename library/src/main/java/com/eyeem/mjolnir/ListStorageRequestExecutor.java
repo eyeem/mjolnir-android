@@ -34,7 +34,18 @@ public class ListStorageRequestExecutor {
    }
 
    public VolleyListRequestExecutor fetchFront(final HashMap<String, String> metaParams) {
+      return fetchFront(metaParams, null);
+   }
+
+   public VolleyListRequestExecutor fetchBack(HashMap<String, String> metaParams) {
+      return fetchBack(metaParams, null);
+   }
+
+   public VolleyListRequestExecutor fetchFront(final HashMap<String, String> metaParams, CopyModifier copyModifier) {
       RequestBuilder frontRequest = requestBuilder.copy().fetchFront(list);
+      if (copyModifier != null) {
+         copyModifier.onCopied(frontRequest);
+      }
       if (metaParams != null) {
          frontRequest.meta.putAll(metaParams);
       }
@@ -43,8 +54,11 @@ public class ListStorageRequestExecutor {
          .errorListener(new DummmyErrorListener());
    }
 
-   public VolleyListRequestExecutor fetchBack(HashMap<String, String> metaParams) {
+   public VolleyListRequestExecutor fetchBack(HashMap<String, String> metaParams, CopyModifier copyModifier) {
       RequestBuilder backRequest = requestBuilder.copy().fetchBack(list);
+      if (copyModifier != null) {
+         copyModifier.onCopied(backRequest);
+      }
       if (metaParams != null) {
          backRequest.meta.putAll(metaParams);
       }
@@ -127,5 +141,9 @@ public class ListStorageRequestExecutor {
 
    public static void setExecutorListName(String name, RequestBuilder rb) {
       rb.meta(META_LIST_NAME, name);
+   }
+
+   public interface CopyModifier {
+      public void onCopied(RequestBuilder rb);
    }
 }
