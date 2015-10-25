@@ -7,12 +7,7 @@ buildscript {
     }
 }
 
-<<<<<<< HEAD
 apply plugin: 'com.android.library'
-=======
-apply plugin: 'android-library'
-//apply plugin: 'android-test'
->>>>>>> [DON’T merge] changes to work as a submodule
 
 dependencies {
     repositories {
@@ -35,15 +30,9 @@ dependencies {
     compile 'com.squareup:tape:1.2.3'
     compile 'com.esotericsoftware.kryo:kryo:2.20'
 
-<<<<<<< HEAD
     testCompile 'junit:junit:4.10'
     testCompile 'org.robolectric:robolectric:3.0'
     testCompile 'com.squareup:fest-android:1.0.8'
-=======
-    //testCompile 'junit:junit:4.10'
-    //testCompile 'org.robolectric:robolectric:2.1.+'
-    //testCompile 'com.squareup:fest-android:1.0.+'
->>>>>>> [DON’T merge] changes to work as a submodule
 }
 
 task generateSources {
