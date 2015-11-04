@@ -67,6 +67,10 @@ public class Instagram extends RequestBuilder {
       return (Instagram) new Instagram("/v1/users/self/feed").jsonpath("data");
    }
 
+   public static Instagram userSelfLiked() {
+      return (Instagram) new Instagram("/v1/users/self/media/liked").jsonpath("data");
+   }
+
    public static Instagram userMediaRecent(String userId) {
       return (Instagram) new Instagram("/v1/users/" + userId + "/media/recent").jsonpath("data");
    }

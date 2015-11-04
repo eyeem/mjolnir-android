@@ -18,6 +18,7 @@ IGPhoto:
   filter: String
   link: String
   created_time: Date
+  user_has_liked: FalseClass
   likes: IGLikes
   images: IGImages
   users_in_photo:
@@ -41,7 +42,6 @@ IGComment:
   from: IGUser
   id: String
 IGLikes:
-  viewer_has_liked: FalseClass
   count: Fixnum
   data:
     Array: IGUser
