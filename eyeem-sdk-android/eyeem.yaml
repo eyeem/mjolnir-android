@@ -346,6 +346,7 @@ news:
   photo: photo
   body: String
   title: String
+  cta: String
   url: String
   thumbUrl: String
   newsType: String
