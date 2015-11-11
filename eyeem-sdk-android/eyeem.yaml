@@ -451,6 +451,7 @@ settings:
   ab_album_list: FalseClass
   ab_show_market_access: FalseClass
   ab_show_instagram_onboarding: FalseClass
+  ab_show_first_photo_onboarding: FalseClass
   show_nsfw_content: FalseClass
   account_market_seller: FalseClass
   email_market: FalseClass
