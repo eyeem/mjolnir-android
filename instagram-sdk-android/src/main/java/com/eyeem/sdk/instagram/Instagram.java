@@ -63,7 +63,7 @@ public class Instagram extends RequestBuilder {
       return (Instagram) new Instagram("/v1/users/" + id).jsonpath("data");
    }
 
-   public static Instagram userSelfFeed() {
+   @Deprecated public static Instagram userSelfFeed() {
       return (Instagram) new Instagram("/v1/users/self/feed").jsonpath("data");
    }
 
@@ -95,7 +95,7 @@ public class Instagram extends RequestBuilder {
       return (Instagram) new Instagram("/v1/media/" + mediaId + "/comments").jsonpath("data");
    }
 
-   public static Instagram mediaPopular() {
+   @Deprecated public static Instagram mediaPopular() {
       return (Instagram) new Instagram("/v1/media/popular").jsonpath("data");
    }
 
