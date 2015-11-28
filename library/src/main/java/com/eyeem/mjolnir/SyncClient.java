@@ -35,8 +35,8 @@ import javax.net.ssl.SSLContext;
  */
 public class SyncClient {
 
-   RequestBuilder rb;
-   ProgressCallback callback;
+   protected RequestBuilder rb;
+   protected ProgressCallback callback;
 
    public SyncClient(RequestBuilder rb) {
       this.rb = rb;
