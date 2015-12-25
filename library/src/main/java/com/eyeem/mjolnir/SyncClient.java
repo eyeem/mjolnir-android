@@ -37,9 +37,15 @@ public class SyncClient {
 
    protected RequestBuilder rb;
    protected ProgressCallback callback;
+   protected Integer timeout;
 
    public SyncClient(RequestBuilder rb) {
       this.rb = rb;
+   }
+
+   public SyncClient timeout(int timeoutSeconds) {
+      this.timeout = timeoutSeconds;
+      return this;
    }
 
    public SyncClient callback(ProgressCallback callback) {
@@ -138,8 +144,8 @@ public class SyncClient {
    protected HttpURLConnection buildConnection() throws IOException {
       URL url = new URL(rb.toUrl());
       OkHttpClient client = new OkHttpClient();
-      client.setConnectTimeout(Constants.CONNECTION_TIMEOUT_IN_SEC, TimeUnit.SECONDS);
-      client.setReadTimeout(Constants.CONNECTION_TIMEOUT_IN_SEC, TimeUnit.SECONDS);
+      client.setConnectTimeout(timeout == null ? Constants.CONNECTION_TIMEOUT_IN_SEC : timeout, TimeUnit.SECONDS);
+      client.setReadTimeout(timeout == null ? Constants.CONNECTION_TIMEOUT_IN_SEC : timeout, TimeUnit.SECONDS);
       HttpURLConnection connection = new OkUrlFactory(client).open(url);
 
       connection.setRequestProperty("Accept-Encoding", "gzip");
