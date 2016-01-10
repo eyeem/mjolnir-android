@@ -1,6 +1,5 @@
 package com.eyeem.mjolnir;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 
@@ -34,6 +33,8 @@ public class VolleyObjectRequestExecutor {
    }
 
    public void enqueue(RequestQueue queue) {
-      queue.add(build());
+      if (queue != null) {
+         queue.add(build());
+      }
    }
 }
