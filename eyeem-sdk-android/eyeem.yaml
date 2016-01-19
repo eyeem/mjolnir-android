@@ -245,6 +245,7 @@ venue:
   category: String
   categoryName: String
   venueServiceName: String
+  countryCode : String
   sentences:
      Array: String
   java_import_iterator:
