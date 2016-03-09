@@ -454,6 +454,8 @@ settings:
   ab_show_first_photo_onboarding: FalseClass
   show_nsfw_content: FalseClass
   account_market_seller: FalseClass
+  account_market_buyer: FalseClass
+  email_confirmed: FalseClass
   email_market: FalseClass
   email_community_updates: FalseClass
   push_market: FalseClass
