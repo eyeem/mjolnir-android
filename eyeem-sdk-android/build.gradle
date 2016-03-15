@@ -43,7 +43,7 @@ task generateSources {
             commandLine 'rm', '-rf', 'src/javagen'
         }
         exec {
-            commandLine 'mjolnir-package', '--yaml', 'eyeem.yaml', '--packagename', 'com.eyeem.sdk', '--output', 'src/javagen'
+            commandLine "${MJOLNIR_PATH}/mjolnir-package", '--yaml', 'eyeem.yaml', '--packagename', 'com.eyeem.sdk', '--output', 'src/javagen'
         }
     }
 }

@@ -43,7 +43,7 @@ task generateSources {
             commandLine 'rm', '-rf', 'src/javagen'
         }
         exec {
-            commandLine 'mjolnir-package', '--yaml', 'instagram.yaml', '--packagename', 'com.eyeem.sdk.instagram', '--output', 'src/javagen'
+            commandLine "${MJOLNIR_PATH}/mjolnir-package", '--yaml', 'instagram.yaml', '--packagename', 'com.eyeem.sdk.instagram', '--output', 'src/javagen'
         }
     }
 }
