@@ -1,0 +1,8 @@
+---
+FHUser:
+  id: String
+  username: String
+  bio: String
+  website: String
+  profile_picture: String
+  full_name: String
