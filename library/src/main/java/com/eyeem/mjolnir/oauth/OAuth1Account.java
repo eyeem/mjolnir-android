@@ -13,6 +13,9 @@ import com.eyeem.mjolnir.MjolnirRequest;
 import com.eyeem.mjolnir.RequestBuilder;
 import com.eyeem.mjolnir.oauth.utils.PercentEscaper;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.lang.ref.WeakReference;
 import java.net.URLDecoder;
 import java.util.HashMap;
@@ -36,6 +39,19 @@ public abstract class OAuth1Account extends Account {
 
    public abstract RequestBuilder oauthRequestToken();
    public abstract RequestBuilder oauthAccessToken();
+
+   @Override public JSONObject toJSON(JSONObject json) throws JSONException {
+      super.toJSON(json);
+      json.put("token", token);
+      json.put("tokenSecret", tokenSecret);
+      return json;
+   }
+
+   public static void fromJSON(OAuth1Account account, JSONObject json) {
+      Account.fromJSON(account, json);
+      account.token = json.optString("token", "");
+      account.tokenSecret = json.optString("tokenSecret", "");
+   }
 
    private void setAuth(Auth1 auth) {
       this.token = auth.oauth_token;
@@ -69,8 +85,6 @@ public abstract class OAuth1Account extends Account {
          String oauth_signature_string = rb.method() + "&" + percentEncode(rb.justUrl()) + "&" + percentEncode(rb.toQuery());
          String oauth_signature = HmacSHA1Signature(oauth_signature_string, consumerSecret() + "&" + tokenSecret);
          rb.param("oauth_signature", oauth_signature);
-
-         Log.d("OAuth1.sign", "signed " + rb.toUrl() + " with " + oauth_signature);
       }
       return rb;
    }

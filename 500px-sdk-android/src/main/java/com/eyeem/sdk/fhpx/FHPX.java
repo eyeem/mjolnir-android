@@ -1,12 +1,16 @@
 package com.eyeem.sdk.fhpx;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.eyeem.mjolnir.RequestBuilder;
 import com.eyeem.mjolnir.oauth.Auth1;
 import com.eyeem.mjolnir.oauth.OAuth1Account;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
 
@@ -22,7 +26,7 @@ public class FHPX extends RequestBuilder {
    public static String CALLBACK_URI = "";
 
    public static void init(String key, String secret, String callback_uri) {
-      Account.registerAccountType("500px", FHPX.Account.class);
+      Account.registerAccountType(Account.TYPE, FHPX.Account.class);
       FHPX.CONSUMER_KEY = key;
       FHPX.CONSUMER_SECRET = secret;
       FHPX.CALLBACK_URI = callback_uri;
@@ -43,7 +47,23 @@ public class FHPX extends RequestBuilder {
 
    public static class Account extends OAuth1Account {
 
+      public final static String TYPE = "500px";
+
       public FHUser user;
+
+      public Account() {
+         type = TYPE;
+      }
+
+      public static Account fromJSON(Account account, JSONObject json) {
+         OAuth1Account.fromJSON(account, json);
+         account.user = FHUser.fromJSON(json.optJSONObject("user"));
+         return account;
+      }
+
+      public static Account fromJSON(JSONObject json) {
+         return fromJSON(new Account(), json);
+      }
 
       @Override public String consumerKey() { return CONSUMER_KEY; }
       @Override public String consumerSecret() { return CONSUMER_SECRET; }
@@ -63,6 +83,11 @@ public class FHPX extends RequestBuilder {
          return path("/v1/oauth/access_token").post();
       }
 
+      @Override public JSONObject toJSON(JSONObject json) throws JSONException {
+         json.put("user", user.toJSON());
+         return super.toJSON(json);
+      }
+
       @Override
       public void postAuth(RequestQueue queue, final Context context, final WeakReference<UICallback> _callback) {
          FHPX.users()
@@ -73,7 +98,7 @@ public class FHPX extends RequestBuilder {
                public void onResponse(Object o) {
                   user = (FHUser) o;
                   id = user.id;
-                  // save(context);
+                  save(context);
                   UICallback callback = _callback.get();
                   if (callback != null) {
                      callback.onPostAuth(FHPX.Account.this);
@@ -81,6 +106,22 @@ public class FHPX extends RequestBuilder {
                }
             })
             .enqueue(queue);
+      }
+
+      @Override public String avatarUrl() {
+         try {
+            return user.avatars.large.https;
+         } catch (NullPointerException npe) {
+            return "";
+         }
+      }
+
+      @Override public String userName() {
+         return (user == null || TextUtils.isEmpty(user.username)) ? "" : user.username;
+      }
+
+      @Override public String fullName() {
+         return (user == null || TextUtils.isEmpty(user.fullname)) ? "" : user.fullname;
       }
    }
 }

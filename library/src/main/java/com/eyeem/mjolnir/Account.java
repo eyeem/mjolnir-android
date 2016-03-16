@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 /**
  * Created by vishna on 15/11/13.
@@ -103,7 +104,7 @@ public abstract class Account implements Serializable {
       HashSet<Account> accounts = new HashSet<Account>();
       if (TextUtils.isEmpty(type))
          return accounts;
-      for (Account account : getAccounts(context)) {
+      for (Account account : getAccounts(context, null)) {
          if (!TextUtils.isEmpty(account.type) && account.type.equals(type))
             accounts.add(account);
       }
@@ -113,7 +114,7 @@ public abstract class Account implements Serializable {
    public static Account getByTypeAndId(Context context, String type, String id) {
       if (TextUtils.isEmpty(type))
          return null;
-      for (Account account : getAccounts(context)) {
+      for (Account account : getAccounts(context, null)) {
          if (!TextUtils.isEmpty(account.type) && account.type.equals(type) && account.id.equals(id))
             return account;
       }
@@ -121,13 +122,13 @@ public abstract class Account implements Serializable {
    }
 
    public void save(Context context) {
-      HashSet<Account> accounts = getAccounts(context);
+      HashSet<Account> accounts = getAccounts(context, null);
       accounts.add(this);
       save(context, accounts);
    }
 
    public void delete(Context context) {
-      HashSet<Account> accounts = getAccounts(context);
+      HashSet<Account> accounts = getAccounts(context, null);
       accounts.remove(this);
       save(context, accounts);
    }
@@ -148,7 +149,7 @@ public abstract class Account implements Serializable {
          .commit();
    }
 
-   public static HashSet<Account> getAccounts(Context context) {
+   public static HashSet<Account> getAccounts(Context context, List<String> supportedAccounts) {
       HashSet<Account> accounts = new HashSet<Account>();
       String jsonAccounts = context
          .getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
@@ -157,8 +158,11 @@ public abstract class Account implements Serializable {
          JSONArray jsonArray = new JSONArray(jsonAccounts);
          for (int i = 0; i < jsonArray.length(); i++) {
             Account account = fromJSON(jsonArray.optJSONObject(i));
-            if (account != null)
-               accounts.add(account);
+            if (account != null) {
+               if (supportedAccounts == null || supportedAccounts.contains(account.type)) {
+                  accounts.add(account);
+               }
+            }
          }
       } catch (JSONException je) {}
       return accounts;
