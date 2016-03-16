@@ -1,8 +1,56 @@
 ---
 FHUser:
+  about: String
+  affection: Fixnum
+  allow_sale_requests: Fixnum
+  auth: FHAuth
+  avatars: FHAvatars
+  city: String
+  contacts: FHContacts
+  country: String
+  domain: String
+  email: String
+#  equipment: FHEquipment
+  firstname: String
+  followers_count: Fixnum
+  fotomoto_on: FalseClass
+  friends_count: Fixnum
+  fullname: String
+  galleries_count: Fixnum
   id: String
+  in_favorites_count: Fixnum
+  invite_accepted: FalseClass
+  invite_pending: FalseClass
+  lastname: String
+  locale: String
+  photos_count: Fixnum
+  registration_date: String
+  sex: Fixnum
+  show_nude: FalseClass
+  state: String
+  store_on: FalseClass
+  upgrade_status: Fixnum
+  upgrade_status_expiry: String
+  upgrade_type: Fixnum
+  upload_limit_expiry: String
   username: String
-  bio: String
+  userpic_https_url: String
+  userpic_url: String
+  usertype: Fixnum
+FHAuth:
+  facebook: Fixnum
+  google_oauth2: Fixnum
+  twitter: Fixnum
+FHAvatars:
+  default: FHAvatar
+  large: FHAvatar
+  small: FHAvatar
+  tiny: FHAvatar
+FHAvatar:
+  http: String
+  https: String
+FHContacts:
+  facebook: String
+  twitter: String
   website: String
-  profile_picture: String
-  full_name: String
+#FHEquipment: {}

@@ -3,6 +3,7 @@ package com.eyeem.mjolnir.oauth;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.Base64;
+import android.util.Log;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -41,9 +42,37 @@ public abstract class OAuth1Account extends Account {
       this.tokenSecret = auth.oauth_token_secret;
    }
 
-   @Override public RequestBuilder sign(RequestBuilder requestBuilder) {
-      // TODO implement
-      return null;
+   public abstract void postAuth(RequestQueue queue, Context context, WeakReference<UICallback> _callback);
+
+   @Override public RequestBuilder sign(RequestBuilder rb) {
+      if (!TextUtils.isEmpty(token) && !TextUtils.isEmpty(tokenSecret)) {
+         final String timestamp = Long.toString(System.currentTimeMillis() / 1000L);
+
+         rb = rb.copy();
+
+         // remove old values if any
+         rb.params.remove("oauth_consumer_key");
+         rb.params.remove("oauth_token");
+         rb.params.remove("oauth_signature");
+         rb.params.remove("oauth_signature_method");
+         rb.params.remove("oauth_timestamp");
+         rb.params.remove("oauth_nonce");
+         rb.params.remove("oauth_version");
+
+         rb.param("oauth_consumer_key", consumerKey())
+            .param("oauth_token", token)
+            .param("oauth_signature_method", "HMAC-SHA1")
+            .param("oauth_timestamp", timestamp)
+            .param("oauth_nonce", nonce())
+            .param("oauth_version", "1.0");
+
+         String oauth_signature_string = rb.method() + "&" + percentEncode(rb.justUrl()) + "&" + percentEncode(rb.toQuery());
+         String oauth_signature = HmacSHA1Signature(oauth_signature_string, consumerSecret() + "&" + tokenSecret);
+         rb.param("oauth_signature", oauth_signature);
+
+         Log.d("OAuth1.sign", "signed " + rb.toUrl() + " with " + oauth_signature);
+      }
+      return rb;
    }
 
    public void requestRequestToken(
@@ -147,6 +176,7 @@ public abstract class OAuth1Account extends Account {
                   if (!TextUtils.isEmpty(auth.oauth_token) && !TextUtils.isEmpty(auth.oauth_token)) {
                      setAuth(auth);
                      callback.onAccessTokenGranted(OAuth1Account.this);
+                     postAuth(queue, context, _callback);
                   } else {
                      throw new IllegalStateException("Failed to login user");
                   }
@@ -225,6 +255,7 @@ public abstract class OAuth1Account extends Account {
    public interface UICallback {
       void onRequestTokenGranted(Auth1 auth);
       void onAccessTokenGranted(OAuth1Account account);
+      void onPostAuth(OAuth1Account account);
       void fail(Throwable error);
    }
 }

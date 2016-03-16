@@ -236,7 +236,7 @@ public class RequestBuilder implements Serializable {
 
    public RequestBuilder sign() {
       if (account != null) {
-         account.sign(this);
+         return account.sign(this);
       }
       return this;
    }
