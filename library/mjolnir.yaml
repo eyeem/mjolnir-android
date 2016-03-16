@@ -3,3 +3,8 @@ auth:
   token_type: String
   expires_in: Fixnum
   refresh_token: String
+auth1:
+  oauth_token : String
+  oauth_token_secret : String
+  oauth_verifier : String
+  oauth_callback_confirmed : FalseClass

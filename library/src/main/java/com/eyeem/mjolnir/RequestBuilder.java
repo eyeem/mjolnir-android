@@ -183,6 +183,12 @@ public class RequestBuilder implements Serializable {
       return sb.toString();
    }
 
+   public String justUrl() {
+      StringBuilder sb = new StringBuilder();
+      sb.append(host).append(path);
+      return sb.toString();
+   }
+
    public SyncClient sync() {
       sign();
       return new SyncClient(this);
