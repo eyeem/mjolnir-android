@@ -54,6 +54,8 @@ public class FHPX extends RequestBuilder {
    public static FHPX photos() {
       return (FHPX) path("/v1/photos").jsonpath("photos");
    }
+
+   public static FHPX usersSearch(String term) { return (FHPX) path("/v1/users/search").param("term", term).jsonpath("users"); }
    // endregion
 
    // region params
@@ -144,6 +146,14 @@ public class FHPX extends RequestBuilder {
        */
       public FHPX user_friends(String user_id) {
          return (FHPX) fhpx.feature("user_friends").param("user_id", user_id);
+      }
+
+      /**
+       * Return photos of User.
+       * @return
+       */
+      public FHPX user(String user_id) {
+         return (FHPX) fhpx.feature("user").param("user_id", user_id);
       }
    }
 
