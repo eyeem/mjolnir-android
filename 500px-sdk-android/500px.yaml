@@ -24,15 +24,15 @@ FHUser:
   lastname: String
   locale: String
   photos_count: Fixnum
-  registration_date: String
+  registration_date: Date
   sex: Fixnum
   show_nude: FalseClass
   state: String
   store_on: FalseClass
   upgrade_status: Fixnum
-  upgrade_status_expiry: String
+  upgrade_status_expiry: Date
   upgrade_type: Fixnum
-  upload_limit_expiry: String
+  upload_limit_expiry: Date
   username: String
   userpic_https_url: String
   userpic_url: String
@@ -54,3 +54,60 @@ FHContacts:
   twitter: String
   website: String
 #FHEquipment: {}
+FHPhoto:
+  aperture: String
+  camera: String
+  category: Fixnum
+  collections_count: Fixnum
+  comments_count: Fixnum
+  converted: Fixnum
+  converted_bits: Fixnum
+  created_at: Date
+  crop_version: Fixnum
+  description: String
+  disliked: FalseClass
+  favorited: FalseClass
+  favorites_count: Fixnum
+  focal_length: String
+  for_sale: FalseClass
+  height: Fixnum
+  hi_res_uploaded: Fixnum
+  highest_rating: Fixnum
+  id: String
+  image_format: String
+  image_url: String
+  images:
+    Array: FHImage
+  iso: String
+  license_requests_enabled: FalseClass
+  license_type: Fixnum
+  licensing_requested: FalseClass
+  liked: FalseClass
+  name: String
+  nsfw: FalseClass
+  positive_votes_count: Fixnum
+  privacy: FalseClass
+  profile: TrueClass
+  purchased: FalseClass
+  rating: Fixnum
+  request_to_buy_enabled: TrueClass
+  sales_count: Fixnum
+  shutter_speed: String
+  status: Fixnum
+  store_download: FalseClass
+  store_license: FalseClass
+  store_print: FalseClass
+  taken_at: Date
+  times_viewed: Fixnum
+  url: String
+  user: FHUser
+  user_id: Fixnum
+  voted: FalseClass
+  votes_count: Fixnum
+  watermark: FalseClass
+  width: Fixnum
+FHImage:
+  format: String
+  https_url: String
+  size: Fixnum
+  url: String

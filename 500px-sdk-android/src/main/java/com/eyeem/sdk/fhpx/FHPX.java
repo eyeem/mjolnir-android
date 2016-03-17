@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.eyeem.mjolnir.DateParser;
 import com.eyeem.mjolnir.RequestBuilder;
 import com.eyeem.mjolnir.oauth.Auth1;
 import com.eyeem.mjolnir.oauth.OAuth1Account;
@@ -13,6 +14,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 /**
  * Created by vishna on 15/03/16.
@@ -41,10 +45,192 @@ public class FHPX extends RequestBuilder {
       return new FHPX(path);
    }
 
+   // region api endpoints
    public static FHPX users() {
       return (FHPX) path("/v1/users").jsonpath("user");
    }
 
+   public static FHPX photos() {
+      return (FHPX) path("/v1/photos").jsonpath("photos");
+   }
+   // endregion
+
+   // region params
+   public FHPX image_size(int value) { return (FHPX)param("image_size", value); }
+
+   public FHPX bestQuality() { return (FHPX)param("image_size", TextUtils.join(",", SIZES_ID)); }
+
+   public FHPX feature(String value) { return (FHPX)param("feature", value); }
+
+   public FHPX tags() { return (FHPX)param("tags", 1); }
+
+   public Feature feature() {
+      return new Feature(this);
+   }
+
+   public static class Feature {
+      FHPX fhpx;
+
+      Feature(FHPX fhpx) {
+         this.fhpx = fhpx;
+      }
+
+      /**
+       * Return photos in Popular. Default sort: rating.
+       * @return
+       */
+      public FHPX popular() {
+         return fhpx.feature("popular");
+      }
+
+      /**
+       * Return photos that have been in Popular. Default sort: highest_rating.
+       * @return
+       */
+      public FHPX highestRated() {
+         return fhpx.feature("highest_rated");
+      }
+
+      /**
+       * Return photos in Upcoming. Default sort: time when Upcoming was reached.
+       * @return
+       */
+      public FHPX upcoming() {
+         return fhpx.feature("upcoming");
+      }
+
+      /**
+       * Return photos in Editors' Choice. Default sort: time when selected by an editor.
+       * @return
+       */
+      public FHPX editors() {
+         return fhpx.feature("editors");
+      }
+
+      /**
+       * Return photos in Fresh Today. Default sort: time when reached fresh.
+       * @return
+       */
+      public FHPX fresh_today() {
+         return fhpx.feature("fresh_today");
+      }
+
+      /**
+       * Return photos in Fresh Yesterday. Default sort: same as 'fresh_today'
+       * @return
+       */
+      public FHPX fresh_yesterday() {
+         return fhpx.feature("fresh_yesterday");
+      }
+
+      /**
+       * Return photos in Fresh This Week. Default sort: same as 'fresh_today'.
+       * @return
+       */
+      public FHPX fresh_week() {
+         return fhpx.feature("fresh_week");
+      }
+
+      /**
+       * Return photos User follows.
+       * @return
+       */
+      public FHPX user_friends(String user_id) {
+         return (FHPX) fhpx.feature("user_friends").param("user_id", user_id);
+      }
+   }
+
+   public FHPX sort(String value) { return (FHPX)param("sort", value); }
+
+   public Sort sortBy() {
+      return new Sort(this);
+   }
+
+   /**
+    * Sort in ascending order (lowest or least-recent first)
+    * @return
+    */
+   public FHPX asc() { return (FHPX)param("sort_direction", "asc"); }
+
+   /**
+    * Sort in descending order (highest or most-recent first). This is the default.
+    * @return
+    */
+   public FHPX desc() { return (FHPX)param("sort_direction", "desc"); }
+
+   public static class Sort {
+      FHPX fhpx;
+
+      Sort(FHPX fhpx) {
+         this.fhpx = fhpx;
+      }
+
+      /**
+       * Sort by time of upload.
+       * @return
+       */
+      public FHPX createdAt() {
+         return fhpx.sort("created_at");
+      }
+
+      /**
+       * Sort by rating
+       * @return
+       */
+      public FHPX rating() {
+         return fhpx.sort("rating");
+      }
+
+      /**
+       * Sort by highest rating
+       * @return
+       */
+      public FHPX highestRating() {
+         return fhpx.sort("highest_rating");
+      }
+
+      /**
+       * Sort by view count
+       * @return
+       */
+      public FHPX timesViewed() {
+         return fhpx.sort("times_viewed");
+      }
+
+      /**
+       * Sort by votes count
+       * @return
+       */
+      public FHPX votesCount() {
+         return fhpx.sort("votes_count");
+      }
+
+      /**
+       * Sort by comments count
+       * @return
+       */
+      public FHPX commentsCount() {
+         return fhpx.sort("comments_count");
+      }
+
+
+      /**
+       * Sort by the original date of the image extracted from metadata (might not be available for all images)
+       * @return
+       */
+      public FHPX takenAt() {
+         return fhpx.sort("taken_at");
+      }
+   }
+
+   public FHPX photoDefaults() {
+      return bestQuality()
+         .tags()
+         .sortBy().createdAt().desc();
+   }
+   // endregion
+
+   // region account
    public static class Account extends OAuth1Account {
 
       public final static String TYPE = "500px";
@@ -124,4 +310,37 @@ public class FHPX extends RequestBuilder {
          return (user == null || TextUtils.isEmpty(user.fullname)) ? "" : user.fullname;
       }
    }
+   // endregion
+
+   //region timestamp parsing
+   static {
+      new DateParser("com.eyeem.sdk.fhpx") {
+         @Override public long toSeconds(String date) {
+            try {
+               if (date.charAt(date.length() - 3) == ':' &&
+                  (date.charAt(date.length() - 6) == '-' || date.charAt(date.length() - 6) == '+')) {
+                  StringBuilder sb = new StringBuilder(date);
+                  date = sb.deleteCharAt(date.length() - 3).toString();
+               }
+               return new SimpleDateFormat(
+               "yyyy-MM-dd'T'HH:mm:ssZ",
+               Locale.getDefault()).parse(date).getTime()/1000;
+            } catch (ParseException e) { return 0; }
+         }
+      };
+   }
+   //endregion
+
+   //region image size support
+   public final static Integer[] SIZES_ID = new Integer[]{4, 1080, 5, 1600, 2048};
+   public final static Integer[] SIZES_PX = new Integer[]{900, 1080, 1170, 1600, 2048};
+
+   public static int idForSize(int px) {
+      int i = 0;
+      for (; i < SIZES_PX.length; i++) {
+         if (px <= SIZES_PX[i]) break;
+      }
+      return SIZES_ID[i];
+   }
+   //endregion
 }
