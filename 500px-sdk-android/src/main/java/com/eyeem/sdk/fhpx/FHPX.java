@@ -65,6 +65,10 @@ public class FHPX extends RequestBuilder {
 
    public FHPX feature(String value) { return (FHPX)param("feature", value); }
 
+   public FHPX includeStore() { return (FHPX)param("include_store", 1); }
+
+   public FHPX includeStates() { return (FHPX)param("include_states", 1); }
+
    public FHPX tags() { return (FHPX)param("tags", 1); }
 
    public Feature feature() {
@@ -228,6 +232,8 @@ public class FHPX extends RequestBuilder {
 
    public FHPX photoDefaults() {
       return bestQuality()
+         .includeStore()
+         .includeStates()
          .tags()
          .sortBy().createdAt().desc();
    }
