@@ -106,6 +106,8 @@ FHPhoto:
   votes_count: Fixnum
   watermark: FalseClass
   width: Fixnum
+  tags:
+    Array: String
 FHImage:
   format: String
   https_url: String
