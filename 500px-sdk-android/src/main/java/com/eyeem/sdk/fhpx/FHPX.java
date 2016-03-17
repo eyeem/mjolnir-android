@@ -9,6 +9,7 @@ import com.eyeem.mjolnir.DateParser;
 import com.eyeem.mjolnir.RequestBuilder;
 import com.eyeem.mjolnir.oauth.Auth1;
 import com.eyeem.mjolnir.oauth.OAuth1Account;
+import com.eyeem.storage.Storage;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -56,6 +57,8 @@ public class FHPX extends RequestBuilder {
    // endregion
 
    // region params
+   public FHPX page(int index) { return (FHPX)param("page", index); }
+
    public FHPX image_size(int value) { return (FHPX)param("image_size", value); }
 
    public FHPX bestQuality() { return (FHPX)param("image_size", TextUtils.join(",", SIZES_ID)); }
@@ -341,6 +344,22 @@ public class FHPX extends RequestBuilder {
          if (px <= SIZES_PX[i]) break;
       }
       return SIZES_ID[i];
+   }
+   //endregion
+
+   //region pagination
+   public static final int DEFAULT_RESULTS_PER_PAGE = 20;
+
+   @Override public RequestBuilder fetchFront(Object info) {
+      return this;
+   }
+
+   @Override public RequestBuilder fetchBack(Object info) {
+      Storage.List list = (Storage.List) info;
+      if (list.size() >= DEFAULT_RESULTS_PER_PAGE) {
+         return page(list.size()/DEFAULT_RESULTS_PER_PAGE + 1);
+      }
+      return this;
    }
    //endregion
 }
