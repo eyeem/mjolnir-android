@@ -17,11 +17,15 @@ import com.eyeem.mjolnir.oauth.utils.PercentEscaper;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.TreeMap;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -79,7 +83,7 @@ public abstract class OAuth1Account extends Account {
             .param("oauth_nonce", nonce())
             .param("oauth_version", "1.0");
 
-         String oauth_signature_string = rb.method() + "&" + percentEncode(rb.justUrl()) + "&" + percentEncode(rb.toQuery());
+         String oauth_signature_string = rb.method() + "&" + percentEncode(rb.justUrl()) + "&" + percentEncode(join(rb.params));
          String oauth_signature = HmacSHA1Signature(oauth_signature_string, consumerSecret() + "&" + tokenSecret);
          rb.param("oauth_signature", oauth_signature);
 
@@ -99,6 +103,22 @@ public abstract class OAuth1Account extends Account {
          }
       }
       return rb;
+   }
+
+   /**
+    * Pretty much equivalent of .toQuery expect for this one encodes using OAuth1 percentEncoder
+    * @param params
+    * @return
+    */
+   private static String join(TreeMap<String, RequestBuilder.StringWrapper> params) {
+      ArrayList<String> pairs = new ArrayList<>();
+      for (Map.Entry<String, RequestBuilder.StringWrapper> entry : params.entrySet()) {
+         pairs.add(String.format("%s=%s",
+            percentEncode(entry.getKey()),
+            entry.getValue().encoded ? entry.getValue().value : percentEncode(entry.getValue().value)
+         ));
+      }
+      return TextUtils.join("&", pairs);
    }
 
    private static String trim(String value) {
