@@ -55,11 +55,25 @@ public class FHPX extends RequestBuilder {
       return (FHPX) path("/v1/photos").jsonpath("photos");
    }
 
+   public static FHPX photosSearch() {
+      return (FHPX) path("/v1/photos/search").jsonpath("photos");
+   }
+
+   public static FHPX photosVote(String photoId) {
+      return (FHPX) path("/v1/photos/" + photoId + "/vote").jsonpath("photo");
+   }
+
    public static FHPX usersSearch(String term) { return (FHPX) path("/v1/users/search").param("term", term).jsonpath("users"); }
    // endregion
 
    // region params
    public FHPX page(int index) { return (FHPX)param("page", index); }
+
+   /**
+    * @param value 1 - like, 0 - dislike
+    * @return
+    */
+   public FHPX vote(int value) { return (FHPX)param("vote", value); }
 
    public FHPX image_size(int value) { return (FHPX)param("image_size", value); }
 
@@ -70,6 +84,8 @@ public class FHPX extends RequestBuilder {
    public FHPX includeStore() { return (FHPX)param("include_store", 1); }
 
    public FHPX includeStates() { return (FHPX)param("include_states", 1); }
+
+   public FHPX tag(String tag) { return (FHPX)param("tag", tag); }
 
    public FHPX tags() { return (FHPX)param("tags", 1); }
 
