@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -19,6 +20,7 @@ import org.json.JSONObject;
 import java.lang.ref.WeakReference;
 import java.net.URLDecoder;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import javax.crypto.Mac;
@@ -67,14 +69,9 @@ public abstract class OAuth1Account extends Account {
          rb = rb.copy();
 
          // remove old values if any
-         rb.params.remove("oauth_consumer_key");
-         rb.params.remove("oauth_token");
-         rb.params.remove("oauth_signature");
-         rb.params.remove("oauth_signature_method");
-         rb.params.remove("oauth_timestamp");
-         rb.params.remove("oauth_nonce");
-         rb.params.remove("oauth_version");
+         removeOAuth1Params(rb);
 
+         // generate signature
          rb.param("oauth_consumer_key", consumerKey())
             .param("oauth_token", token)
             .param("oauth_signature_method", "HMAC-SHA1")
@@ -85,8 +82,41 @@ public abstract class OAuth1Account extends Account {
          String oauth_signature_string = rb.method() + "&" + percentEncode(rb.justUrl()) + "&" + percentEncode(rb.toQuery());
          String oauth_signature = HmacSHA1Signature(oauth_signature_string, consumerSecret() + "&" + tokenSecret);
          rb.param("oauth_signature", oauth_signature);
+
+         if ((rb.method == Request.Method.POST || rb.method == Request.Method.PUT) && rb.params != null) {
+            StringBuilder oauthHeader = new StringBuilder();
+            for (Map.Entry<String, RequestBuilder.StringWrapper> entry : rb.params.entrySet()) {
+               if (TextUtils.isEmpty(entry.getKey()) || !entry.getKey().startsWith("oauth_")) {
+                  continue;
+               }
+               if (oauthHeader.length() > 0) {
+                  oauthHeader.append(",");
+               }
+               oauthHeader.append(entry.getKey()).append("=\"").append(percentEncode(trim(entry.getValue().value))).append("\"");
+            }
+            rb.header("Authorization", "OAuth " + oauthHeader.toString());
+            removeOAuth1Params(rb);
+         }
       }
       return rb;
+   }
+
+   private static String trim(String value) {
+      if (TextUtils.isEmpty(value)) {
+         return "";
+      } else {
+         return value.trim();
+      }
+   }
+
+   private static void removeOAuth1Params(RequestBuilder rb) {
+      rb.params.remove("oauth_consumer_key");
+      rb.params.remove("oauth_token");
+      rb.params.remove("oauth_signature");
+      rb.params.remove("oauth_signature_method");
+      rb.params.remove("oauth_timestamp");
+      rb.params.remove("oauth_nonce");
+      rb.params.remove("oauth_version");
    }
 
    public void requestRequestToken(

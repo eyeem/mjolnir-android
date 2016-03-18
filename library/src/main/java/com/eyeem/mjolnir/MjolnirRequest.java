@@ -52,6 +52,7 @@ public class MjolnirRequest<T> extends JsonRequest<T> {
    }
 
    @Override public byte[] getBody() {
+      if (b.appendForOAuth1()) return null;
       if (b.method != Request.Method.PUT && b.method != Request.Method.POST)
          return super.getBody();
 

@@ -3,6 +3,7 @@ package com.eyeem.mjolnir;
 import android.text.TextUtils;
 
 import com.android.volley.Request;
+import com.eyeem.mjolnir.oauth.OAuth1Account;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -174,10 +175,21 @@ public class RequestBuilder implements Serializable {
       return TextUtils.join("&", pairs);
    }
 
+   /**
+    * This is how APIGee does it and it works
+    * @return
+    */
+   public boolean appendForOAuth1() {
+      return account instanceof OAuth1Account && params.size() > 0
+         && (method == Request.Method.PUT || method == Request.Method.POST);
+   }
+
    public String toUrl() {
       StringBuilder sb = new StringBuilder();
       sb.append(host).append(path);
-      if (params.size() > 0 && method != Request.Method.PUT && method != Request.Method.POST) {
+
+      // to append or not to append
+      if (appendForOAuth1() || (params.size() > 0 && method != Request.Method.PUT && method != Request.Method.POST)) {
          sb.append('?').append(toQuery());
       }
       return sb.toString();

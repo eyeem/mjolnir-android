@@ -32,7 +32,7 @@ import java.io.InterruptedIOException;
  */
 public class PersistentTaskService extends Service implements ObservableRequestQueue.Listener {
 
-   private static final String TAG = "Mjolnir:PersistentTaskService";
+   private static final String TAG = "MjolnirTaskService";
    private static final String KEY_TASK = "PersistenTask.key";
 
    private static ObservableRequestQueue requestQueue;

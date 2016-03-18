@@ -72,7 +72,7 @@ public class PersistentRequest extends ObjectRequest {
                public void onResponse(Object o) {}
             };
          }
-         return new PersistentRequest(rb, task, listener, errorListener);
+         return new PersistentRequest(rb.sign(), task, listener, errorListener);
       }
    }
 }
