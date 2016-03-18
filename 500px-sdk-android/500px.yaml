@@ -113,3 +113,13 @@ FHImage:
   https_url: String
   size: Fixnum
   url: String
+FHComment:
+  body: String
+  created_at: Date
+  flagged: FalseClass
+  id: String
+  rating: Fixnum
+  to_whom_user_id: String
+  user: FHUser
+  user_id: String
+  voted: FalseClass

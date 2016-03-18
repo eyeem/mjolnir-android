@@ -59,6 +59,14 @@ public class FHPX extends RequestBuilder {
       return (FHPX) path("/v1/photos/search").jsonpath("photos");
    }
 
+   public static FHPX photosComments(String photoId) {
+      return (FHPX) path("/v1/photos/" + photoId + "/comments").jsonpath("comments");
+   }
+
+   public static FHPX photosComments(String photoId, String body) {
+      return (FHPX) path("/v1/photos/" + photoId + "/comments").param("body", body).jsonpath("comment").post();
+   }
+
    public static FHPX photosVote(String photoId) {
       return (FHPX) path("/v1/photos/" + photoId + "/vote").jsonpath("photo");
    }
