@@ -14,6 +14,7 @@ public class VolleyListRequestExecutor {
    RequestBuilder requestBuilder;
    Response.Listener<List> listener;
    Response.ErrorListener errorListener;
+   MjolnirRequest.OnParsedListener parsedListener;
    Class objectClass;
 
    public VolleyListRequestExecutor(com.eyeem.mjolnir.RequestBuilder requestBuilder, Class objectClass) {
@@ -31,9 +32,14 @@ public class VolleyListRequestExecutor {
       return this;
    }
 
+   public VolleyListRequestExecutor parsedListener(MjolnirRequest.OnParsedListener parsedListener) {
+      this.parsedListener = parsedListener;
+      return this;
+   }
+
    public MjolnirRequest build() {
       if (listener == null) { listener = dummy; }
-      return new ListRequest(requestBuilder, objectClass, listener, errorListener);
+      return new ListRequest(requestBuilder, objectClass, listener, errorListener).onParsedListener(parsedListener);
    }
 
    public void enqueue(RequestQueue queue) {

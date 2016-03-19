@@ -49,7 +49,14 @@ public class ListStorageRequestExecutor {
       if (metaParams != null) {
          frontRequest.meta.putAll(metaParams);
       }
+
+      OnParsed onParsed = null;
+      if (requestBuilder.pagination != null) {
+         onParsed = new OnParsed(frontRequest, list, requestBuilder.pagination, true);
+      }
+
       return new VolleyListRequestExecutor(frontRequest, objectClass)
+         .parsedListener(onParsed)
          .listener(new FetchFrontListener(list, metaParams))
          .errorListener(new DummmyErrorListener());
    }
@@ -62,7 +69,14 @@ public class ListStorageRequestExecutor {
       if (metaParams != null) {
          backRequest.meta.putAll(metaParams);
       }
+
+      OnParsed onParsed = null;
+      if (requestBuilder.pagination != null) {
+         onParsed = new OnParsed(backRequest, list, requestBuilder.pagination, false);
+      }
+
       return new VolleyListRequestExecutor(backRequest, objectClass)
+         .parsedListener(onParsed)
          .listener(new FetchBackListener(list, metaParams))
          .errorListener(new DummmyErrorListener());
    }
@@ -145,5 +159,29 @@ public class ListStorageRequestExecutor {
 
    public interface CopyModifier {
       public void onCopied(RequestBuilder rb);
+   }
+
+   private static class OnParsed implements MjolnirRequest.OnParsedListener {
+
+      RequestBuilder rb;
+      Storage.List list;
+      Pagination pagination;
+      boolean isFront;
+
+      public OnParsed(RequestBuilder rb, Storage.List list, Pagination pagination, boolean isFront) {
+         this.rb = rb;
+         this.list = list;
+         this.pagination = pagination;
+         this.isFront = isFront;
+      }
+
+      @Override public void onParsed(Object data) {
+         if (pagination == null) return;
+         if (isFront) {
+            pagination.onFrontFetched(rb, data, list);
+         } else {
+            pagination.onBackFetched(rb, data, list);
+         }
+      }
    }
 }

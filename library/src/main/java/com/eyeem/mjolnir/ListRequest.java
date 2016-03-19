@@ -35,6 +35,7 @@ public class ListRequest extends MjolnirRequest<List> {
       try {
          String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
          JSONObject jsonObject = new JSONObject(jsonString);
+         onParsed(jsonObject);
          return Response.success(fromArray(b.declutter.jsonArray(jsonObject)), HttpHeaderParser.parseCacheHeaders(response));
       } catch (UnsupportedEncodingException e) {
          return Response.error(new ParseError(e));

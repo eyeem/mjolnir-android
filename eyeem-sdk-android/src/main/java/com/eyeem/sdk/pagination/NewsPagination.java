@@ -17,4 +17,7 @@ public class NewsPagination implements Pagination {
          rb.param("oldestId", news.id);
       }
    }
+
+   @Override public void onFrontFetched(RequestBuilder rb, Object response, Object info) {}
+   @Override public void onBackFetched(RequestBuilder rb, Object response, Object info) {}
 }

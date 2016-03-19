@@ -8,4 +8,7 @@ import java.io.Serializable;
 public interface Pagination extends Serializable {
    public void fetchFront(RequestBuilder rb, Object info);
    public void fetchBack(RequestBuilder rb, Object info);
+
+   public void onFrontFetched(RequestBuilder rb, Object response, Object info);
+   public void onBackFetched(RequestBuilder rb, Object response, Object info);
 }

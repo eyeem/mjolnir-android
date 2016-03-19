@@ -23,6 +23,7 @@ public class MjolnirRequest<T> extends JsonRequest<T> {
 
    protected RequestBuilder b;
    protected Class clazz;
+   protected OnParsedListener onParsedListener;
 
    public MjolnirRequest(RequestBuilder b, Class clazz, Response.Listener<T> listener,
                          Response.ErrorListener errorListener) {
@@ -93,4 +94,19 @@ public class MjolnirRequest<T> extends JsonRequest<T> {
    }
 
    static Response.Listener<Object> dummy = new Response.Listener<Object>() { @Override public void onResponse(Object o) {} };
+
+   public interface OnParsedListener {
+      public void onParsed(Object data);
+   }
+
+   public MjolnirRequest onParsedListener(OnParsedListener onParsedListener) {
+      this.onParsedListener = onParsedListener;
+      return this;
+   }
+
+   protected void onParsed(Object data) {
+      if (onParsedListener != null) {
+         onParsedListener.onParsed(data);
+      }
+   }
 }

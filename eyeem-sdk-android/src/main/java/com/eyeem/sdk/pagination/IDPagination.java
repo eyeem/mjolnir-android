@@ -44,6 +44,9 @@ public class IDPagination implements Pagination {
       rb.paramEncoded("ids", TextUtils.join(",", subIDs));
    }
 
+   @Override public void onFrontFetched(RequestBuilder rb, Object response, Object info) {}
+   @Override public void onBackFetched(RequestBuilder rb, Object response, Object info) {}
+
    private int idsSize() {
       return ids == null ? 0 : ids.size();
    }

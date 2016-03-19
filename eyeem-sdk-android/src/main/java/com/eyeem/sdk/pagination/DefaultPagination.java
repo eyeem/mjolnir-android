@@ -17,4 +17,7 @@ public class DefaultPagination implements Pagination {
    @Override public void fetchBack(RequestBuilder rb, Object info) {
       rb.param("offset",  ((List) info).size());
    }
+
+   @Override public void onFrontFetched(RequestBuilder rb, Object response, Object info) {}
+   @Override public void onBackFetched(RequestBuilder rb, Object response, Object info) {}
 }
