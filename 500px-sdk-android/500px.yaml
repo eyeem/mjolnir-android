@@ -37,6 +37,7 @@ FHUser:
   userpic_https_url: String
   userpic_url: String
   usertype: Fixnum
+  cover_url: String
 FHAuth:
   facebook: Fixnum
   google_oauth2: Fixnum
@@ -124,6 +125,7 @@ FHComment:
   user_id: String
   voted: FalseClass
 FHLocation:
+  name: String
   latitude: Float
   longitude: Float
   radius: String
