@@ -391,10 +391,17 @@ public class FHPX extends RequestBuilder {
    public static final int DEFAULT_RESULTS_PER_PAGE = 20;
 
    @Override public RequestBuilder fetchFront(Object info) {
+      if (pagination != null) {
+         pagination.fetchFront(this, info);
+      }
       return this;
    }
 
    @Override public RequestBuilder fetchBack(Object info) {
+      if (pagination != null) {
+         pagination.fetchBack(this, info);
+         return this;
+      }
       Storage.List list = (Storage.List) info;
       if (list.size() >= DEFAULT_RESULTS_PER_PAGE) {
          return page(list.size()/DEFAULT_RESULTS_PER_PAGE + 1);
