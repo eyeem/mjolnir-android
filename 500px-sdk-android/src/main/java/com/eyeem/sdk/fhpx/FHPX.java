@@ -97,6 +97,12 @@ public class FHPX extends RequestBuilder {
 
    public FHPX tags() { return (FHPX)param("tags", 1); }
 
+   public FHPX geo(FHLocation location) {
+      return (FHPX)param("geo",
+         String.format(Locale.US, "%1$f,%2$f,%3$s", location.latitude, location.longitude, location.radius)
+      );
+   }
+
    public Feature feature() {
       return new Feature(this);
    }

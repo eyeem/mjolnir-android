@@ -123,3 +123,7 @@ FHComment:
   user: FHUser
   user_id: String
   voted: FalseClass
+FHLocation:
+  latitude: Float
+  longitude: Float
+  radius: String
