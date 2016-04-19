@@ -617,3 +617,25 @@ news2:
   headline: String
   action: String
   text: String
+seller_data:
+  accepted_tos: String
+  account_type: String
+  birthday: String
+  city: String
+  company: String
+  country_iso: String
+  created_at: String
+  email: String
+  first_name: String
+  id: String
+  last_name: String
+  paypal_account_id: String
+  phone: String
+  state: String
+  street1: String
+  street2: String
+  tax_id: String
+  updated_at: String
+  user_id: String
+  verified: FalseClass
+  zip: String
