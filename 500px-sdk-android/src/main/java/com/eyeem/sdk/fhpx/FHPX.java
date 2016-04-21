@@ -52,7 +52,11 @@ public class FHPX extends RequestBuilder {
    }
 
    public static FHPX users(String userId) {
-      return (FHPX) path("/v1/users/"+userId).jsonpath("user");
+      return (FHPX) path("/v1/users/" + userId).jsonpath("user");
+   }
+
+   public static FHPX usersFriends(String userId) {
+      return (FHPX) path("/v1/users/" + userId + "/friends").jsonpath("user");
    }
 
    public static FHPX photos() {
