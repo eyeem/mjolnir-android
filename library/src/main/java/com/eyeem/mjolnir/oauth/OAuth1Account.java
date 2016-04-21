@@ -144,8 +144,6 @@ public abstract class OAuth1Account extends Account {
       final Context c,
       UICallback callback) {
 
-      final Context context = c.getApplicationContext();
-
       final WeakReference<UICallback> _callback = new WeakReference<UICallback>(callback);
       final String timestamp = Long.toString(System.currentTimeMillis() / 1000L);
 

@@ -202,8 +202,7 @@ public class RequestBuilder implements Serializable {
    }
 
    public SyncClient sync() {
-      sign();
-      return new SyncClient(this);
+      return new SyncClient(sign());
    }
 
    public VolleyListRequestExecutor listOf(Class clazz) {
