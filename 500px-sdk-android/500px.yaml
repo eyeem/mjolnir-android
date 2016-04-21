@@ -38,6 +38,7 @@ FHUser:
   userpic_url: String
   usertype: Fixnum
   cover_url: String
+  following: FalseClass
 FHAuth:
   facebook: Fixnum
   google_oauth2: Fixnum

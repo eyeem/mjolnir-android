@@ -51,6 +51,10 @@ public class FHPX extends RequestBuilder {
       return (FHPX) path("/v1/users").jsonpath("user");
    }
 
+   public static FHPX users(String userId) {
+      return (FHPX) path("/v1/users/"+userId).jsonpath("user");
+   }
+
    public static FHPX photos() {
       return (FHPX) path("/v1/photos").jsonpath("photos");
    }
