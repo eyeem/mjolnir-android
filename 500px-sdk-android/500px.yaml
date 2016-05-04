@@ -130,3 +130,26 @@ FHLocation:
   latitude: Float
   longitude: Float
   radius: String
+FHGallery:
+  id: String
+  privacy: FalseClass
+  kind: Fixnum
+  user_id: String
+  created_at: Date
+  updated_at: Date
+  items_count: Fixnum
+  name: String
+  token: String
+  description: String
+  subtitle: String
+  nsfw: FalseClass
+  cover_photo:
+    Array: FHCoverPhoto
+  custom_path: String
+FHCoverPhoto:
+  String: Fixnum
+  size: Fixnum
+  url: String
+  nsfw: FalseClass
+  width: Fixnum
+  height: Fixnum

@@ -609,3 +609,9 @@ market_totals:
   editorial: Fixnum
   commercial: Fixnum
   getty: Fixnum
+gallery:
+  id: String
+  photo_id: String
+  file_id: String
+  title: String
+  description: String

@@ -80,6 +80,21 @@ public class FHPX extends RequestBuilder {
    }
 
    public static FHPX usersSearch(String term) { return (FHPX) path("/v1/users/search").param("term", term).jsonpath("users"); }
+
+   public static FHPX galleries(String userId) {
+      return (FHPX) path("/v1/users/" + userId + "/galleries")
+         .param("cover_size", TextUtils.join(",", SIZES_ID))
+         .param("include_cover", "1")
+         .param("kinds", "0,1,2,4,5")
+         .param("privacy", "public")
+         .param("sort", "last_added_to_at")
+         .param("sort_direction", "desc")
+         .jsonpath("galleries");
+   }
+
+   public static FHPX galleries(String userId, String galleryId) {
+      return (FHPX) path("/v1/users/" + userId + "/galleries/" + galleryId + "/items");
+   }
    // endregion
 
    // region params
