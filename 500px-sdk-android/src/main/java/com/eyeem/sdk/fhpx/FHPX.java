@@ -92,6 +92,10 @@ public class FHPX extends RequestBuilder {
          .jsonpath("galleries");
    }
 
+   public static FHPX galleryPhotos(String userId, String galleryId) {
+      return (FHPX) FHPX.path("/v1/users/" + userId + "/galleries/" + galleryId + "/items").jsonpath("photos");
+   }
+
    public static FHPX galleries(String userId, String galleryId) {
       return (FHPX) path("/v1/users/" + userId + "/galleries/" + galleryId + "/items");
    }
