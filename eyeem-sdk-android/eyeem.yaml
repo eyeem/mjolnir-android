@@ -657,3 +657,14 @@ marketUser:
   taxId: String
   company: String
   user: user
+task:
+  id: String
+  type: String
+  description: description
+  icon: String
+  action: String
+  new: Fixnum
+  updatedAt: Date
+description:
+  headline: String
+  subline: String
