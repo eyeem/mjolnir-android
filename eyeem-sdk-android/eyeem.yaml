@@ -665,6 +665,9 @@ task:
   action: String
   new: Fixnum
   updatedAt: Date
+  badge: badge
 description:
   headline: String
   subline: String
+badge:
+  count: Fixnum
