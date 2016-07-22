@@ -381,7 +381,6 @@ news:
       public static final String TYPE_PHOTO_SOLD_GETTY = "photoSoldGetty";
 
       // News item types ==============================================================================
-      public static final String ITEM_TYPE_INSTAGRAM_IMPORTER = "instagramImporter";
       public static final String ITEM_TYPE_URL = "url";
       public static final String ITEM_TYPE_MISSION = "mission";
       public static final String ITEM_TYPE_PHOTO = "photo";
@@ -450,8 +449,6 @@ settings:
   ab_friends_in_discover: FalseClass
   ab_album_list: FalseClass
   ab_show_market_access: FalseClass
-  ab_show_instagram_onboarding: FalseClass
-  ab_show_first_photo_onboarding: FalseClass
   show_nsfw_content: FalseClass
   account_market_seller: FalseClass
   account_market_buyer: FalseClass
@@ -468,7 +465,6 @@ settings:
 services:
   flickr: service
   twitter: service
-  instagram: instagram_service
   google: service
   tumblr: service
   foursquare: service
@@ -477,8 +473,6 @@ service:
   status: String
   id: String
   nickname: String
-instagram_service:
-  show_importer: FalseClass
 facebook_service:
   primary: FalseClass
   status: String
