@@ -665,3 +665,43 @@ description:
   subline: String
 badge:
   count: Fixnum
+marketItem:
+  id: String
+  status: Fixnum
+  modelStatus: String
+  propertyStatus: String
+  reviewStatus: Fixnum
+  score: Fixnum
+  modelAmount: Fixnum
+  propertyAmount: Fixnum
+  modelReleases: releases
+  propertyReleases: releases
+  licenseRequest: FalseClass
+  photo: Photo
+releases:
+  offset: Fixnum
+  limit: Fixnum
+  total: Fixnum
+  items:
+    Array: release
+release:
+  id: String
+  street2: String
+  secondParentFirstName: String
+  lastName: String
+  countryIso: String
+  firstName: String
+  parentLastName: String
+  secondParentLastName: String
+  status: Fixnum
+  email: String
+  birthdate: String
+  street1: String
+  state: String
+  message: String
+  zip: String
+  city: String
+  parentFirstName: String
+  type: Fixnum
+  gender: String
+  accepted: Date
