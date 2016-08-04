@@ -705,3 +705,10 @@ release:
   type: Fixnum
   gender: String
   accepted: Date
+  position: position
+  link : String
+position:
+  left: Float
+  top: Float
+  right: Float
+  bottom: Float
