@@ -712,3 +712,8 @@ position:
   top: Float
   right: Float
   bottom: Float
+vision:
+  aestheticsScore: Float
+  fileId: String
+  keywords:
+    Array: String

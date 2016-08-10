@@ -51,6 +51,10 @@ public class SyncClient {
       return new JSONObject(raw());
    }
 
+   public JSONObject jsonFromPath() throws Exception {
+      return rb.declutter == null ? json() : rb.declutter.jsonObject(json());
+   }
+
    public <E extends Object> E objectOf(Class clazz) throws Exception {
       return (E) ObjectRequest.fromJSON(clazz, rb.declutter == null ? json() : rb.declutter.jsonObject(json()));
    }
