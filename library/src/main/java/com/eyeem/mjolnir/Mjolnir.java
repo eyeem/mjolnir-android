@@ -19,4 +19,8 @@ public class Mjolnir extends Exception {
       this.serverMessage = serverMessage;
       this.errorCode = errorCode;
    }
+
+   @Override public String getMessage() {
+      return "[" + errorCode + "] " + serverMessage;
+   }
 }
