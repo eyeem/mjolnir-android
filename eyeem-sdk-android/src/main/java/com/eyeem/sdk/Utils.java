@@ -9,7 +9,10 @@ import com.eyeem.chips.DefaultBubbles;
 import com.eyeem.chips.Linkify;
 import com.eyeem.chips.Regex;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
@@ -152,6 +155,22 @@ public class Utils {
          sb.append(people[i]);
       }
       return sb.toString();
+   }
+
+   public static void computePartners(Photo photo, JSONObject jsonObject) {
+      try {
+         photo.partnerStatus = new ArrayList<>();
+         JSONObject partnerStatus = jsonObject.getJSONObject("partnerStatus");
+         Iterator<String> keys = partnerStatus.keys();
+
+         while (keys.hasNext()) {
+            String key = keys.next();
+            Partner partner = new Partner();
+            partner.name = key;
+            partner.status = partnerStatus.optInt(key);
+            photo.partnerStatus.add(partner);
+         }
+      } catch (Throwable t) {}
    }
 
    public static String getString(int id) {

@@ -24,10 +24,15 @@ photo:
   openEdit: open_edit
   submittedToMarket: FalseClass
   file_id: String
+  market: marketItem
+  partnerStatus:
+      Array: partner
   java_import_linkify:
     ImportMixin: com.eyeem.chips.Linkify
   java_init_entities:
-    CtorMixin: "Utils.computeEntities(this);"
+    CtorMixin: |
+      Utils.computeEntities(this);
+      Utils.computePartners(this, json);
   java_entities:
     Mixin: |
       public Linkify.Entities entities = new Linkify.Entities();
@@ -668,8 +673,8 @@ badge:
 marketItem:
   id: String
   status: Fixnum
-  modelStatus: String
-  propertyStatus: String
+  modelStatus: Fixnum
+  propertyStatus: Fixnum
   reviewStatus: Fixnum
   score: Fixnum
   modelAmount: Fixnum
@@ -717,3 +722,6 @@ vision:
   fileId: String
   keywords:
     Array: String
+partner:
+  name: String
+  status: Fixnum
