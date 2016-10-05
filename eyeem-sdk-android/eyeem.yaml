@@ -691,28 +691,17 @@ releases:
   model:
     Array: release
 release:
-  id: String
-  street2: String
-  secondParentFirstName: String
-  lastName: String
-  countryIso: String
-  firstName: String
-  parentLastName: String
-  secondParentLastName: String
+  release_id: String
+  release_filename: String
+  first_name: String
+  last_name: String
+  parent_first_name: String
+  parent_last_name: String
   status: Fixnum
   email: String
-  birthdate: String
-  street1: String
-  state: String
-  message: String
-  zip: String
-  city: String
-  parentFirstName: String
-  type: Fixnum
-  gender: String
-  accepted: Date
+  releaseUrl: String
   position: position
-  link : String
+  release_type : String
 position:
   left: Float
   top: Float
