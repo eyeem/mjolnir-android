@@ -713,5 +713,14 @@ vision:
   keywords:
     Array: String
 partner:
+  java_methods:
+    Mixin: |
+      // statuses ===================================================================================
+      public static final String TYPE_SELECTED = "SELECTED";
+      public static final String TYPE_SUBMITTED = "SUBMITTED";
+      public static final String TYPE_ON_SALE = "ON_SALE";
+      public static final String TYPE_FAILED = "FAILED";
+      public static final String TYPE_REJECTED = "REJECTED";
+      public static final String TYPE_REMOVED = "REMOVED";
   name: String
-  status: Fixnum
+  status: String

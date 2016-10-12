@@ -167,7 +167,7 @@ public class Utils {
             String key = keys.next();
             Partner partner = new Partner();
             partner.name = key;
-            partner.status = partnerStatus.optInt(key);
+            partner.status = partnerStatus.optString(key);
             photo.partnerStatus.add(partner);
          }
       } catch (Throwable t) {}
