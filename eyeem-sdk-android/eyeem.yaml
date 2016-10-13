@@ -724,3 +724,20 @@ partner:
       public static final String TYPE_REMOVED = "REMOVED";
   name: String
   status: String
+payout:
+  java_methods:
+    Mixin: |
+      public static final int STATUS_PENDING = 1;
+      public static final int STATUS_REQUESTED = 2;
+      public static final int STATUS_PROCESSING = 3;
+      public static final int STATUS_PAID = 4;
+      public static final int STATUS_FAILED = 5;
+  id: String
+  userId: String
+  currency: String
+  status: Fixnum
+  createdAt: Date
+  updatedAt: Date
+  amount: Float
+  paypalAddress: String
+  payoutreceiptUrl: String
