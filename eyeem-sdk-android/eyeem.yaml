@@ -741,3 +741,26 @@ payout:
   amount: Float
   paypalAddress: String
   payoutreceiptUrl: String
+releaseRequest:
+  id: String
+  status: Fixnum
+  type: Fixnum
+  firstName: String
+  lastName: String
+  email: String
+  message: String
+  birthdate: String
+  gender: String
+  parentFirstName: String
+  parentLastName: String
+  secondParentFirstName: String
+  secondParentLastName: String
+  street1: String
+  street2: String
+  city: String
+  state: String
+  countryIso: String
+  zip: String
+  phoneNumber: String
+  photos:
+    Array: photo
