@@ -762,5 +762,20 @@ releaseRequest:
   countryIso: String
   zip: String
   phoneNumber: String
+  ownerStreet1: String
+  ownerStreet2: String
+  ownerCompany: String
+  ownerCity: String
+  ownerState: String
+  ownerCountryIso: String
+  ownerZip: String
+  ownerPhone: String
+  description: String
+  propertyStreet1: String
+  propertyStreet2: String
+  propertyCity: String
+  propertyState: String
+  propertyCountryIso: String
+  propertyZip: String
   photos:
     Array: photo
