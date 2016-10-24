@@ -69,11 +69,17 @@ public class RequestBuilder implements Serializable {
       return this;
    }
 
+   public RequestBuilder patch() {
+      method = Request.Method.PATCH;
+      return this;
+   }
+
    public String method() {
       switch (method) {
          case Request.Method.POST : return "POST";
          case Request.Method.PUT : return "PUT";
          case Request.Method.DELETE : return "DELETE";
+         case Request.Method.PATCH : return "PATCH";
          case Request.Method.GET :
          default: return "GET";
       }

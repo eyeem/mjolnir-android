@@ -691,22 +691,28 @@ releases:
   model:
     Array: release
 release:
-  release_id: String
-  release_filename: String
-  first_name: String
-  last_name: String
-  parent_first_name: String
-  parent_last_name: String
-  status: Fixnum
+  java_methods:
+    Mixin: |
+      // statuses ===================================================================================
+      public static final String TYPE_MODEL = "MODEL";
+      public static final String TYPE_PROPERTY = "PROPERTY";
+      public static final String STATUS_NEEDED = "NEEDED";
+      public static final String STATUS_REQUESTED = "REQUESTED";
+      public static final String STATUS_CLEARED = "CLEARED";
+      public static final String STATUS_DENIED = "DENIED";
+  id: String
+  uuid: String
+  releaseType : String # MODEL, PROPERTY
+  releaseFilename: String
+  firstName: String
+  lastName: String
+  status: String
   email: String
-  releaseUrl: String
-  position: position
-  release_type : String
-position:
-  left: Float
-  top: Float
-  right: Float
-  bottom: Float
+  link: String
+  tagX1: Float
+  tagX2: Float
+  tagY1: Float
+  tagY2: Float
 vision:
   aestheticsScore: Float
   fileId: String
@@ -743,14 +749,16 @@ payout:
   payoutreceiptUrl: String
 releaseRequest:
   id: String
-  status: Fixnum
-  type: Fixnum
+  uuid: String
+  releaseType : String # MODEL, PROPERTY
+  status: String # NEEDED, REQUESTED, CLEARED
   firstName: String
   lastName: String
   email: String
   message: String
   birthdate: String
-  gender: String
+  gender: String # MALE, FEMALE, OTHER
+  modelIdentity: String # SELF, MY_KID, OTHER
   parentFirstName: String
   parentLastName: String
   secondParentFirstName: String
