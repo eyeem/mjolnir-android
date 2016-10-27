@@ -38,7 +38,7 @@ public class MjolnirRequest<T> extends JsonRequest<T> {
    public RequestBuilder getRequestBuilder() {return b;}
 
    @Override public String getBodyContentType() {
-      if (b.method != Request.Method.PUT && b.method != Request.Method.POST)
+      if (b.method != Request.Method.PUT && b.method != Request.Method.POST && b.method != Request.Method.PATCH)
          return super.getBodyContentType();
 
       if (!TextUtils.isEmpty(b.content)) { // string content, e.g. json
@@ -52,7 +52,7 @@ public class MjolnirRequest<T> extends JsonRequest<T> {
    }
 
    @Override public byte[] getBody() {
-      if (b.method != Request.Method.PUT && b.method != Request.Method.POST)
+      if (b.method != Request.Method.PUT && b.method != Request.Method.POST && b.method != Request.Method.PATCH)
          return super.getBody();
 
       if (!TextUtils.isEmpty(b.content)) { // string content, e.g. json
