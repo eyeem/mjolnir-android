@@ -703,9 +703,11 @@ release:
   id: String
   uuid: String
   releaseType : String # MODEL, PROPERTY
-  releaseFilename: String
+  releaseUrl: String
   firstName: String
   lastName: String
+  ownerFirstName: String
+  ownerLastName: String
   status: String
   email: String
   link: String
@@ -778,7 +780,10 @@ releaseRequest:
   ownerCountryIso: String
   ownerZip: String
   ownerPhone: String
-  description: String
+  ownerFirstName: String
+  ownerLastName: String
+  ownerEmail: String
+  propertyDescription: String
   propertyStreet1: String
   propertyStreet2: String
   propertyCity: String
