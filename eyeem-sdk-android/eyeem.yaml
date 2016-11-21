@@ -681,6 +681,7 @@ marketItem:
   modelAmount: Fixnum
   propertyAmount: Fixnum
   licenseRequest: FalseClass
+  cantGetReleases: String
 releases:
   is_private: String
   needs_model: String
