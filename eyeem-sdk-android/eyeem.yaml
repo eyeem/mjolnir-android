@@ -308,9 +308,15 @@ contact:
   user: user
   file_id: String
 mission:
+  java_methods:
+    Mixin: |
+      public static final String STATUS_OPEN = "OPEN";
+      public static final String STATUS_EXPIRED = "EXPIRED";
+      public static final String STATUS_COMPLETED = "COMPLETED";
   id: String
   title: String
   partnerName: String
+  startdate: Date
   deadline: Date
   prize: String
   prizeCaption: String
@@ -321,7 +327,19 @@ mission:
   thumbUrl: String
   headerPhoto: photo
   album: Album
+  marketPhotos: FalseClass
+  completed: FalseClass
+  stickyMission: FalseClass
+  filename: String
+  position: Fixnum
+  status: String
   samplePhotos:
+    Array: photo
+  winnerPhotos:
+    Array: photo
+  runnerupPhotos:
+    Array: photo
+  grandprizePhotos:
     Array: photo
 search_result:
   totalUsers: Fixnum
