@@ -79,7 +79,7 @@ android {
 apply plugin: 'maven'
 apply plugin: 'signing'
 
-version = "2.4.0.2-SNAPSHOT"
+version = "2.4.1-SNAPSHOT"
 group = "com.eyeem.sdk"
 
 configurations {
