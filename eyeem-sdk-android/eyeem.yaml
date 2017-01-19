@@ -323,6 +323,7 @@ mission:
   terms: String
   brief: String
   description: String
+  recap: String
   url: String
   thumbUrl: String
   headerPhoto: photo
