@@ -452,7 +452,6 @@ settings:
   push_user_joined: FalseClass
   email_weekly_newsletter: FalseClass
   push_photo_like: FalseClass
-  ab_show_friends: FalseClass
   email_photo_comment: FalseClass
   email_photo_tagged_person: FalseClass
   email_photo_like: FalseClass
@@ -471,9 +470,6 @@ settings:
   push_photo_tagged_person: FalseClass
   facebook_photocomment: FalseClass
   push_user_follower: FalseClass
-  ab_friends_in_discover: FalseClass
-  ab_album_list: FalseClass
-  ab_show_market_access: FalseClass
   show_nsfw_content: FalseClass
   account_market_seller: FalseClass
   account_market_buyer: FalseClass
@@ -487,6 +483,7 @@ settings:
   discover_content_local_de_en: FalseClass
   discover_content_local_es_es: FalseClass
   discover_content_local_es_en: FalseClass
+  ab_skip_upload: FalseClass
 services:
   flickr: service
   twitter: service
