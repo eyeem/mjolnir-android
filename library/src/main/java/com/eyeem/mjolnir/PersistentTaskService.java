@@ -113,6 +113,9 @@ public class PersistentTaskService extends Service implements ObservableRequestQ
    public void onCreate() {
       super.onCreate();
       Log.i(TAG, "onCreate");
+      if (requestQueue == null) {
+         return;
+      }
       requestQueue.registerListener(this);
       HandlerThread thread = new HandlerThread(TAG, Thread.MIN_PRIORITY);
       thread.start();
@@ -122,9 +125,14 @@ public class PersistentTaskService extends Service implements ObservableRequestQ
    @Override
    public void onDestroy() {
       super.onDestroy();
-      requestQueue.unregisterListener(this);
-      persistenceHandler.getLooper().quit();
-      persistenceHandler = null;
+      if (requestQueue != null) {
+         requestQueue.unregisterListener(this);
+      }
+
+      if (persistenceHandler != null) {
+         persistenceHandler.getLooper().quit();
+         persistenceHandler = null;
+      }
       Log.i(TAG, "onDestroy");
    }
 
