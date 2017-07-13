@@ -32,7 +32,7 @@ dependencies {
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.4.0'
     compile 'com.squareup.okio:okio:1.5.0'
     compile 'com.squareup.mimecraft:mimecraft:1.1.0'
-    compile 'com.squareup:tape:1.2.3'
+    compile 'com.evernote:android-job:1.1.11'
     compile 'com.esotericsoftware.kryo:kryo:2.20'
 
     testCompile 'junit:junit:4.12'

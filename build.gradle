@@ -1,6 +1,7 @@
 class ProjectSettings{
     int compileSdk = 25
     int targetSdk = 25
+    int minSdk = 14
     String buildTools = '25.0.0'
     String androidPlugin = 'com.android.tools.build:gradle:2.3.3'
 }
