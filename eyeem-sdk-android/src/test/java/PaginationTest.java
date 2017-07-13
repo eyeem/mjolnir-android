@@ -1,4 +1,3 @@
-import com.eyeem.sdk.BuildConfig;
 import com.eyeem.sdk.EyeEm;
 import com.eyeem.sdk.News;
 import com.eyeem.sdk.Photo;
@@ -8,7 +7,7 @@ import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
@@ -20,8 +19,8 @@ import static org.junit.Assert.assertEquals;
 /**
  * Created by vishna on 11/08/15.
  */
-@Config(constants = BuildConfig.class, sdk = 21)
-@RunWith(RobolectricGradleTestRunner.class)
+@Config(manifest= Config.NONE)
+@RunWith(RobolectricTestRunner.class)
 public class PaginationTest {
 
    JSONObject news_feed;

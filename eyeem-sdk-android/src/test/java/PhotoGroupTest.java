@@ -5,7 +5,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowApplication;
 
@@ -21,8 +21,8 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by vishna on 18/08/15.
  */
-@Config(constants = BuildConfig.class, sdk = 21)
-@RunWith(RobolectricGradleTestRunner.class)
+@Config(manifest= Config.NONE)
+@RunWith(RobolectricTestRunner.class)
 public class PhotoGroupTest {
 
    /**

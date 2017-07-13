@@ -1,5 +1,6 @@
 buildscript {
     repositories {
+        jcenter()
         maven {
             url 'https://oss.sonatype.org/content/repositories/snapshots/'
         }
@@ -34,9 +35,9 @@ dependencies {
 
     compile project(':library')
 
-    testCompile 'junit:junit:4.10'
-    testCompile 'org.robolectric:robolectric:3.0'
-    testCompile 'com.squareup:fest-android:1.0.8'
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.robolectric:robolectric:3.3.2'
+    //testCompile 'com.squareup:fest-android:1.0.8'
 }
 
 task generateSources {
@@ -47,7 +48,7 @@ task generateSources {
             commandLine 'rm', '-rf', 'src/javagen'
         }
         exec {
-            commandLine 'mjolnir-package', '--yaml', 'eyeem.yaml', '--packagename', 'com.eyeem.sdk', '--output', 'src/javagen'
+            commandLine "${MJOLNIR_PATH}/mjolnir-package", '--yaml', 'eyeem.yaml', '--packagename', 'com.eyeem.sdk', '--output', 'src/javagen'
         }
     }
 }
@@ -68,6 +69,12 @@ android {
         }
     }
 
+//    testOptions {
+//        unitTests {
+//            includeAndroidResources = true
+//        }
+//    }
+
     libraryVariants.all { variant ->
         variant.javaCompile.dependsOn generateSources
     }
@@ -79,7 +86,7 @@ android {
 apply plugin: 'maven'
 apply plugin: 'signing'
 
-version = "2.4.1.2-SNAPSHOT"
+version = "2.4.1.3-SNAPSHOT"
 group = "com.eyeem.sdk"
 
 configurations {
@@ -89,7 +96,7 @@ configurations {
 }
 
 signing {
-    required { has("release") && gradle.taskGraph.hasTask("uploadArchives") }
+    required { gradle.taskGraph.hasTask("assembleRelease") && gradle.taskGraph.hasTask("uploadArchives") }
     sign configurations.archives
 }
 

@@ -5,20 +5,18 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowApplication;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 
 /**
  * Created by vishna on 27/08/15.
  */
-@Config(constants = BuildConfig.class, sdk = 21)
-@RunWith(RobolectricGradleTestRunner.class)
+@Config(manifest= Config.NONE)
+@RunWith(RobolectricTestRunner.class)
 public class UserTest {
 
    JSONObject userJSON;
