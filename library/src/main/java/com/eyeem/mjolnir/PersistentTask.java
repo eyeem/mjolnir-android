@@ -23,9 +23,11 @@ public class PersistentTask extends Job {
 
    public static final String TAG = PersistentTask.class.getSimpleName();
 
-   protected RequestBuilder rb;
    protected boolean immediate;
 
+   public Object data;
+   public Result result;
+   public Throwable reason;
 
    public PersistentTask() { /*kryo*/ }
 
@@ -49,32 +51,49 @@ public class PersistentTask extends Job {
       });
 
       try {
-         final Object o = execute();
+         data = execute();
          MAIN_THREAD.post(new Runnable() {
             @Override public void run() {
-               onSuccess(o);
+               onSuccess();
             }
          });
-         return Result.SUCCESS;
+         return result = Result.SUCCESS;
       } catch (Throwable t) {
-         return onError(t);
+         reason = t;
+         result = onError(t);
+         MAIN_THREAD.post(new Runnable() {
+            @Override public void run() {
+               onFailure();
+            }
+         });
+         return result;
       }
    }
 
-   public PersistentTask setRequestBuilder(RequestBuilder rb) {
-      this.rb = rb;
-      return this;
-   }
-
+   /**
+    * This should deliver some kind of result
+    * @return
+    * @throws Exception
+    */
    public Object execute() throws Exception {
       throw new IllegalStateException("Method not implemented");
    }
 
-   public void onStart() {
-   }
+   /**
+    * Triggered when the job is run, happens on UI thread and before the execute()
+    * which is supposed to be an IO operation
+    */
+   public void onStart() {}
 
-   public void onSuccess(Object data) {
-   }
+   /**
+    * Executed on UI thread in case task has completed sucessfully
+    */
+   public void onSuccess() {}
+
+   /**
+    * Executed on UI thread in case task has failed
+    */
+   public void onFailure() {}
 
    protected Result onError(Throwable t) {
       return Result.FAILURE;
