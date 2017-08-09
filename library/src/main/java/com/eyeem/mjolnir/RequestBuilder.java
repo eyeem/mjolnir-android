@@ -190,8 +190,7 @@ public class RequestBuilder implements Serializable {
    }
 
    public SyncClient sync() {
-      sign();
-      return new SyncClient(this);
+      return new SyncClient(sign());
    }
 
    public VolleyListRequestExecutor listOf(Class clazz) {
@@ -231,7 +230,7 @@ public class RequestBuilder implements Serializable {
 
    public RequestBuilder sign() {
       if (account != null) {
-         account.sign(this);
+         return account.sign(this);
       }
       return this;
    }
