@@ -113,7 +113,6 @@ public class PersistentTask extends Job {
          .setExecutionWindow(delay + 1L, delay + 60_000L)
          .setRequiredNetworkType(JobRequest.NetworkType.CONNECTED)
          .setBackoffCriteria(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS, JobRequest.BackoffPolicy.EXPONENTIAL)
-         .setPersisted(true)
          .setExtras(extras)
          .build();
    }

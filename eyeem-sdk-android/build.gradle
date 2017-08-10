@@ -1,21 +1,8 @@
-buildscript {
-    repositories {
-        jcenter()
-        maven {
-            url 'https://oss.sonatype.org/content/repositories/snapshots/'
-        }
-        mavenCentral()
-        mavenLocal()
-    }
-    dependencies {
-        classpath project.ver.androidPlugin
-    }
-}
-
 apply plugin: 'com.android.library'
 
 dependencies {
     repositories {
+        google()
         maven {
             url 'https://oss.sonatype.org/content/repositories/snapshots/'
         }
@@ -23,7 +10,7 @@ dependencies {
         mavenLocal()
     }
 
-    compile 'com.android.support:support-v4:18.0.+'
+    compile "com.android.support:support-v4:${support_version}"
 
     compile 'com.mcxiaoke.volley:library:1.0.10'
 
@@ -37,7 +24,6 @@ dependencies {
 
     testCompile 'junit:junit:4.12'
     testCompile 'org.robolectric:robolectric:3.3.2'
-    //testCompile 'com.squareup:fest-android:1.0.8'
 }
 
 task generateSources {
@@ -54,8 +40,8 @@ task generateSources {
 }
 
 android {
-    compileSdkVersion project.ver.compileSdk
-    buildToolsVersion project.ver.buildTools
+    compileSdkVersion compile_sdk
+    buildToolsVersion build_tools_version
 
     lintOptions {
         abortOnError false
@@ -86,7 +72,7 @@ android {
 apply plugin: 'maven'
 apply plugin: 'signing'
 
-version = "2.4.2-SNAPSHOT"
+version = "2.4.2.1-SNAPSHOT"
 group = "com.eyeem.sdk"
 
 configurations {

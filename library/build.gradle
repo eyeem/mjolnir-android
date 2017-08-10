@@ -1,21 +1,8 @@
-buildscript {
-    repositories {
-        jcenter()
-        maven {
-            url 'https://oss.sonatype.org/content/repositories/snapshots/'
-        }
-        mavenCentral()
-        mavenLocal()
-    }
-    dependencies {
-        classpath project.ver.androidPlugin
-    }
-}
-
 apply plugin: 'com.android.library'
 
 dependencies {
     repositories {
+        google()
         maven {
             url 'https://oss.sonatype.org/content/repositories/snapshots/'
         }
@@ -23,7 +10,7 @@ dependencies {
         mavenLocal()
     }
 
-    compile 'com.android.support:support-v4:18.0.+'
+    compile "com.android.support:support-v4:${support_version}"
 
     compile 'com.mcxiaoke.volley:library:1.0.10'
 
@@ -32,7 +19,7 @@ dependencies {
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.4.0'
     compile 'com.squareup.okio:okio:1.5.0'
     compile 'com.squareup.mimecraft:mimecraft:1.1.0'
-    compile 'com.evernote:android-job:1.1.11'
+    compile 'com.evernote:android-job:1.2.0-alpha3'
     compile 'com.esotericsoftware.kryo:kryo:2.20'
 
     testCompile 'junit:junit:4.12'
@@ -54,8 +41,8 @@ task generateSources {
 }
 
 android {
-    compileSdkVersion project.ver.compileSdk
-    buildToolsVersion project.ver.buildTools
+    compileSdkVersion compile_sdk
+    buildToolsVersion build_tools_version
 
     lintOptions {
         abortOnError false
@@ -81,7 +68,7 @@ android {
 apply plugin: 'maven'
 apply plugin: 'signing'
 
-version = "0.1.4-SNAPSHOT"
+version = "0.1.4.1-SNAPSHOT"
 group = "com.eyeem.mjolnir"
 
 configurations {
