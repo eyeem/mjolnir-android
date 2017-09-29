@@ -10,6 +10,7 @@ import android.util.Log;
 import com.android.volley.DefaultRetryPolicy;
 
 import com.evernote.android.job.Job;
+import com.evernote.android.job.JobManager;
 import com.evernote.android.job.JobRequest;
 import com.evernote.android.job.util.support.PersistableBundleCompat;
 
@@ -129,7 +130,16 @@ public class PersistentTask extends Job {
                   // NO-OP
                } finally {
                   if (result == null || result == Result.RESCHEDULE) {
-                     buildMe(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS).schedule();
+
+                     try {
+                        buildMe(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS).schedule();
+                     } catch (IllegalStateException ise) {
+                        boolean cleanJobs = ise.getMessage() != null && ise.getMessage().contains("100");
+
+                        if (cleanJobs) { // sorry
+                           JobManager.instance().cancelAll();
+                        }
+                     }
                   }
                }
             }
