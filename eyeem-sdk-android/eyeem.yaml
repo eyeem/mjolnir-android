@@ -732,6 +732,7 @@ release:
   tagX2: Float
   tagY1: Float
   tagY2: Float
+  multiReleaseId: String
 vision:
   aestheticsScore: Float
   fileId: String
