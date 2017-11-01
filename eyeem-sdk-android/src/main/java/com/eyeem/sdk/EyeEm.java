@@ -190,6 +190,10 @@ public class EyeEm extends RequestBuilder {
       return (EyeEm) new EyeEm("/v2/news").jsonpath("news.items").param("aggregated", "1").pagination(new NewsPagination());
    }
 
+   public static EyeEm venuesGeocode(String query) {
+      return (EyeEm) new EyeEm("/v2/venues/geocode/").param("query", query).jsonpath("response");
+   }
+
 ///// PARAMS
    public EyeEm defaults() {
       return detailed()

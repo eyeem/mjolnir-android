@@ -772,3 +772,14 @@ releaseRequest:
   propertyZip: String
   photos:
     Array: photo
+geocode:
+  countryIso: String  # e.g. DE
+  name: String        # e.g. Berlin
+  displayName: String # e.g. Berlin, Germany
+  fsGeonameId: String # geonameid:2950159
+  geometry: geometry
+geometry:
+  center: coords
+coords:
+  lat: Float
+  lng: Float
