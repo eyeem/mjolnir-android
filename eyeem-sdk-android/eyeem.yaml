@@ -211,40 +211,6 @@ location:
 venue_service:
   categoryName: String
   id: String
-discover_meta:
-  header: header
-  weather: weather
-  lat: String
-  lng: String
-discover_item:
-  title: String
-  subtitle: String
-  weight: Float
-  primaryReason: String
-  reason: String
-  album: album
-  trendingWeight: Float
-  nearbyWeight: Float
-  type: String
-  photos: photos
-  java_types:
-    Mixin: |
-      public static final String TYPE_ALBUM = "album";
-      public static final String TYPE_POPULAR = "popular";
-      public static final String TYPE_NEARBY = "nearbyLive";
-      public static final String TYPE_USER = "user";
-      public static final String TYPE_FRIENDS = "friends";
-      public boolean local; // FIXME
-weather:
-  weather_icon: String
-  weather_code: String
-  temp_f: String
-  temp_c: String
-header:
-  venue: venue
-  image_url: String
-  greeting: String
-  city: city
 venue:
   name: String
   serviceId: String
@@ -285,10 +251,6 @@ venue:
       public boolean noLocation;
       public double newLat;
       public double newLon;
-city:
-  lng: String
-  lat: String
-  name: String
 photos:
   total: Fixnum
   limit: Fixnum
