@@ -217,6 +217,7 @@ venue:
   category: String
   categoryName: String
   venueServiceName: String
+  categoryIcon: String
   sentences:
      Array: String
   java_import_iterator:
