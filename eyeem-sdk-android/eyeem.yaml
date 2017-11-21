@@ -209,7 +209,9 @@ location:
   countryAlbum: album
   venueService: venue_service
 venue_service:
+  name: String
   categoryName: String
+  category: String
   id: String
 venue:
   name: String
