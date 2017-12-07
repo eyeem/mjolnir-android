@@ -19,7 +19,7 @@ dependencies {
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.4.0'
     compile 'com.squareup.okio:okio:1.5.0'
     compile 'com.squareup.mimecraft:mimecraft:1.1.0'
-    compile 'com.evernote:android-job:1.2.0-alpha3'
+    compile 'com.evernote:android-job:1.2.1'
     compile 'com.esotericsoftware.kryo:kryo:2.20'
 
     testCompile 'junit:junit:4.12'
@@ -68,7 +68,7 @@ android {
 apply plugin: 'maven'
 apply plugin: 'signing'
 
-version = "0.1.4.2-SNAPSHOT"
+version = "0.1.4.3-SNAPSHOT"
 group = "com.eyeem.mjolnir"
 
 configurations {
