@@ -275,8 +275,10 @@ contact:
 mission:
   java_methods:
     Mixin: |
-      public static final String STATUS_OPEN = "OPEN";
-      public static final String STATUS_EXPIRED = "EXPIRED";
+      public static final String STATUS_IN_PREPARATION = "IN_PREPARATION";
+      public static final String STATUS_READY_TO_LAUNCH = "READY_TO_LAUNCH";
+      public static final String STATUS_RUNNING = "RUNNING";
+      public static final String STATUS_SELECTING_WINNERS = "SELECTING_WINNERS";
       public static final String STATUS_COMPLETED = "COMPLETED";
   id: String
   title: String
