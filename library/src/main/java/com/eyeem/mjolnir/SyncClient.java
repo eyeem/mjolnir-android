@@ -170,7 +170,7 @@ public class SyncClient {
          if (Constants.DEBUG && code / 200 != 2)
             Log.i(Constants.TAG, String.format("%d : %s", code, rb.toUrl()));
 
-         InputStream is = (code == 400 || code == 401 || code == 403) ? connection.getErrorStream() : connection.getInputStream();
+         InputStream is = (code == 400 || code == 401 || code == 403 || code == 404) ? connection.getErrorStream() : connection.getInputStream();
 
          final String encoding = connection.getContentEncoding();
          if (encoding != null && encoding.equalsIgnoreCase("gzip")) {

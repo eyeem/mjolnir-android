@@ -68,7 +68,7 @@ android {
 apply plugin: 'maven'
 apply plugin: 'signing'
 
-version = "0.1.4.3-SNAPSHOT"
+version = "0.1.4.4-SNAPSHOT"
 group = "com.eyeem.mjolnir"
 
 configurations {
