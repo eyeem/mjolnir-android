@@ -825,3 +825,12 @@ mission2:
     Array: String
   createdAt: Date
   updatedAt: Date
+lightbox:
+  id: String
+  userId: String
+  name: String
+  createdAt: Date
+  lastUserUpdatedAt: Date
+  totalPhotos: Fixnum
+  photos:
+    Array: photo
