@@ -159,7 +159,7 @@ person:
       } else if (serviceType.equals("twitter")) {
          name = nickname;
       }
-      
+
       return serviceType + ":" + serviceId + ":" + name;
       }
 albums:
@@ -229,7 +229,7 @@ venue:
   java_init_topics:
     CtorMixin: |
       JSONObject topics = json.optJSONObject("topics");
-      
+
       if (topics != null) {
          Iterator it = topics.keys();
          while (it.hasNext()) {
@@ -786,3 +786,42 @@ geometry:
 coords:
   lat: Float
   lng: Float
+mission2:
+  java_methods:
+    Mixin: |
+      public static final String STATUS_OPEN = "OPEN";
+      public static final String STATUS_EXPIRED = "EXPIRED";
+      public static final String STATUS_COMPLETED = "COMPLETED";
+      public static final String STATUS_RUNNING = "RUNNING";
+  id: String # e.g. "ef400bae-ddea-49bf-a3eb-24e636d971e1",
+  partnerName: String # e.g. "Google Pixel 2",
+  startDate: Date # String "2018-06-06T01:00:00Z"
+  endDate: Date # "2018-08-01T01:00:00Z"
+  status: String # "RUNNING"
+  brandLogoUrl: String # "https://www.eyeem.com/blog/wp-content/uploads/2018/06/mission-logo.png",
+  tosLink: String # "https://goo.gl/cYjau3",
+  marketOnly: FalseClass
+  sticky: FalseClass
+  position: Fixnum
+  previewable: Fixnum
+  blogUrl: String
+  samplePhotoLightboxId: String
+  winnerPhotos:
+    Array: photo
+  runnerupPhotos:
+    Array: photo
+  grandprizePhotos:
+    Array: photo
+  backgroundImageId: String
+  albumId: String
+  missionTitle: String
+  locale: String
+  description: String
+  prizeTitle: String
+  prizeDescription: String
+  do:
+    Array: String
+  dont:
+    Array: String
+  createdAt: Date
+  updatedAt: Date
