@@ -789,10 +789,11 @@ coords:
 mission2:
   java_methods:
     Mixin: |
-      public static final String STATUS_OPEN = "OPEN";
-      public static final String STATUS_EXPIRED = "EXPIRED";
-      public static final String STATUS_COMPLETED = "COMPLETED";
+      public static final String STATUS_IN_PREPARATION = "IN_PREPARATION";
+      public static final String STATUS_READY_TO_LAUNCH = "READY_TO_LAUNCH";
       public static final String STATUS_RUNNING = "RUNNING";
+      public static final String STATUS_SELECTING_WINNERS = "SELECTING_WINNERS";
+      public static final String STATUS_COMPLETED = "COMPLETED";
   id: String # e.g. "ef400bae-ddea-49bf-a3eb-24e636d971e1",
   partnerName: String # e.g. "Google Pixel 2",
   startDate: Date # String "2018-06-06T01:00:00Z"
@@ -832,5 +833,4 @@ lightbox:
   createdAt: Date
   lastUserUpdatedAt: Date
   totalPhotos: Fixnum
-  photos:
-    Array: photo
+  photos: photos
