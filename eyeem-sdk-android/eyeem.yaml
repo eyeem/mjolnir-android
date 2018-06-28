@@ -820,6 +820,7 @@ mission2:
   description: String
   prizeTitle: String
   prizeDescription: String
+  backgroundImage: photo
   do:
     Array: String
   dont:
