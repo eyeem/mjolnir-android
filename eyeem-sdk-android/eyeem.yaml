@@ -449,6 +449,7 @@ settings:
   discover_content_local_es_es: FalseClass
   discover_content_local_es_en: FalseClass
   ab_skip_upload: FalseClass
+  ab_new_home: FalseClass
 services:
   flickr: service
   twitter: service
