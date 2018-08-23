@@ -3,12 +3,6 @@ package com.eyeem.mjolnir;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.android.volley.Request;
-import com.squareup.mimecraft.Multipart;
-import com.squareup.mimecraft.Part;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.OkUrlFactory;
-
 import org.json.JSONObject;
 
 import java.io.BufferedOutputStream;
@@ -28,23 +22,34 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.zip.GZIPInputStream;
 
-import javax.net.ssl.SSLContext;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 /**
  * Created by vishna on 22/11/13.
  */
 public class SyncClient {
 
+   /** Copied from Volley/Request. */
+   public interface Method {
+      int DEPRECATED_GET_OR_POST = -1;
+      int GET = 0;
+      int POST = 1;
+      int PUT = 2;
+      int DELETE = 3;
+      int HEAD = 4;
+      int OPTIONS = 5;
+      int TRACE = 6;
+      int PATCH = 7;
+   }
+
    RequestBuilder rb;
-   ProgressCallback callback;
 
    public SyncClient(RequestBuilder rb) {
       this.rb = rb;
-   }
-
-   public SyncClient callback(ProgressCallback callback) {
-      this.callback = callback;
-      return this;
    }
 
    public JSONObject json() throws Exception {
@@ -64,215 +69,60 @@ public class SyncClient {
    }
 
    public String raw() throws Exception {
-      HttpURLConnection connection = buildConnection();
-      if (rb.method == Request.Method.PUT || rb.method == Request.Method.POST || rb.method == Request.Method.PATCH) {
 
-         if (!TextUtils.isEmpty(rb.content)) { // string content, e.g. json
-            final byte[] bytes = rb.content.getBytes("UTF-8");
-            connection.setRequestProperty("Content-Length", Integer.toString(bytes.length));
-            connection.setRequestProperty("Content-Type", rb.content_type);
-            connection.setDoOutput(true);
-            OutputStream os = connection.getOutputStream();
-            try {
-               os.write(bytes);
-               os.flush();
-            } finally {
-               os.close();
-            }
-         } else if (rb.files.entrySet().size() == 0) { // url encoded
-            connection.setDoInput(true);
-            connection.setDoOutput(true);
-            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
-            connection.setDoOutput(true);
-            OutputStream os = connection.getOutputStream();
-            try {
-               os.write(rb.toQuery().getBytes("UTF-8"));
-               os.flush();
-            } finally {
-               os.close();
-            }
-         } else { // multipart
-            connection.setDoInput(true);
-            connection.setDoOutput(true);
-            connection.setDoOutput(true);
-            connection.setChunkedStreamingMode(FilePart.MAX_BUFFER_SIZE);
+      OkHttpClient client = new OkHttpClient.Builder()
+            .readTimeout(Constants.CONNECTION_TIMEOUT_IN_SEC, TimeUnit.SECONDS)
+            .writeTimeout(Constants.CONNECTION_TIMEOUT_IN_SEC, TimeUnit.SECONDS)
+            .connectTimeout(Constants.CONNECTION_TIMEOUT_IN_SEC, TimeUnit.SECONDS)
+            .build();
 
-            Multipart.Builder mb = new Multipart.Builder();
-            mb.type(Multipart.Type.FORM);
-
-            for (Map.Entry<String, RequestBuilder.StringWrapper> e : rb.params.entrySet()) {
-               mb.addPart(
-                  new Part.Builder()
-                     .contentType("text/plain; charset=UTF-8")
-                     .contentDisposition("form-data; name=\"" + e.getKey() + "\"")
-                     .body(e.getValue().value)
-                     .build()
-               );
-            }
-
-            for (Map.Entry<String, String> e : rb.files.entrySet()) {
-               File file = new File(e.getValue());
-               if (!file.exists()) continue;
-               mb.addPart(
-                  new FilePart(file)
-                     .callback(callback)
-                     .contentType("application/octet-stream")
-                     .contentDisposition("form-data; name=\"" + e.getKey() + "\"; filename=\"" + file.getName() + "\"")
-               );
-            }
-
-            Multipart m = mb.build();
-
-            for (Map.Entry<String, String> header : m.getHeaders().entrySet() ) {
-               connection.setRequestProperty(header.getKey(), header.getValue());
-            }
-
-            OutputStream os = new BufferedOutputStream(connection.getOutputStream());
-            try {
-               m.writeBodyTo(os);
-               os.flush();
-            } finally {
-               os.close();
-            }
-         }
-      }
-      return readConnection(connection);
-   }
-
-   protected HttpURLConnection buildConnection() throws IOException {
-      URL url = new URL(rb.toUrl());
-      OkHttpClient client = new OkHttpClient();
-      client.setConnectTimeout(Constants.CONNECTION_TIMEOUT_IN_SEC, TimeUnit.SECONDS);
-      client.setReadTimeout(Constants.CONNECTION_TIMEOUT_IN_SEC, TimeUnit.SECONDS);
-      HttpURLConnection connection = new OkUrlFactory(client).open(url);
-
-      connection.setRequestProperty("Accept-Encoding", "gzip");
-      connection.setRequestMethod(rb.method());
+      Request.Builder okRB = new Request.Builder().url(rb.toUrl());
 
       // headers
       for (Map.Entry<String, String> header : rb.headers.entrySet() ) {
-         connection.setRequestProperty(header.getKey(), header.getValue());
+         okRB.header(header.getKey(), header.getValue());
       }
 
-      connection.setUseCaches(false);
+      // generate request body (if applicable)
+      RequestBody body = null;
+      if (rb.method == Method.POST || rb.method == Method.PUT || rb.method == Method.PATCH) {
+         if (!TextUtils.isEmpty(rb.content)) { // string content, e.g. json
+            MediaType mediaType = MediaType.parse(rb.content_type);
+            body = RequestBody.create(mediaType, rb.content);
+         } else if (rb.files.entrySet().size() == 0) { // url encoded
+            MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded;charset=UTF-8");
+            body = RequestBody.create(mediaType, rb.toQuery());
+         }
+      }
 
-      return connection;
-   }
+      // set some request method
+      okRB.method(rb.method(), body);
 
-   public String readConnection(HttpURLConnection connection) throws Exception {
+      Request request = okRB.build();
+
       int code = 0;
+      String responseBody = null;
 
-      try {
-         code = connection.getResponseCode();
-
-         if (code >= 500 && code < 600)
-            throw new Mjolnir(rb, code);
-         if (Constants.DEBUG && code / 200 != 2)
-            Log.i(Constants.TAG, String.format("%d : %s", code, rb.toUrl()));
-
-         InputStream is = (code == 400 || code == 401 || code == 403 || code == 404) ? connection.getErrorStream() : connection.getInputStream();
-
-         final String encoding = connection.getContentEncoding();
-         if (encoding != null && encoding.equalsIgnoreCase("gzip")) {
-            is = new GZIPInputStream(is);
-         }
-
-         final String s = convertStreamToString(is);
-
-         if (code < 200 || code >= 300) {
-            throw new Mjolnir(rb, code, s);
-         }
-
-         if (Constants.DEBUG)
-            Log.v(Constants.TAG, String.format("[OK] %d bytes read : %s", s.length(), rb.toUrl()));
-
-         return s;
-      } catch (Exception e) {
-         throw e;
-      } finally {
-         connection.disconnect();
-      }
-   }
-
-   private String convertStreamToString(InputStream is) {
-      BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-      StringBuilder sb = new StringBuilder();
-
-      String line;
-      try {
-         while ((line = reader.readLine()) != null) {
-            sb.append(line);
-         }
-      } catch (IOException e) {
-         e.printStackTrace();
-      } finally {
+      try (Response response = client.newCall(request).execute()) {
          try {
-            is.close();
-         } catch (IOException e) {
-            if (Constants.DEBUG)
-               Log.e(Constants.TAG, "SyncClient.convertToStream()", e);
-         }
-      }
-      return sb.toString();
-   }
-
-   public static final class FilePart implements Part {
-      public final static int MAX_BUFFER_SIZE = 8*1024;
-
-      private final File file;
-      private final byte[] buffer = new byte[MAX_BUFFER_SIZE];
-      private final Map<String, String> headers;
-      private ProgressCallback callback;
-
-      @Override public Map<String, String> getHeaders() {
-         return headers;
+            code = response.code();
+            responseBody = response.body().string();
+         } catch(Throwable t) {}
       }
 
-      public FilePart(File file) {
-         this.headers = new HashMap<String, String>();
-         this.file = file;
+      if (code >= 500 && code < 600) {
+         throw new Mjolnir(rb, code);
       }
 
-      public FilePart contentDisposition(String contentDisposition) {
-         if (contentDisposition != null) {
-            headers.put("Content-Disposition", contentDisposition);
-         }
-         return this;
+      if (code < 200 || code >= 300) {
+         throw new Mjolnir(rb, code, responseBody);
       }
 
-      public FilePart contentType(String contentType) {
-         if (contentType != null) {
-            headers.put("Content-Type", contentType);
-         }
-         return this;
+      if (Constants.DEBUG && code / 200 != 2) {
+         Log.i(Constants.TAG, String.format("%d : %s", code, rb.toUrl()));
       }
 
-      public FilePart callback(ProgressCallback callback) {
-         this.callback = callback;
-         return this;
-      }
-
-      @Override public void writeBodyTo(OutputStream out) throws IOException {
-         InputStream in = null;
-         try {
-            in = new FileInputStream(file);
-            long totalBytes = file.length();
-            long bytesUploaded = 0;
-            int bytesRead;
-            while ((bytesRead = in.read(buffer)) != -1) {
-               out.write(buffer);
-               bytesUploaded += bytesRead;
-               if (callback != null) callback.transferred(file, bytesUploaded, totalBytes);
-            }
-         } finally {
-            if (in != null) {
-               try {
-                  in.close();
-               } catch (IOException ignored) {
-               }
-            }
-         }
-      }
+      return responseBody;
    }
 
    public interface ProgressCallback {

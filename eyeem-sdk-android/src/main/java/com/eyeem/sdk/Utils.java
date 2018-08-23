@@ -23,7 +23,7 @@ import java.util.regex.Matcher;
 public class Utils {
 
    public static String CDN_PATH = "cdn.eyeem.com";
-   public static String PHOTO_PATH = "http://" + CDN_PATH + "/";
+   public static String PHOTO_PATH = "https://" + CDN_PATH + "/";
    public static String THUMB_BASE = "thumb/";
 
    private static Application app;
@@ -251,7 +251,7 @@ public class Utils {
 
    public static String getSquareThumbnail(int side, String thumbUrl, String photofilename) {
       if (TextUtils.isEmpty(thumbUrl)) {
-         return "http://cdn.eyeem.com/thumb/placeholder.jpg/sq/" + side;
+         return "https://cdn.eyeem.com/thumb/placeholder.jpg/sq/" + side;
       }
 
       if (thumbUrl.startsWith("file://")) return thumbUrl;

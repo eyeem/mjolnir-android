@@ -44,7 +44,7 @@ public class ObservableRequestQueue extends RequestQueue {
       File cacheDir = new File(context.getCacheDir(), DEFAULT_CACHE_DIR);
 
       if (stack == null) {
-         stack = OkHttpStack.newInstance();
+         stack = VolleyOkHttp3StackInterceptors.newInstance();
       }
 
       Network network = new BasicNetwork(stack);

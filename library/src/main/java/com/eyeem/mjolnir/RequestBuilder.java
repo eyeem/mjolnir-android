@@ -93,7 +93,7 @@ public class RequestBuilder implements Serializable {
 
    public RequestBuilder content(JSONObject jsonContent) {
       this.content = jsonContent.toString();
-      this.content_type = "application/json";
+      this.content_type = "application/json; charset=utf-8";
       return this;
    }
 
