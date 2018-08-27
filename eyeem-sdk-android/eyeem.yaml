@@ -408,19 +408,14 @@ aggregation:
 settings:
   filters_unlocked: FalseClass
   email_newsletter: FalseClass
-  push_album_contributor: FalseClass
   facebook_userfollow: FalseClass
-  email_album_contributor: FalseClass
-  email_album_invite: FalseClass
   facebook_albumlike: FalseClass
   facebook_albumfavorite: FalseClass
   push_user_joined: FalseClass
   email_weekly_newsletter: FalseClass
   push_photo_like: FalseClass
   email_photo_comment: FalseClass
-  email_photo_tagged_person: FalseClass
   email_photo_like: FalseClass
-  push_album_invite: FalseClass
   onboarding_collections: FalseClass
   facebook_photodiscover: FalseClass
   facebook_photolike: FalseClass
@@ -432,16 +427,13 @@ settings:
   email_photo_comment_mention: FalseClass
   push_photo_comment: FalseClass
   push_photo_comment_mention: FalseClass
-  push_photo_tagged_person: FalseClass
   facebook_photocomment: FalseClass
   push_user_follower: FalseClass
   show_nsfw_content: FalseClass
   account_market_seller: FalseClass
   account_market_buyer: FalseClass
   email_confirmed: FalseClass
-  email_market: FalseClass
   email_community_updates: FalseClass
-  push_market: FalseClass
   push_community_updates: FalseClass
   discover_content_global: FalseClass
   discover_content_local_de_de: FalseClass
