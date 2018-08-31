@@ -27,6 +27,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.Call;
 
 /**
  * Created by vishna on 22/11/13.
@@ -46,7 +47,7 @@ public class SyncClient {
       int PATCH = 7;
    }
 
-   RequestBuilder rb;
+   public RequestBuilder rb;
 
    public SyncClient(RequestBuilder rb) {
       this.rb = rb;
@@ -69,13 +70,16 @@ public class SyncClient {
    }
 
    public String raw() throws Exception {
-
       OkHttpClient client = new OkHttpClient.Builder()
             .readTimeout(Constants.CONNECTION_TIMEOUT_IN_SEC, TimeUnit.SECONDS)
             .writeTimeout(Constants.CONNECTION_TIMEOUT_IN_SEC, TimeUnit.SECONDS)
             .connectTimeout(Constants.CONNECTION_TIMEOUT_IN_SEC, TimeUnit.SECONDS)
             .build();
 
+      return raw(client);
+   }
+
+   public Call asCall(OkHttpClient client) {
       Request.Builder okRB = new Request.Builder().url(rb.toUrl());
 
       // headers
@@ -100,10 +104,17 @@ public class SyncClient {
 
       Request request = okRB.build();
 
+      return client.newCall(request);
+   }
+
+   public String raw(OkHttpClient client) throws Exception {
+
+      Call call = asCall(client);
+
       int code = 0;
       String responseBody = null;
 
-      try (Response response = client.newCall(request).execute()) {
+      try (Response response = call.execute()) {
          try {
             code = response.code();
             responseBody = response.body().string();

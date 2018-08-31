@@ -48,7 +48,7 @@ public class ObjectRequest extends MjolnirRequest<Object> {
       }
    }
 
-   protected static Object fromJSON(Class clazz, JSONObject jsonObject) {
+   public static Object fromJSON(Class clazz, JSONObject jsonObject) {
       try {
          java.lang.reflect.Method fromJSON = clazz.getMethod("fromJSON", JSONObject.class);
          return fromJSON.invoke(null, jsonObject);
