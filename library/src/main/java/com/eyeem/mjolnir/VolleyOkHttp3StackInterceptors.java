@@ -105,13 +105,11 @@ public class VolleyOkHttp3StackInterceptors extends BaseHttpStack {
         okhttp3.Request.Builder okHttpRequestBuilder = new okhttp3.Request.Builder();
         okHttpRequestBuilder.url(request.getUrl());
 
-        Map<String, String> headers = request.getHeaders();
-        for (final String name : headers.keySet()) {
-            okHttpRequestBuilder.addHeader(name, headers.get(name));
-        }
-        for (final String name : additionalHeaders.keySet()) {
-            okHttpRequestBuilder.addHeader(name, additionalHeaders.get(name));
-        }
+        Headers headers = new Headers.Builder()
+           .addAll(Headers.of(request.getHeaders()))
+           .addAll(Headers.of(additionalHeaders))
+           .build();
+        okHttpRequestBuilder.headers(headers);
 
         setConnectionParametersForRequest(okHttpRequestBuilder, request);
 

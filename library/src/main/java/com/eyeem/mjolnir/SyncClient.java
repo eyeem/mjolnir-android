@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.zip.GZIPInputStream;
 
+import okhttp3.Headers;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -83,9 +84,7 @@ public class SyncClient {
       Request.Builder okRB = new Request.Builder().url(rb.toUrl());
 
       // headers
-      for (Map.Entry<String, String> header : rb.headers.entrySet() ) {
-         okRB.header(header.getKey(), header.getValue());
-      }
+      okRB.headers(Headers.of(rb.headers));
 
       // generate request body (if applicable)
       RequestBody body = null;
