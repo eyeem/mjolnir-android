@@ -595,6 +595,8 @@ market_totals:
   editorial: Fixnum
   commercial: Fixnum
   getty: Fixnum
+  partner: Fixnum
+  onHold: Fixnum
 news2:
   headline: String
   action: String
