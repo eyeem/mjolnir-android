@@ -21,7 +21,6 @@ photo:
   albums: albums
   liked: FalseClass
   blacklisted: FalseClass
-  openEdit: open_edit
   submittedToMarket: FalseClass
   file_id: String
   market: marketItem
@@ -501,20 +500,7 @@ upload_spec:
     Array: String
   originalFilename: String      # device local full path to the uploaded image before any transformations were applied
   filteredFilename: String      # iOS specific
-  openEdit: open_edit
   market: String                # values: "0"|"1"
-open_edit:
-  version: String               # 1 (filter specification version)
-  cropped: FalseClass
-  rotated: FalseClass
-  perspective: FalseClass
-  transformations:
-    Array: transformation
-transformation:
-  type: String                  # values: "adjustment"|"filter"
-  name: String                  # e.g.: "capa", "fresh 1", "unsharp mask"
-  params:
-    Array: Float                # transformation defining values, most transformations should only have one value but this should be easily expandable
 blog_post:
   body: String
   category: String
